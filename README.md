@@ -6,6 +6,7 @@ A lightweight, browser-based flashcard application that loads question-and-answe
 
 - Load flashcards from a CSV file
 - Interactive card flip animation
+- Side chevron navigation controls beside the flashcard for Previous/Next traversal
 - Three settings tabs in one unified panel:
   - **Setup**
     - Upload CSV
@@ -95,7 +96,7 @@ Each new card is selected randomly.
 ### Mouse
 
 - Click the card to flip between question and answer.
-- Use **Next** and **Previous** buttons to navigate.
+- Use the left/right chevron buttons beside the card to navigate.
 
 ### Keyboard
 
