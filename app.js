@@ -320,21 +320,6 @@ function renderCurrentCard() {
   updateStatus(progressText);
 
   updateNavigationControls(true);
-  focusFlashcardAfterRender();
-}
-
-function focusFlashcardAfterRender() {
-  // Move focus after the DOM updates so keyboard shortcuts target the flashcard.
-  requestAnimationFrame(() => {
-    // Mark this focus shift as programmatic so CSS can suppress only this ring.
-    elements.flashcard.dataset.programmaticFocus = "true";
-    elements.flashcard.focus({ preventScroll: true });
-
-    // Clear marker on next frame so user-initiated focus can still be styled.
-    requestAnimationFrame(() => {
-      delete elements.flashcard.dataset.programmaticFocus;
-    });
-  });
 }
 
 function formatProgressText() {

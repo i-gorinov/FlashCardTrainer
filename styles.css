@@ -411,10 +411,6 @@ button:focus-visible,
   outline-offset: 2px;
 }
 
-.flashcard[data-programmatic-focus="true"]:focus-visible {
-  outline: none;
-}
-
 @media (max-width: 760px) {
   /* Stack controls and actions for narrow screens. */
   .app-shell {
