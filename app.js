@@ -54,7 +54,7 @@ const elements = {
   modeRadios: document.querySelectorAll("input[name='modeChoice']"),
   previousBtn: document.getElementById("previousBtn"),
   nextBtn: document.getElementById("nextBtn"),
-  restartBtn: document.getElementById("restartBtn"),
+  resetBtn: document.getElementById("resetBtn"),
   status: document.getElementById("status"),
   flashcard: document.getElementById("flashcard"),
   answerStatusIndicators: document.querySelectorAll(".answer-status-indicator"),
@@ -85,7 +85,7 @@ function initializeApp() {
   elements.testTab.addEventListener("click", handleTestTabSelect);
   elements.previousBtn.addEventListener("click", showPreviousCard);
   elements.nextBtn.addEventListener("click", showNextCard);
-  elements.restartBtn.addEventListener("click", restartDeck);
+  elements.resetBtn.addEventListener("click", resetDeck);
   document.addEventListener("keydown", handleGlobalKeyboardNavigation);
 
   elements.flashcard.addEventListener("click", toggleCardFlip);
@@ -168,7 +168,7 @@ function handleModeChange() {
   }
 
   // Rebuild order and progress for the selected mode.
-  restartDeck();
+  resetDeck();
 }
 
 function handleSetupTabSelect() {
@@ -382,11 +382,11 @@ function applyMode(mode, shouldStartSession = false) {
   syncModeTabUi();
 
   if (state.cards.length > 0 && (state.sessionStarted || shouldStartSession)) {
-    restartDeck();
+    resetDeck();
   }
 }
 
-function restartDeck() {
+function resetDeck() {
   if (state.cards.length === 0) {
     return;
   }
@@ -438,7 +438,7 @@ function showNextCard() {
   }
 
   if (state.cursor >= state.order.length - 1) {
-    updateStatus(`End of deck. You have reviewed all ${state.cards.length} cards. Press Restart.`);
+    updateStatus(`End of deck. You have reviewed all ${state.cards.length} cards. Press Reset.`);
     updateNavigationControls(true);
     return;
   }
@@ -628,7 +628,7 @@ function toggleCardFlip() {
 }
 
 function setControlsEnabled(enabled) {
-  elements.restartBtn.disabled = !enabled;
+  elements.resetBtn.disabled = !enabled;
   elements.flashcard.classList.toggle("is-disabled", !enabled);
   elements.flashcard.setAttribute("aria-disabled", String(!enabled));
   elements.flashcard.tabIndex = enabled ? 0 : -1;

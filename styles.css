@@ -109,7 +109,7 @@ button {
   gap: 0;
 }
 
-#restartBtn {
+#resetBtn {
   width: auto;
   min-width: 0;
   padding: 0;
@@ -127,13 +127,13 @@ button {
   box-shadow: none;
 }
 
-#restartBtn:hover:not(:disabled) {
+#resetBtn:hover:not(:disabled) {
   background: transparent;
   color: var(--accent-dark);
   text-decoration: underline;
 }
 
-#restartBtn .restart-icon {
+#resetBtn .reset-icon {
   font-size: 1rem;
   line-height: 1;
 }
@@ -473,7 +473,7 @@ button:disabled {
     flex-basis: 100%;
   }
 
-  #restartBtn {
+  #resetBtn {
     margin-left: auto;
   }
 }

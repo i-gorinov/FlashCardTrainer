@@ -68,7 +68,7 @@ The Settings panel uses three tabs:
 - **Test**
   - Random (no repetition)
 
-Switching the selected mode after loading a CSV restarts the current deck, preserving the same behavior as before.
+Switching the selected mode after loading a CSV resets the current deck, preserving the same behavior as before.
 
 ## Application States
 
@@ -86,7 +86,7 @@ This is the default state when the application first loads.
 - No Question or Answer headings visible
 - No flip instruction shown
 - Navigation buttons disabled
-- Restart button disabled
+- Reset button disabled
 
 ### Ready State (After CSV Upload)
 
@@ -100,7 +100,7 @@ The card display updates after successfully uploading a CSV file and before star
 - No Question or Answer headings visible
 - No flip instruction shown
 - Navigation buttons disabled
-- Restart button disabled
+- Reset button disabled
 - Settings tabs (Study/Test) become enabled
 
 ### Active State (Session Running)
@@ -125,12 +125,12 @@ Answer
 - Question and Answer headings are visible
 - Flip instruction shown: "Click the card or press Space to flip."
 - Navigation buttons enabled based on traversal mode
-- Restart button enabled
+- Reset button enabled
 - Card is interactive and clickable
 
 ## Study Modes
 
-Switching the selected mode after loading a CSV restarts the current deck, preserving the same behavior as before.
+Switching the selected mode after loading a CSV resets the current deck, preserving the same behavior as before.
 
 ### Sequential
 
