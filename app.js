@@ -10,6 +10,12 @@ const CardState = {
   ACTIVE: "active",
 };
 
+const AnswerStatus = {
+  UNANSWERED: "unanswered",
+  CORRECT: "correct",
+  INCORRECT: "incorrect",
+};
+
 // Runtime state for current dataset, traversal strategy, and active card pointer.
 const state = {
   cards: [],
@@ -20,6 +26,7 @@ const state = {
   currentCardIndex: -1,
   sessionStarted: false,
   cardState: CardState.EMPTY,
+  answerStatuses: [],
 };
 
 // Session progress is separate from dataset position.
@@ -45,6 +52,7 @@ const elements = {
   restartBtn: document.getElementById("restartBtn"),
   status: document.getElementById("status"),
   flashcard: document.getElementById("flashcard"),
+  answerStatusIndicator: document.getElementById("answerStatusIndicator"),
   questionText: document.getElementById("questionText"),
   answerText: document.getElementById("answerText"),
   questionHeading: document.querySelector(".flashcard-front h2"),
@@ -73,6 +81,8 @@ function initializeApp() {
   document.addEventListener("keydown", handleGlobalKeyboardNavigation);
 
   elements.flashcard.addEventListener("click", toggleCardFlip);
+  elements.answerStatusIndicator.addEventListener("click", handleAnswerStatusIndicatorClick);
+  elements.answerStatusIndicator.addEventListener("keydown", handleAnswerStatusIndicatorKeydown);
   elements.flashcard.addEventListener("keydown", (event) => {
     if (event.key === " " || event.key === "Spacebar") {
       event.preventDefault();
@@ -110,6 +120,7 @@ async function handleFileUpload(event) {
 
     state.cards = parsedCards;
     state.sessionStarted = false;
+    state.answerStatuses = [];
     viewedCount = 0;
     uniqueSeen.clear();
     state.order = [];
@@ -282,6 +293,7 @@ function restartDeck() {
   }
 
   state.sessionStarted = true;
+  state.answerStatuses = Array.from({ length: state.cards.length }, () => AnswerStatus.UNANSWERED);
 
   viewedCount = 0;
   uniqueSeen.clear();
@@ -324,8 +336,7 @@ function showNextCard() {
 }
 
 function showPreviousCard() {
-  // Backward navigation is intentionally supported only in sequential mode.
-  if (state.cards.length === 0 || state.mode !== Mode.SEQUENTIAL) {
+  if (state.cards.length === 0 || (state.mode !== Mode.SEQUENTIAL && state.mode !== Mode.RANDOM_NO_REPEAT)) {
     return;
   }
 
@@ -352,6 +363,7 @@ function renderCurrentCard() {
   elements.questionText.textContent = card.question;
   elements.answerText.textContent = card.answer;
   elements.flashcard.classList.remove("is-flipped");
+  syncAnswerStatusIndicator();
   elements.flashcard.classList.remove("is-disabled");
   elements.flashcard.setAttribute("aria-disabled", "false");
   setCardState(CardState.ACTIVE);
@@ -365,11 +377,89 @@ function renderCurrentCard() {
 function formatProgressText() {
   const total = state.cards.length;
 
+  if (state.mode === Mode.RANDOM_NO_REPEAT) {
+    const currentPosition = total > 0 ? state.cursor + 1 : 0;
+    const correct = state.answerStatuses.filter((status) => status === AnswerStatus.CORRECT).length;
+    const incorrect = state.answerStatuses.filter((status) => status === AnswerStatus.INCORRECT).length;
+
+    if (correct + incorrect === 0) {
+      return `Question ${currentPosition}/${total} | Correct: 0 | Incorrect: 0 | Score: --`;
+    }
+
+    const score = Math.round((correct / (correct + incorrect)) * 100);
+    return `Question ${currentPosition}/${total} | Correct: ${correct} | Incorrect: ${incorrect} | Score: ${score}%`;
+  }
+
   if (state.mode === Mode.SEQUENTIAL || state.mode === Mode.RANDOM_REPEAT) {
     return `Viewed: ${viewedCount} | Unique: ${uniqueSeen.size} | Deck: ${total}`;
   }
 
   return `Viewed: ${viewedCount} | Deck: ${total}`;
+}
+
+function syncAnswerStatusIndicator() {
+  const shouldShowIndicator = state.mode === Mode.RANDOM_NO_REPEAT && state.currentCardIndex >= 0 && state.cards[state.currentCardIndex];
+  elements.answerStatusIndicator.hidden = !shouldShowIndicator;
+
+  if (!shouldShowIndicator) {
+    return;
+  }
+
+  const currentCardIndex = state.currentCardIndex;
+  const status = state.answerStatuses[currentCardIndex] || AnswerStatus.UNANSWERED;
+  const statusMeta = getAnswerStatusMeta(status);
+
+  elements.answerStatusIndicator.classList.remove("is-unanswered", "is-correct", "is-incorrect");
+  elements.answerStatusIndicator.classList.add(`is-${status}`);
+  elements.answerStatusIndicator.setAttribute("aria-label", `Answer status: ${statusMeta.label}`);
+  elements.answerStatusIndicator.title = `Answer status: ${statusMeta.label}`;
+  elements.answerStatusIndicator.querySelector(".answer-status-symbol").textContent = statusMeta.symbol;
+}
+
+function handleAnswerStatusIndicatorClick(event) {
+  event.preventDefault();
+  event.stopPropagation();
+
+  if (state.cards.length === 0 || state.mode !== Mode.RANDOM_NO_REPEAT || state.currentCardIndex < 0) {
+    return;
+  }
+
+  const currentStatus = state.answerStatuses[state.currentCardIndex] || AnswerStatus.UNANSWERED;
+  state.answerStatuses[state.currentCardIndex] = getNextAnswerStatus(currentStatus);
+  syncAnswerStatusIndicator();
+  updateStatus(formatProgressText());
+}
+
+function handleAnswerStatusIndicatorKeydown(event) {
+  if (event.key === " " || event.key === "Spacebar" || event.key === "Enter") {
+    event.preventDefault();
+    event.stopPropagation();
+    handleAnswerStatusIndicatorClick(event);
+  }
+}
+
+function getNextAnswerStatus(status) {
+  if (status === AnswerStatus.UNANSWERED) {
+    return AnswerStatus.CORRECT;
+  }
+
+  if (status === AnswerStatus.CORRECT) {
+    return AnswerStatus.INCORRECT;
+  }
+
+  return AnswerStatus.UNANSWERED;
+}
+
+function getAnswerStatusMeta(status) {
+  if (status === AnswerStatus.CORRECT) {
+    return { label: "correct", symbol: "✓" };
+  }
+
+  if (status === AnswerStatus.INCORRECT) {
+    return { label: "incorrect", symbol: "✗" };
+  }
+
+  return { label: "unanswered", symbol: "○" };
 }
 
 function toggleCardFlip() {
@@ -402,14 +492,13 @@ function updateNavigationControls(enabled) {
     return;
   }
 
-  elements.previousBtn.disabled = true;
-
-  // Only the finite non-repeat mode reaches an actual deck end.
   if (state.mode === Mode.RANDOM_NO_REPEAT) {
+    elements.previousBtn.disabled = state.cursor <= 0;
     elements.nextBtn.disabled = state.cursor >= state.order.length - 1;
     return;
   }
 
+  elements.previousBtn.disabled = true;
   elements.nextBtn.disabled = false;
 }
 
@@ -480,12 +569,14 @@ function resetToEmptyState() {
   setModeTabsEnabled(false);
   viewedCount = 0;
   uniqueSeen.clear();
+  state.answerStatuses = [];
 
   elements.questionText.textContent = "Upload a CSV file to begin.";
   elements.answerText.textContent = "Upload a CSV file to begin.";
   elements.flashcard.classList.remove("is-flipped");
   setControlsEnabled(false);
   setCardState(CardState.EMPTY);
+  syncAnswerStatusIndicator();
 }
 
 function setReadyState() {
@@ -494,6 +585,7 @@ function setReadyState() {
   elements.flashcard.classList.remove("is-flipped");
   setControlsEnabled(false);
   setCardState(CardState.READY);
+  syncAnswerStatusIndicator();
 }
 
 function setModeTabsEnabled(enabled) {

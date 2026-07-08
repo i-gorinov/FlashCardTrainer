@@ -21,6 +21,7 @@ A lightweight, browser-based flashcard application that loads question-and-answe
   - **Test**
     - Random (no repetition)
 - Progress tracking
+- Test mode answer marking with per-card status tracking
 - Keyboard shortcuts
 - Responsive design for desktop and mobile
 - Client-side only — no data leaves your browser
@@ -181,6 +182,13 @@ Progress display is mode-dependent:
 - **Unique** – Number of distinct cards seen during the current session.
 - **Deck** – Total cards in the deck (shown in Test mode).
 
+In Test mode, the status line also reports answer progress:
+
+- **Question X/Y** – Current position in the test order.
+- **Correct** – Number of cards marked as correct.
+- **Incorrect** – Number of cards marked as incorrect.
+- **Score** – Percentage of marked cards that were correct.
+
 Example:
 
 Practice / Random (with repetition):
@@ -189,9 +197,23 @@ Viewed: 15 | Unique: 10 / 25
 
 Test / Random (no repetition):
 
-Viewed: 15 | Deck: 25
+Question 8/25 | Correct: 5 | Incorrect: 2 | Score: 71%
 
-This allows revisited cards to be distinguished from genuinely new cards in Practice, while Test shows progress against total deck size.
+When no cards have been marked yet, the Test status line shows:
+
+Question X/Y | Correct: 0 | Incorrect: 0 | Score: --
+
+This allows revisited cards to be distinguished from genuinely new cards in Practice, while Test shows progress against total deck size and answer accuracy.
+
+## Test Mode Answer Marking
+
+In Test mode, each card includes a compact status indicator in the top-right corner of the flashcard. Clicking the indicator cycles through these states:
+
+- **○** – Unanswered
+- **✓** – Correct
+- **✗** – Incorrect
+
+The indicator is visible on both sides of the card, remains persistent while navigating between cards, and does not flip the card or trigger navigation when clicked.
 
 ## Project Structure
 
