@@ -46,10 +46,10 @@ const elements = {
   csvInput: document.getElementById("csvInput"),
   fileName: document.getElementById("fileName"),
   setupTab: document.getElementById("setupTab"),
-  practiceTab: document.getElementById("practiceTab"),
+  studyTab: document.getElementById("studyTab"),
   testTab: document.getElementById("testTab"),
   setupPanel: document.getElementById("setupPanel"),
-  practicePanel: document.getElementById("practicePanel"),
+  studyPanel: document.getElementById("studyPanel"),
   testPanel: document.getElementById("testPanel"),
   modeRadios: document.querySelectorAll("input[name='modeChoice']"),
   previousBtn: document.getElementById("previousBtn"),
@@ -81,7 +81,7 @@ function initializeApp() {
     tab.addEventListener("keydown", handleSettingsTabKeydown);
   });
   elements.setupTab.addEventListener("click", handleSetupTabSelect);
-  elements.practiceTab.addEventListener("click", handlePracticeTabSelect);
+  elements.studyTab.addEventListener("click", handleStudyTabSelect);
   elements.testTab.addEventListener("click", handleTestTabSelect);
   elements.previousBtn.addEventListener("click", showPreviousCard);
   elements.nextBtn.addEventListener("click", showNextCard);
@@ -202,8 +202,8 @@ function handleSettingsTabKeydown(event) {
   tabs[nextIndex].click();
 }
 
-function handlePracticeTabSelect() {
-  activateTab("practice");
+function handleStudyTabSelect() {
+  activateTab("study");
 
   if (state.cards.length === 0) {
     return;
@@ -238,7 +238,7 @@ function syncModeTabUi() {
     return;
   }
 
-  activateTab(isPracticeMode(state.mode) ? "practice" : "test");
+  activateTab(isStudyMode(state.mode) ? "study" : "test");
 
   setModeRadio(state.mode);
 }
@@ -253,9 +253,9 @@ function activateTab(category) {
       active: category === "setup",
     },
     {
-      tab: elements.practiceTab,
-      panel: elements.practicePanel,
-      active: category === "practice",
+      tab: elements.studyTab,
+      panel: elements.studyPanel,
+      active: category === "study",
     },
     {
       tab: elements.testTab,
@@ -273,10 +273,10 @@ function activateTab(category) {
 }
 
 function getSettingsTabs() {
-  return [elements.setupTab, elements.practiceTab, elements.testTab];
+  return [elements.setupTab, elements.studyTab, elements.testTab];
 }
 
-function isPracticeMode(mode) {
+function isStudyMode(mode) {
   return mode === Mode.SEQUENTIAL || mode === Mode.RANDOM_REPEAT;
 }
 
@@ -713,8 +713,8 @@ function resetToEmptyState() {
 }
 
 function setReadyState() {
-  elements.questionText.textContent = "Select Practice or Test to begin";
-  elements.answerText.textContent = "Select Practice or Test to begin";
+  elements.questionText.textContent = "Select Study or Test to begin";
+  elements.answerText.textContent = "Select Study or Test to begin";
   elements.flashcard.classList.remove("is-flipped");
   setControlsEnabled(false);
   setCardState(CardState.READY);
@@ -722,7 +722,7 @@ function setReadyState() {
 }
 
 function setModeTabsEnabled(enabled) {
-  [elements.practiceTab, elements.testTab].forEach((tab) => {
+  [elements.studyTab, elements.testTab].forEach((tab) => {
     tab.disabled = !enabled;
     tab.setAttribute("aria-disabled", String(!enabled));
   });

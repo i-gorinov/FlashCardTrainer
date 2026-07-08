@@ -8,14 +8,14 @@ A lightweight, browser-based flashcard application that loads question-and-answe
 - Interactive card flip animation
 - Progressive UI that reveals information only when relevant:
   - Initial state shows "Upload a CSV file to begin." in the card
-  - After upload shows instructions to select Practice or Test
+  - After upload shows instructions to select Study or Test
   - During active session shows flashcard with question and answer headings
 - Side chevron navigation controls beside the flashcard for Previous/Next traversal
 - Three settings tabs in one unified panel:
   - **Setup**
     - Upload CSV
     - Current file display
-  - **Practice**
+  - **Study**
     - Sequential
     - Random (with repetition)
   - **Test**
@@ -32,7 +32,7 @@ A lightweight, browser-based flashcard application that loads question-and-answe
 1. Download or clone this repository.
 2. Open `index.html` in a modern web browser.
 3. In the **Setup** tab, upload a CSV file containing your flashcards.
-4. Choose **Practice** or **Test**, then begin reviewing cards.
+4. Choose **Study** or **Test**, then begin reviewing cards.
 
 ## CSV Format
 
@@ -62,7 +62,7 @@ The Settings panel uses three tabs:
   - Upload CSV
   - View currently selected file name
 
-- **Practice**
+- **Study**
   - Sequential
   - Random (with repetition)
 - **Test**
@@ -94,14 +94,14 @@ The card display updates after successfully uploading a CSV file and before star
 
 **Toolbar:** "<N> cards loaded." (e.g., "3 cards loaded.")
 
-**Card Display:** "Select Practice or Test to begin"
+**Card Display:** "Select Study or Test to begin"
 
 **Characteristics:**
 - No Question or Answer headings visible
 - No flip instruction shown
 - Navigation buttons disabled
 - Restart button disabled
-- Settings tabs (Practice/Test) become enabled
+- Settings tabs (Study/Test) become enabled
 
 ### Active State (Session Running)
 
@@ -193,7 +193,7 @@ In Test mode, the status line also reports answer progress:
 
 Example:
 
-Practice / Random (with repetition):
+Study / Random (with repetition):
 
 Viewed: 15 | Unique: 10 / 25
 
@@ -205,7 +205,7 @@ When no cards have been marked yet, the Test status line shows:
 
 Question X/Y | Correct: 0 | Incorrect: 0 | Score: --
 
-This allows revisited cards to be distinguished from genuinely new cards in Practice, while Test shows progress against total deck size and answer accuracy.
+This allows revisited cards to be distinguished from genuinely new cards in Study, while Test shows progress against total deck size and answer accuracy.
 
 ## Test Mode Answer Marking
 
