@@ -366,7 +366,7 @@ function formatProgressText() {
   const total = state.cards.length;
 
   if (state.mode === Mode.SEQUENTIAL || state.mode === Mode.RANDOM_REPEAT) {
-    return `Viewed: ${viewedCount} | Unique: ${uniqueSeen.size} / ${total}`;
+    return `Viewed: ${viewedCount} | Unique: ${uniqueSeen.size} | Deck: ${total}`;
   }
 
   return `Viewed: ${viewedCount} | Deck: ${total}`;
