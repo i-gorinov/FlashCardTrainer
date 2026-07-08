@@ -22,6 +22,7 @@ A lightweight, browser-based flashcard application that loads question-and-answe
     - Random (no repetition)
 - Progress tracking
 - Test mode answer marking with per-card status tracking
+- Test mode navigation filters for hiding Correct, Incorrect, or No Mark cards while browsing with Previous/Next
 - Keyboard shortcuts
 - Responsive design for desktop and mobile
 - Client-side only — no data leaves your browser
@@ -145,7 +146,8 @@ Cards are displayed in the order they appear in the CSV file.
 Cards are shown in a random order without repeats.
 
 - Each card is shown exactly once per session.
-- Previous navigation is disabled.
+- Previous navigation is disabled unless the navigation filter is used to skip hidden categories.
+- Test mode includes compact navigation filters that let you hide Correct, Incorrect, or No Mark cards so Previous/Next only move through the remaining categories.
 
 ### Random (With Repetition)
 

@@ -27,6 +27,11 @@ const state = {
   sessionStarted: false,
   cardState: CardState.EMPTY,
   answerStatuses: [],
+  navigationFilters: {
+    correct: false,
+    incorrect: false,
+    noMark: false,
+  },
 };
 
 // Session progress is separate from dataset position.
@@ -58,6 +63,9 @@ const elements = {
   questionHeading: document.querySelector(".flashcard-front h2"),
   answerHeading: document.querySelector(".flashcard-back h2"),
   flipHint: document.querySelector(".flip-hint"),
+  hideCorrectCheckbox: document.getElementById("hideCorrectCheckbox"),
+  hideIncorrectCheckbox: document.getElementById("hideIncorrectCheckbox"),
+  hideNoMarkCheckbox: document.getElementById("hideNoMarkCheckbox"),
 };
 
 function initializeApp() {
@@ -90,6 +98,13 @@ function initializeApp() {
       event.preventDefault();
       toggleCardFlip();
     }
+  });
+  [
+    elements.hideCorrectCheckbox,
+    elements.hideIncorrectCheckbox,
+    elements.hideNoMarkCheckbox,
+  ].forEach((checkbox) => {
+    checkbox.addEventListener("change", handleNavigationFilterChange);
   });
 
   state.mode = getSelectedModeFromRadios();
@@ -128,6 +143,7 @@ async function handleFileUpload(event) {
     state.order = [];
     state.cursor = 0;
     state.currentCardIndex = -1;
+    resetNavigationFilters();
     setModeTabsEnabled(true);
     activateTab("setup");
     setReadyState();
@@ -275,6 +291,75 @@ function setModeRadio(mode) {
   });
 }
 
+function resetNavigationFilters() {
+  state.navigationFilters = {
+    correct: false,
+    incorrect: false,
+    noMark: false,
+  };
+  syncNavigationFilterControls();
+}
+
+function syncNavigationFilterControls() {
+  const filterCheckboxes = [
+    elements.hideCorrectCheckbox,
+    elements.hideIncorrectCheckbox,
+    elements.hideNoMarkCheckbox,
+  ];
+  const checkedCount = filterCheckboxes.filter((checkbox) => checkbox.checked).length;
+
+  filterCheckboxes.forEach((checkbox) => {
+    checkbox.disabled = checkedCount >= 2 && !checkbox.checked;
+  });
+}
+
+function handleNavigationFilterChange() {
+  state.navigationFilters = {
+    correct: elements.hideCorrectCheckbox.checked,
+    incorrect: elements.hideIncorrectCheckbox.checked,
+    noMark: elements.hideNoMarkCheckbox.checked,
+  };
+
+  syncNavigationFilterControls();
+
+  if (state.mode === Mode.RANDOM_NO_REPEAT && state.sessionStarted && state.currentCardIndex >= 0) {
+    updateNavigationControls(true);
+  }
+}
+
+function isCardVisibleInTestNavigation(cardIndex) {
+  if (state.mode !== Mode.RANDOM_NO_REPEAT) {
+    return true;
+  }
+
+  const cardStatus = state.answerStatuses[cardIndex] || AnswerStatus.UNANSWERED;
+
+  if (cardStatus === AnswerStatus.CORRECT) {
+    return !state.navigationFilters.correct;
+  }
+
+  if (cardStatus === AnswerStatus.INCORRECT) {
+    return !state.navigationFilters.incorrect;
+  }
+
+  return !state.navigationFilters.noMark;
+}
+
+function getVisibleCardIndex(startIndex, direction) {
+  const step = direction > 0 ? 1 : -1;
+  let index = startIndex + step;
+
+  while (index >= 0 && index < state.order.length) {
+    if (isCardVisibleInTestNavigation(state.order[index])) {
+      return index;
+    }
+
+    index += step;
+  }
+
+  return -1;
+}
+
 function applyMode(mode, shouldStartSession = false) {
   if (state.mode === mode && !shouldStartSession) {
     return;
@@ -326,6 +411,20 @@ function showNextCard() {
     return;
   }
 
+  if (state.mode === Mode.RANDOM_NO_REPEAT) {
+    const nextIndex = getVisibleCardIndex(state.cursor, 1);
+
+    if (nextIndex === -1) {
+      updateNavigationControls(true);
+      return;
+    }
+
+    state.cursor = nextIndex;
+    state.currentCardIndex = state.order[nextIndex];
+    renderCurrentCard();
+    return;
+  }
+
   if (state.cursor >= state.order.length - 1) {
     updateStatus(`End of deck. You have reviewed all ${state.cards.length} cards. Press Restart.`);
     updateNavigationControls(true);
@@ -339,6 +438,20 @@ function showNextCard() {
 
 function showPreviousCard() {
   if (state.cards.length === 0 || (state.mode !== Mode.SEQUENTIAL && state.mode !== Mode.RANDOM_NO_REPEAT)) {
+    return;
+  }
+
+  if (state.mode === Mode.RANDOM_NO_REPEAT) {
+    const previousIndex = getVisibleCardIndex(state.cursor, -1);
+
+    if (previousIndex === -1) {
+      updateNavigationControls(true);
+      return;
+    }
+
+    state.cursor = previousIndex;
+    state.currentCardIndex = state.order[previousIndex];
+    renderCurrentCard();
     return;
   }
 
@@ -442,6 +555,7 @@ function handleAnswerStatusIndicatorClick(event) {
   state.answerStatuses[state.currentCardIndex] = getNextAnswerStatus(currentStatus);
   syncAnswerStatusIndicator();
   animateAnswerStatusIndicator();
+  updateNavigationControls(true);
   updateStatus(formatProgressText());
 }
 
@@ -508,8 +622,11 @@ function updateNavigationControls(enabled) {
   }
 
   if (state.mode === Mode.RANDOM_NO_REPEAT) {
-    elements.previousBtn.disabled = state.cursor <= 0;
-    elements.nextBtn.disabled = state.cursor >= state.order.length - 1;
+    const previousVisibleIndex = getVisibleCardIndex(state.cursor, -1);
+    const nextVisibleIndex = getVisibleCardIndex(state.cursor, 1);
+
+    elements.previousBtn.disabled = previousVisibleIndex === -1;
+    elements.nextBtn.disabled = nextVisibleIndex === -1;
     return;
   }
 
@@ -585,6 +702,7 @@ function resetToEmptyState() {
   viewedCount = 0;
   uniqueSeen.clear();
   state.answerStatuses = [];
+  resetNavigationFilters();
 
   elements.questionText.textContent = "Upload a CSV file to begin.";
   elements.answerText.textContent = "Upload a CSV file to begin.";

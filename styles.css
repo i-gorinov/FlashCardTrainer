@@ -216,6 +216,36 @@ button {
   accent-color: var(--accent);
 }
 
+.navigation-filter-section {
+  display: grid;
+  gap: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(15, 23, 42, 0.1);
+}
+
+.navigation-filter-title {
+  margin: 0;
+}
+
+.navigation-filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+}
+
+.navigation-filter-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.navigation-filter-option input[type="checkbox"] {
+  margin: 0;
+  accent-color: var(--accent);
+}
+
 .button-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
