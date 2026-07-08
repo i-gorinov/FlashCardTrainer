@@ -187,7 +187,7 @@ In Test mode, the status line also reports answer progress:
 - **Question X/Y** – Current position in the test order.
 - **Correct** – Number of cards marked as correct.
 - **Incorrect** – Number of cards marked as incorrect.
-- **Score** – Percentage of marked cards that were correct.
+- **Score** – Percentage of total cards that were correct, treating unmarked cards as 0.
 
 Example:
 
@@ -213,7 +213,7 @@ In Test mode, each card includes a compact status indicator in the top-right cor
 - **✓** – Correct
 - **✗** – Incorrect
 
-The indicator is visible on both sides of the card, remains persistent while navigating between cards, and does not flip the card or trigger navigation when clicked.
+The indicator is rendered on both sides of the card, flips with the card as part of the existing 3D animation, remains persistent while navigating between cards, and does not flip the card or trigger navigation when clicked.
 
 ## Project Structure
 

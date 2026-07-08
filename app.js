@@ -52,7 +52,7 @@ const elements = {
   restartBtn: document.getElementById("restartBtn"),
   status: document.getElementById("status"),
   flashcard: document.getElementById("flashcard"),
-  answerStatusIndicator: document.getElementById("answerStatusIndicator"),
+  answerStatusIndicators: document.querySelectorAll(".answer-status-indicator"),
   questionText: document.getElementById("questionText"),
   answerText: document.getElementById("answerText"),
   questionHeading: document.querySelector(".flashcard-front h2"),
@@ -81,8 +81,10 @@ function initializeApp() {
   document.addEventListener("keydown", handleGlobalKeyboardNavigation);
 
   elements.flashcard.addEventListener("click", toggleCardFlip);
-  elements.answerStatusIndicator.addEventListener("click", handleAnswerStatusIndicatorClick);
-  elements.answerStatusIndicator.addEventListener("keydown", handleAnswerStatusIndicatorKeydown);
+  elements.answerStatusIndicators.forEach((indicator) => {
+    indicator.addEventListener("click", handleAnswerStatusIndicatorClick);
+    indicator.addEventListener("keydown", handleAnswerStatusIndicatorKeydown);
+  });
   elements.flashcard.addEventListener("keydown", (event) => {
     if (event.key === " " || event.key === "Spacebar") {
       event.preventDefault();
@@ -382,11 +384,11 @@ function formatProgressText() {
     const correct = state.answerStatuses.filter((status) => status === AnswerStatus.CORRECT).length;
     const incorrect = state.answerStatuses.filter((status) => status === AnswerStatus.INCORRECT).length;
 
+    const score = total > 0 ? Math.round((correct / total) * 100) : 0;
     if (correct + incorrect === 0) {
-      return `Question ${currentPosition}/${total} | Correct: 0 | Incorrect: 0 | Score: --`;
+      return `Question ${currentPosition}/${total} | Correct: 0 | Incorrect: 0 | Score: ${score}%`;
     }
 
-    const score = Math.round((correct / (correct + incorrect)) * 100);
     return `Question ${currentPosition}/${total} | Correct: ${correct} | Incorrect: ${incorrect} | Score: ${score}%`;
   }
 
@@ -399,21 +401,33 @@ function formatProgressText() {
 
 function syncAnswerStatusIndicator() {
   const shouldShowIndicator = state.mode === Mode.RANDOM_NO_REPEAT && state.currentCardIndex >= 0 && state.cards[state.currentCardIndex];
-  elements.answerStatusIndicator.hidden = !shouldShowIndicator;
 
-  if (!shouldShowIndicator) {
-    return;
-  }
+  Array.from(elements.answerStatusIndicators).forEach((indicator) => {
+    indicator.hidden = !shouldShowIndicator;
 
-  const currentCardIndex = state.currentCardIndex;
-  const status = state.answerStatuses[currentCardIndex] || AnswerStatus.UNANSWERED;
-  const statusMeta = getAnswerStatusMeta(status);
+    if (!shouldShowIndicator) {
+      indicator.classList.remove("is-unanswered", "is-correct", "is-incorrect", "is-animating");
+      return;
+    }
 
-  elements.answerStatusIndicator.classList.remove("is-unanswered", "is-correct", "is-incorrect");
-  elements.answerStatusIndicator.classList.add(`is-${status}`);
-  elements.answerStatusIndicator.setAttribute("aria-label", `Answer status: ${statusMeta.label}`);
-  elements.answerStatusIndicator.title = `Answer status: ${statusMeta.label}`;
-  elements.answerStatusIndicator.querySelector(".answer-status-symbol").textContent = statusMeta.symbol;
+    const currentCardIndex = state.currentCardIndex;
+    const status = state.answerStatuses[currentCardIndex] || AnswerStatus.UNANSWERED;
+    const statusMeta = getAnswerStatusMeta(status);
+
+    indicator.classList.remove("is-unanswered", "is-correct", "is-incorrect", "is-animating");
+    indicator.classList.add(`is-${status}`);
+    indicator.setAttribute("aria-label", `Answer status: ${statusMeta.label}`);
+    indicator.title = `Answer status: ${statusMeta.label}`;
+    indicator.querySelector(".answer-status-symbol").textContent = statusMeta.symbol;
+  });
+}
+
+function animateAnswerStatusIndicator() {
+  Array.from(elements.answerStatusIndicators).forEach((indicator) => {
+    indicator.classList.remove("is-animating");
+    void indicator.offsetWidth;
+    indicator.classList.add("is-animating");
+  });
 }
 
 function handleAnswerStatusIndicatorClick(event) {
@@ -427,6 +441,7 @@ function handleAnswerStatusIndicatorClick(event) {
   const currentStatus = state.answerStatuses[state.currentCardIndex] || AnswerStatus.UNANSWERED;
   state.answerStatuses[state.currentCardIndex] = getNextAnswerStatus(currentStatus);
   syncAnswerStatusIndicator();
+  animateAnswerStatusIndicator();
   updateStatus(formatProgressText());
 }
 

@@ -23,22 +23,30 @@
         <button id="previousBtn" class="card-nav card-nav-prev" type="button" aria-label="Previous card" disabled>❮</button>
 
         <div id="flashcard" class="flashcard is-disabled" role="group" tabindex="0" aria-label="Flashcard">
-          <button
-            id="answerStatusIndicator"
-            class="answer-status-indicator"
-            type="button"
-            hidden
-            aria-label="Answer status: unanswered"
-            title="Answer status: unanswered"
-          >
-            <span class="answer-status-symbol" aria-hidden="true">○</span>
-          </button>
           <div class="flashcard-inner">
             <article class="flashcard-face flashcard-front" aria-label="Question side">
+              <button
+                class="answer-status-indicator"
+                type="button"
+                hidden
+                aria-label="Answer status: unanswered"
+                title="Answer status: unanswered"
+              >
+                <span class="answer-status-symbol" aria-hidden="true">○</span>
+              </button>
               <h2>Question</h2>
               <p id="questionText">No card loaded yet.</p>
             </article>
             <article class="flashcard-face flashcard-back" aria-label="Answer side">
+              <button
+                class="answer-status-indicator"
+                type="button"
+                hidden
+                aria-label="Answer status: unanswered"
+                title="Answer status: unanswered"
+              >
+                <span class="answer-status-symbol" aria-hidden="true">○</span>
+              </button>
               <h2>Answer</h2>
               <p id="answerText">Upload a file to see answers.</p>
             </article>
