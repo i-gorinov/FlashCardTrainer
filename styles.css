@@ -345,17 +345,11 @@ button:disabled {
   }
 }
 
-.answer-status-indicator:hover:not(:disabled),
-.answer-status-indicator:focus-visible {
+.answer-status-indicator:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
   background: #ffffff;
   border-color: rgba(15, 23, 42, 0.16);
-}
-
-.answer-status-indicator:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--accent) 55%, white);
-  outline-offset: 2px;
 }
 
 .answer-status-indicator[hidden] {

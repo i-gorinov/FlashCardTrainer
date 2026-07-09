@@ -77,27 +77,15 @@ function initializeApp() {
   elements.modeRadios.forEach((radio) => {
     radio.addEventListener("change", handleModeChange);
   });
-  getSettingsTabs().forEach((tab) => {
-    tab.addEventListener("keydown", handleSettingsTabKeydown);
-  });
   elements.setupTab.addEventListener("click", handleSetupTabSelect);
   elements.studyTab.addEventListener("click", handleStudyTabSelect);
   elements.testTab.addEventListener("click", handleTestTabSelect);
   elements.previousBtn.addEventListener("click", showPreviousCard);
   elements.nextBtn.addEventListener("click", showNextCard);
   elements.resetBtn.addEventListener("click", resetDeck);
-  document.addEventListener("keydown", handleGlobalKeyboardNavigation);
-
   elements.flashcard.addEventListener("click", toggleCardFlip);
   elements.answerStatusIndicators.forEach((indicator) => {
     indicator.addEventListener("click", handleAnswerStatusIndicatorClick);
-    indicator.addEventListener("keydown", handleAnswerStatusIndicatorKeydown);
-  });
-  elements.flashcard.addEventListener("keydown", (event) => {
-    if (event.key === " " || event.key === "Spacebar") {
-      event.preventDefault();
-      toggleCardFlip();
-    }
   });
   [
     elements.hideCorrectCheckbox,
@@ -177,33 +165,6 @@ function handleSetupTabSelect() {
   }
 
   activateTab("setup");
-}
-
-function handleSettingsTabKeydown(event) {
-  const tabs = getSettingsTabs();
-  const currentIndex = tabs.indexOf(event.currentTarget);
-
-  if (currentIndex === -1) {
-    return;
-  }
-
-  let nextIndex = currentIndex;
-
-  if (event.key === "ArrowRight") {
-    nextIndex = (currentIndex + 1) % tabs.length;
-  } else if (event.key === "ArrowLeft") {
-    nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
-  } else if (event.key === "Home") {
-    nextIndex = 0;
-  } else if (event.key === "End") {
-    nextIndex = tabs.length - 1;
-  } else {
-    return;
-  }
-
-  event.preventDefault();
-  tabs[nextIndex].focus();
-  tabs[nextIndex].click();
 }
 
 function handleStudyTabSelect() {
@@ -577,21 +538,6 @@ function handleAnswerStatusIndicatorClick(event) {
   animateAnswerStatusIndicator();
   updateNavigationControls(true);
   updateStatus(formatProgressText());
-}
-
-function handleAnswerStatusIndicatorKeydown(event) {
-  const indicator = event.currentTarget;
-  if (indicator.dataset.side !== "back") {
-    event.preventDefault();
-    event.stopPropagation();
-    return;
-  }
-
-  if (event.key === " " || event.key === "Spacebar" || event.key === "Enter") {
-    event.preventDefault();
-    event.stopPropagation();
-    handleAnswerStatusIndicatorClick(event);
-  }
 }
 
 function getNextAnswerStatus(status) {

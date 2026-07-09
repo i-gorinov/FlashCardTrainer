@@ -23,7 +23,6 @@ A lightweight, browser-based flashcard application that loads question-and-answe
 - Progress tracking
 - Test mode answer marking with per-card status tracking
 - Test mode navigation filters for hiding Correct, Incorrect, or No Mark cards while browsing with Previous/Next
-- Keyboard shortcuts
 - Responsive design for desktop and mobile
 - Client-side only — no data leaves your browser
 
@@ -164,17 +163,6 @@ Each new card is selected randomly.
 
 - Click the card to flip between question and answer.
 - Use the left/right chevron buttons beside the card to navigate.
-
-### Keyboard
-
-- **Space** — Flip card
-- **Right Arrow** — Next card
-- **Left Arrow** — Previous card (Sequential mode only)
-- **In Settings tabs:**
-  - **Right Arrow** — Move to next tab
-  - **Left Arrow** — Move to previous tab
-  - **Home** — Jump to first tab
-  - **End** — Jump to last tab
 
 ## Progress Tracking
 
