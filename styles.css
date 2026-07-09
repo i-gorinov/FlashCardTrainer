@@ -1,5 +1,4 @@
 :root {
-  /* Theme tokens used across layout, controls, and flashcard faces. */
   --bg-top: #f8f6ef;
   --bg-bottom: #e9f1ee;
   --panel: #ffffff;
@@ -7,8 +6,6 @@
   --muted: #52606d;
   --accent: #0f766e;
   --accent-dark: #0b5f58;
-  --card-front: #ffffff;
-  --card-back: #d1fbee;
   --shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
 }
 
@@ -28,7 +25,6 @@ body {
 }
 
 .app-shell {
-  /* Constrain line length and visually lift the app from page background. */
   width: min(880px, 100%);
   background: color-mix(in srgb, var(--panel) 85%, transparent);
   border: 1px solid rgba(15, 23, 42, 0.08);
@@ -73,6 +69,28 @@ button {
   padding: 10px 12px;
   font-size: 0.95rem;
   background: #fff;
+}
+
+button {
+  cursor: pointer;
+  background: var(--accent);
+  color: #fff;
+  border-color: transparent;
+  font-weight: 600;
+  transition: background-color 160ms ease;
+}
+
+button:hover:not(:disabled) {
+  background: var(--accent-dark);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+[hidden] {
+  display: none !important;
 }
 
 .upload-btn {
@@ -138,10 +156,6 @@ button {
   line-height: 1;
 }
 
-[hidden] {
-  display: none !important;
-}
-
 .mode-tabs {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -204,14 +218,16 @@ button {
   font-weight: 600;
 }
 
-.mode-option {
+.mode-option,
+.navigation-filter-option {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 0.95rem;
 }
 
-.mode-option input[type="radio"] {
+.mode-option input[type="radio"],
+.navigation-filter-option input[type="checkbox"] {
   margin: 0;
   accent-color: var(--accent);
 }
@@ -234,40 +250,8 @@ button {
 }
 
 .navigation-filter-option {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
   color: var(--muted);
   font-size: 0.92rem;
-}
-
-.navigation-filter-option input[type="checkbox"] {
-  margin: 0;
-  accent-color: var(--accent);
-}
-
-.button-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-button {
-  cursor: pointer;
-  background: var(--accent);
-  color: #fff;
-  border-color: transparent;
-  font-weight: 600;
-  transition: background-color 160ms ease;
-}
-
-button:hover:not(:disabled) {
-  background: var(--accent-dark);
-}
-
-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
 }
 
 .status {
@@ -280,7 +264,6 @@ button:disabled {
 }
 
 .card-stage {
-  /* Three-column layout: left nav, card, right nav. Keeps card centered. */
   display: grid;
   grid-template-columns: auto minmax(0, min(680px, 95vw)) auto;
   align-items: center;
@@ -290,7 +273,6 @@ button:disabled {
 }
 
 .flashcard {
-  /* Perspective creates the 3D depth used during front/back rotation. */
   width: min(680px, 95vw);
   height: 330px;
   perspective: 1200px;
@@ -304,6 +286,56 @@ button:disabled {
 .flashcard.is-disabled {
   cursor: not-allowed;
   opacity: 0.7;
+}
+
+.flashcard:not(.is-disabled):hover {
+  transform: translateY(-2px);
+}
+
+.flashcard-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 500ms ease;
+  transform-style: preserve-3d;
+}
+
+.flashcard.is-flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: var(--shadow);
+  backface-visibility: hidden;
+  padding: 24px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+}
+
+.flashcard-front {
+  background: #ffffff;
+}
+
+.flashcard-back {
+  background: #d1fbee;
+  transform: rotateY(180deg);
+}
+
+.flashcard-face h2 {
+  margin: 0 0 10px;
+}
+
+.flashcard-face p {
+  margin: 0;
+  max-width: 90%;
+  font-size: 1.15rem;
+  line-height: 1.4;
 }
 
 .answer-status-indicator {
@@ -326,23 +358,14 @@ button:disabled {
   transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease, color 160ms ease, border-color 160ms ease;
 }
 
-.answer-status-indicator.is-animating {
-  animation: answer-status-pop 180ms cubic-bezier(0.2, 0.9, 0.3, 1);
+.answer-status-indicator[hidden] {
+  display: none !important;
 }
 
-@keyframes answer-status-pop {
-  0% {
-    transform: scale(0.96);
-    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
-  }
-  60% {
-    transform: scale(1.08);
-    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.14);
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
-  }
+.answer-status-indicator .answer-status-symbol {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .answer-status-indicator:hover:not(:disabled) {
@@ -352,14 +375,8 @@ button:disabled {
   border-color: rgba(15, 23, 42, 0.16);
 }
 
-.answer-status-indicator[hidden] {
-  display: none !important;
-}
-
-.answer-status-indicator .answer-status-symbol {
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1;
+.answer-status-indicator.is-animating {
+  animation: answer-status-pop 180ms cubic-bezier(0.2, 0.9, 0.3, 1);
 }
 
 .answer-status-indicator.is-unanswered {
@@ -392,56 +409,21 @@ button:disabled {
   border-color: #d0d7de;
 }
 
-.flashcard:not(.is-disabled):hover {
-  transform: translateY(-2px);
-}
+@keyframes answer-status-pop {
+  0% {
+    transform: scale(0.96);
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+  }
 
-.flashcard-inner {
-  /* Inner container rotates while both faces stay stacked in place. */
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transition: transform 500ms ease;
-  transform-style: preserve-3d;
-}
+  60% {
+    transform: scale(1.08);
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.14);
+  }
 
-.flashcard.is-flipped .flashcard-inner {
-  transform: rotateY(180deg);
-}
-
-.flashcard-face {
-  /* Shared face geometry keeps front/back perfectly aligned. */
-  position: absolute;
-  inset: 0;
-  border-radius: 18px;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: var(--shadow);
-  backface-visibility: hidden;
-  padding: 24px;
-  display: grid;
-  align-content: center;
-  justify-items: center;
-  text-align: center;
-}
-
-.flashcard-front {
-  background: var(--card-front);
-}
-
-.flashcard-back {
-  background: var(--card-back);
-  transform: rotateY(180deg);
-}
-
-.flashcard-face h2 {
-  margin: 0 0 10px;
-}
-
-.flashcard-face p {
-  margin: 0;
-  max-width: 90%;
-  font-size: 1.15rem;
-  line-height: 1.4;
+  100% {
+    transform: scale(1);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+  }
 }
 
 .flip-hint {
@@ -451,29 +433,7 @@ button:disabled {
   font-size: 0.9rem;
 }
 
-.primary-action {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 320px));
-  justify-content: center;
-  gap: 10px;
-}
-
-@media (max-width: 420px) {
-  .app-toolbar {
-    align-items: start;
-  }
-
-  .status {
-    flex-basis: 100%;
-  }
-
-  #resetBtn {
-    margin-left: auto;
-  }
-}
-
 .card-nav {
-  /* Icon-only vertical pill nav: modest width, tall clickable area. */
   width: 52px;
   height: min(260px, 80%);
   padding: 0;
@@ -498,13 +458,15 @@ button:disabled {
   color: var(--accent-dark);
 }
 
-/* Keep disabled styling shared for both nav controls. */
 .card-nav:disabled {
   cursor: not-allowed;
   opacity: 0.5;
 }
 
-.card-nav:focus-visible {
+.card-nav:focus-visible,
+input[type="file"]:focus-visible,
+select:focus-visible,
+button:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--accent) 55%, white);
   outline-offset: 2px;
 }
@@ -515,30 +477,11 @@ button:disabled {
   border-top: 1px solid rgba(15, 23, 42, 0.12);
 }
 
-.settings-title {
-  margin: 0 0 10px;
-  color: var(--muted);
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-}
-
-input[type="file"]:focus-visible,
-select:focus-visible,
-button:focus-visible,
-.flashcard:focus-visible {
-  /* Consistent high-contrast focus ring for keyboard navigation. */
-  outline: 3px solid color-mix(in srgb, var(--accent) 55%, white);
-  outline-offset: 2px;
-}
-
 @media (max-width: 760px) {
-  /* Stack controls and actions for narrow screens. */
   .app-shell {
     padding: 18px;
   }
 
-  /* Reduce nav pill height a bit on tablet / small desktop. */
   .card-nav {
     width: 48px;
     height: min(200px, 72%);
@@ -567,7 +510,18 @@ button:focus-visible,
 }
 
 @media (max-width: 420px) {
-  /* On narrow mobile, keep pills compact to avoid overlap with content. */
+  .app-toolbar {
+    align-items: start;
+  }
+
+  .status {
+    flex-basis: 100%;
+  }
+
+  #resetBtn {
+    margin-left: auto;
+  }
+
   .card-stage {
     column-gap: 10px;
   }

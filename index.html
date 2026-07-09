@@ -8,8 +8,8 @@
   </head>
   <body>
     <main class="app-shell">
-      <!-- Live status region announces progress and validation updates to assistive tech. -->
       <h1>Flashcard Trainer</h1>
+
       <div class="app-toolbar">
         <p id="status" class="status" aria-live="polite">Ready to load flashcards.</p>
         <button id="resetBtn" type="button" disabled>
@@ -18,11 +18,9 @@
         </button>
       </div>
 
-      <!-- Focusable flashcard surface used for click and keyboard flip interactions. -->
       <section class="card-stage" aria-label="Flashcard display">
         <button id="previousBtn" class="card-nav card-nav-prev" type="button" aria-label="Previous card" disabled>❮</button>
-
-        <div id="flashcard" class="flashcard is-disabled" role="group" tabindex="0" aria-label="Flashcard">
+        <div id="flashcard" class="flashcard is-disabled" role="group" aria-label="Flashcard" aria-disabled="true">
           <div class="flashcard-inner">
             <article class="flashcard-face flashcard-front" aria-label="Question side">
               <button
@@ -38,6 +36,7 @@
               <h2>Question</h2>
               <p id="questionText">No card loaded yet.</p>
             </article>
+
             <article class="flashcard-face flashcard-back" aria-label="Answer side">
               <button
                 class="answer-status-indicator"
@@ -54,15 +53,11 @@
             </article>
           </div>
         </div>
-
         <button id="nextBtn" class="card-nav card-nav-next" type="button" aria-label="Next card" disabled>❯</button>
       </section>
 
-      <p class="flip-hint">Click the card or press Space to flip.</p>
+      <p class="flip-hint">Click the card to flip.</p>
 
-      <!-- Primary navigation mirrors keyboard left/right actions. (moved into .card-stage) -->
-
-      <!-- Session controls for data source, traversal mode, and reset. -->
       <section class="settings-panel" aria-label="Flashcard controls">
         <section class="control-group settings-tabs-panel" aria-label="Mode category and options">
           <div class="mode-tabs" role="tablist" aria-label="Flashcard settings">
@@ -128,7 +123,6 @@
                 <input type="radio" name="modeChoice" value="randomNoRepeat" />
                 <span>Random (no repetition)</span>
               </label>
-
               <div class="navigation-filter-section" aria-label="Navigation filter">
                 <p class="mode-panel-title navigation-filter-title">Hide category:</p>
                 <div class="navigation-filter-options">
@@ -152,6 +146,12 @@
       </section>
     </main>
 
-    <script src="app.js"></script>
+    <script defer src="js/constants.js"></script>
+    <script defer src="js/state.js"></script>
+    <script defer src="js/dom.js"></script>
+    <script defer src="js/csvParser.js"></script>
+    <script defer src="js/navigation.js"></script>
+    <script defer src="js/ui.js"></script>
+    <script defer src="js/main.js"></script>
   </body>
 </html>
