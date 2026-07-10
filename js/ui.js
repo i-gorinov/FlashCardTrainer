@@ -257,7 +257,9 @@ function formatProgressText() {
     return `Question ${currentPosition}/${total} | Correct: ${correct} | Incorrect: ${incorrect} | Score: ${score}%`;
   }
 
-  return `Viewed: ${state.progress.viewedCount} | Deck: ${total}`;
+  const currentPosition = total > 0 ? state.cursor + 1 : 0;
+
+  return `Card ${currentPosition}/${total} | Viewed: ${state.progress.viewedCount}`;
 }
 
 function computeTestTotals() {
