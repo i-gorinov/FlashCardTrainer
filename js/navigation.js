@@ -1,11 +1,12 @@
 
 function createOrder(length, mode) {
   const indexes = Array.from({ length }, (_, index) => index);
-  return mode === Mode.RANDOM_NO_REPEAT ? shuffle(indexes) : indexes;
-}
 
-function getRandomIndex(maxExclusive) {
-  return Math.floor(Math.random() * maxExclusive);
+  if (mode === Mode.STUDY_RANDOM_NO_REPEAT || mode === Mode.TEST_RANDOM_NO_REPEAT) {
+    return shuffle(indexes);
+  }
+
+  return indexes;
 }
 
 function getVisibleCardCursor(startCursor, direction) {
@@ -28,25 +29,25 @@ function getNavigationState(enabled) {
     return { canGoPrevious: false, canGoNext: false };
   }
 
-  if (state.mode === Mode.SEQUENTIAL) {
+  if (state.mode === Mode.SEQUENTIAL || state.mode === Mode.STUDY_RANDOM_NO_REPEAT) {
     return {
       canGoPrevious: state.cursor > 0,
       canGoNext: state.cursor < state.order.length - 1,
     };
   }
 
-  if (state.mode === Mode.RANDOM_NO_REPEAT) {
+  if (state.mode === Mode.TEST_RANDOM_NO_REPEAT) {
     return {
       canGoPrevious: getVisibleCardCursor(state.cursor, -1) !== -1,
       canGoNext: getVisibleCardCursor(state.cursor, 1) !== -1,
     };
   }
 
-  return { canGoPrevious: false, canGoNext: true };
+  return { canGoPrevious: false, canGoNext: false };
 }
 
 function isCardVisibleInTestNavigation(cardIndex) {
-  if (state.mode !== Mode.RANDOM_NO_REPEAT) {
+  if (state.mode !== Mode.TEST_RANDOM_NO_REPEAT) {
     return true;
   }
 

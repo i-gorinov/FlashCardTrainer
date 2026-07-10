@@ -108,8 +108,8 @@ function selectTestTab() {
     return;
   }
 
-  if (state.mode !== Mode.RANDOM_NO_REPEAT || !state.sessionStarted) {
-    applyMode(Mode.RANDOM_NO_REPEAT, true);
+  if (state.mode !== Mode.TEST_RANDOM_NO_REPEAT || !state.sessionStarted) {
+    applyMode(Mode.TEST_RANDOM_NO_REPEAT, true);
   } else {
     setModeRadio(state.mode);
   }
@@ -161,7 +161,7 @@ function resetDeck() {
   resetProgress();
   resetCoreState();
   state.order = createOrder(state.cards.length, state.mode);
-  state.currentCardIndex = state.mode === Mode.RANDOM_REPEAT ? getRandomIndex(state.cards.length) : state.order[0];
+  state.currentCardIndex = state.order[0];
   renderCurrentCard();
   setControlsEnabled(true);
 }
@@ -171,19 +171,13 @@ function showNextCard() {
     return;
   }
 
-  if (state.mode === Mode.RANDOM_REPEAT) {
-    state.currentCardIndex = getRandomIndex(state.cards.length);
-    renderCurrentCard();
-    return;
-  }
-
-  if (state.mode === Mode.RANDOM_NO_REPEAT) {
+  if (state.mode === Mode.TEST_RANDOM_NO_REPEAT) {
     moveToVisibleCard(1);
     return;
   }
 
   if (state.cursor >= state.order.length - 1) {
-    updateStatus(`End of deck. You have reviewed all ${state.cards.length} cards. Press Reset.`);
+    updateStatus(`End of deck. You have viewed ${state.progress.viewedCount} of ${state.cards.length} cards. Press Reset.`);
     updateNavigationControls(true);
     return;
   }
@@ -193,12 +187,20 @@ function showNextCard() {
   renderCurrentCard();
 }
 
+function supportsPreviousNavigation(mode) {
+  return (
+    mode === Mode.SEQUENTIAL ||
+    mode === Mode.STUDY_RANDOM_NO_REPEAT ||
+    mode === Mode.TEST_RANDOM_NO_REPEAT
+  );
+}
+
 function showPreviousCard() {
-  if (state.cards.length === 0 || (state.mode !== Mode.SEQUENTIAL && state.mode !== Mode.RANDOM_NO_REPEAT)) {
+  if (state.cards.length === 0 || !supportsPreviousNavigation(state.mode)) {
     return;
   }
 
-  if (state.mode === Mode.RANDOM_NO_REPEAT) {
+  if (state.mode === Mode.TEST_RANDOM_NO_REPEAT) {
     moveToVisibleCard(-1);
     return;
   }
@@ -248,7 +250,7 @@ function renderCurrentCard() {
 function formatProgressText() {
   const total = state.cards.length;
 
-  if (state.mode === Mode.RANDOM_NO_REPEAT) {
+  if (state.mode === Mode.TEST_RANDOM_NO_REPEAT) {
     const currentPosition = total > 0 ? state.cursor + 1 : 0;
     const { correct, incorrect } = computeTestTotals();
     const score = total > 0 ? Math.round((correct / total) * 100) : 0;
@@ -269,7 +271,7 @@ function computeTestTotals() {
 }
 
 function syncAnswerStatusIndicator() {
-  const shouldShowIndicator = state.mode === Mode.RANDOM_NO_REPEAT && state.currentCardIndex >= 0 && Boolean(state.cards[state.currentCardIndex]);
+  const shouldShowIndicator = state.mode === Mode.TEST_RANDOM_NO_REPEAT && state.currentCardIndex >= 0 && Boolean(state.cards[state.currentCardIndex]);
 
   elements.answerStatusIndicators.forEach((indicator) => {
     indicator.hidden = !shouldShowIndicator;
@@ -310,7 +312,7 @@ function handleAnswerStatusIndicatorClick(event) {
 
   const indicator = event.currentTarget;
 
-  if (indicator.dataset.side !== "back" || state.cards.length === 0 || state.mode !== Mode.RANDOM_NO_REPEAT || state.currentCardIndex < 0) {
+  if (indicator.dataset.side !== "back" || state.cards.length === 0 || state.mode !== Mode.TEST_RANDOM_NO_REPEAT || state.currentCardIndex < 0) {
     return;
   }
 
@@ -400,7 +402,7 @@ function handleNavigationFilterChange() {
   };
   syncNavigationFilterControls();
 
-  if (state.mode === Mode.RANDOM_NO_REPEAT && state.sessionStarted && state.currentCardIndex >= 0) {
+  if (state.mode === Mode.TEST_RANDOM_NO_REPEAT && state.sessionStarted && state.currentCardIndex >= 0) {
     updateNavigationControls(true);
   }
 }
@@ -456,7 +458,7 @@ function getTabConfig() {
 }
 
 function isStudyMode(mode) {
-  return mode === Mode.SEQUENTIAL || mode === Mode.RANDOM_REPEAT;
+  return mode === Mode.SEQUENTIAL || mode === Mode.STUDY_RANDOM_NO_REPEAT;
 }
 
 function setSelectedFileName(fileName) {

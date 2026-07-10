@@ -1,7 +1,7 @@
 const Mode = Object.freeze({
   SEQUENTIAL: "sequential",
-  RANDOM_NO_REPEAT: "randomNoRepeat",
-  RANDOM_REPEAT: "randomRepeat",
+  STUDY_RANDOM_NO_REPEAT: "studyRandomNoRepeat",
+  TEST_RANDOM_NO_REPEAT: "testRandomNoRepeat",
 });
 
 const TabName = Object.freeze({
