@@ -357,10 +357,14 @@ function updateNavigationControls(enabled) {
 
 function setCardState(cardState) {
   state.cardState = cardState;
+
   const isActive = cardState === CardState.ACTIVE;
+  const isEmpty = cardState === CardState.EMPTY;
+
   elements.questionHeading.hidden = !isActive;
   elements.answerHeading.hidden = !isActive;
   elements.resetBtn.hidden = !isActive;
+  elements.csvExample.hidden = !isEmpty;
 }
 
 function resetToEmptyState() {
@@ -368,8 +372,10 @@ function resetToEmptyState() {
   syncModeTabUi();
   setModeTabsEnabled(false);
   syncNavigationFilterControls();
-  elements.questionText.textContent = "Upload a CSV file to begin.";
-  elements.answerText.textContent = "Upload a CSV file to begin.";
+  elements.questionText.textContent = EMPTY_CARD_TEXT;
+  elements.answerText.textContent = EMPTY_CARD_TEXT;
+  elements.csvExample.textContent = EMPTY_CSV_EXAMPLE;
+  // IG: Copilot suggeted: elements.csvExample.hidden = false;
   elements.flashcard.classList.remove("is-flipped");
   setControlsEnabled(false);
   setCardState(CardState.EMPTY);
@@ -494,4 +500,5 @@ function revealRenderedText() {
   elements.status.classList.remove("is-pending-render");
   elements.questionText.classList.remove("is-pending-render");
   elements.answerText.classList.remove("is-pending-render");
+  elements.csvExample.classList.remove("is-pending-render");
 }

@@ -359,6 +359,30 @@ button:disabled {
   line-height: 1.4;
 }
 
+.empty-card-content {
+    display: grid;
+    gap: 14px;
+    justify-items: center;
+}
+
+.csv-example {
+    margin: 0;
+    padding: 10px 12px;
+    max-width: min(420px, 90%);
+    overflow-x: auto;
+
+    color: var(--muted);
+    background: color-mix(in srgb, var(--accent) 5%, white);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 10px;
+
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    text-align: left;
+    white-space: pre;
+}
+
 .answer-status-indicator {
   position: absolute;
   top: 14px;

@@ -46,5 +46,6 @@ function getElements() {
     disclaimerLink: requiredElement("#disclaimerLink"),
     disclaimerDialog: requiredElement("#disclaimerDialog"),
     closeDisclaimerBtn: requiredElement("#closeDisclaimerBtn"),
+    csvExample: requiredElement("#csvExample"),
   };
 }
