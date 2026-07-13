@@ -14,7 +14,7 @@ function getElements() {
     sessionButtons: requiredElementList(".session-toggle-btn"), practiceSessionBtn: requiredElement("#practiceSessionBtn"), testSessionBtn: requiredElement("#testSessionBtn"),
     shuffleCardsCheckbox: requiredElement("#shuffleCardsCheckbox"), previousBtn: requiredElement("#previousBtn"), nextBtn: requiredElement("#nextBtn"), resetBtn: requiredElement("#resetBtn"),
     status: requiredElement("#status"), flashcard: requiredElement("#flashcard"), answerStatusIndicators: requiredElementList(".answer-status-indicator"),
-    questionText: requiredElement("#questionText"), answerText: requiredElement("#answerText"), questionHeading: requiredElement(".flashcard-front h2"), answerHeading: requiredElement(".flashcard-back h2"),
+    questionText: requiredElement("#questionText"), answerText: requiredElement("#answerText"), questionCategory: requiredElement("#questionCategory"), questionHeading: requiredElement(".flashcard-front h2"), answerHeading: requiredElement(".flashcard-back h2"),
     hideCorrectCheckbox: requiredElement("#hideCorrectCheckbox"), hideIncorrectCheckbox: requiredElement("#hideIncorrectCheckbox"), hideNoMarkCheckbox: requiredElement("#hideNoMarkCheckbox"),
     disclaimerLink: requiredElement("#disclaimerLink"), disclaimerDialog: requiredElement("#disclaimerDialog"), closeDisclaimerBtn: requiredElement("#closeDisclaimerBtn"), csvExample: requiredElement("#csvExample"),
   };

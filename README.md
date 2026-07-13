@@ -6,6 +6,7 @@ It runs fully client-side with no backend and no build step.
 ## Highlights
 
 - Upload a CSV deck with Question and Answer columns.
+- Optionally include a Category column shown on the question side.
 - Flip cards by clicking the card.
 - Switch between Practice and Test sessions.
 - Optional shuffle mode with no repeated cards in one run.
@@ -37,6 +38,7 @@ The CSV parser expects:
 - A header row.
 - At least one data row.
 - Header names containing both question and answer (case-insensitive).
+- An optional category header (case-insensitive) for question-side display.
 
 Only rows where both fields are non-empty are imported.
 
@@ -48,6 +50,17 @@ What is HTML?,A markup language for web pages
 What is CSS?,A stylesheet language
 What is JavaScript?,A programming language
 ```
+
+### Optional Category Example
+
+```csv
+Answer,category,QUESTION
+Paris,Geography,What is the capital of France?
+4,,What is 2+2?
+Pacific Ocean,GEOGRAPHY,Largest ocean?
+```
+
+When category is present and non-empty, it appears centered at the top of the question side only.
 
 ### Supported Parsing Behavior
 
@@ -143,7 +156,7 @@ Use an up-to-date browser for best compatibility.
 
 - Data is in-memory only; no persistence between reloads.
 - No import/export of answer results.
-- CSV import is limited to question and answer mapping.
+- CSV import supports question and answer mapping with optional category.
 - Very large CSV files may still take noticeable time to parse.
 
 ## Troubleshooting

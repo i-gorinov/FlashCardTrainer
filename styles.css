@@ -341,6 +341,23 @@ button:disabled,input:disabled+span {
     transform:rotateY(180deg)
 }
 
+.flashcard-category {
+    position:absolute;
+    top:12px;
+    left:50%;
+    transform:translateX(-50%);
+    margin:0;
+    max-width:70%;
+    color:var(--muted);
+    font-size:.9rem;
+    font-weight:700;
+    line-height:1.2;
+    text-align:center;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+    z-index:2
+}
+
 .flashcard-face h2 {
     margin:0 0 10px
 }

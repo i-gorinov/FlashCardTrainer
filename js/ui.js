@@ -110,6 +110,9 @@ function renderCurrentCard() {
   const card = state.cards[state.currentCardIndex];
   if (!card) return;
   markCardViewed(state.currentCardIndex);
+  const category = (card.category || "").trim();
+  elements.questionCategory.textContent = category;
+  elements.questionCategory.hidden = !category;
   elements.questionText.textContent = card.question;
   elements.answerText.textContent = card.answer;
   elements.flashcard.classList.remove("is-flipped", "is-disabled");
@@ -199,6 +202,8 @@ function resetToEmptyState() {
   elements.shuffleCardsCheckbox.checked = false;
   setSessionControlsEnabled(false);
   syncSessionControls();
+  elements.questionCategory.textContent = "";
+  elements.questionCategory.hidden = true;
   elements.questionText.textContent = EMPTY_CARD_TEXT;
   elements.answerText.textContent = EMPTY_CARD_TEXT;
   elements.csvExample.textContent = EMPTY_CSV_EXAMPLE;

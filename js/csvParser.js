@@ -11,6 +11,7 @@ async function parseCardsFromCsv(csvText) {
   const header = nonEmptyRows[0].map(normalizeHeaderCell);
   const questionIndex = header.indexOf("question");
   const answerIndex = header.indexOf("answer");
+  const categoryIndex = header.indexOf("category");
 
   if (questionIndex === -1 || answerIndex === -1) {
     throw new Error("CSV header must include both 'question' and 'answer' columns.");
@@ -21,9 +22,10 @@ async function parseCardsFromCsv(csvText) {
   for (const row of nonEmptyRows.slice(1)) {
     const question = (row[questionIndex] || "").trim();
     const answer = (row[answerIndex] || "").trim();
+    const category = categoryIndex === -1 ? "" : (row[categoryIndex] || "").trim();
 
     if (question && answer) {
-      cards.push({ question, answer });
+      cards.push(category ? { question, answer, category } : { question, answer });
     }
   }
 
