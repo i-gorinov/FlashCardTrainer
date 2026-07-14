@@ -127,6 +127,11 @@ button:active:not(:disabled) {
         color:var(--accent-dark)
     }
 
+    .upload-btn:hover:not(:disabled) {
+        background: color-mix(in srgb, var(--accent) 20%, white);
+        color: var(--accent-dark);
+    }
+
     .card-nav:hover:not(:disabled) {
         background:color-mix(in srgb,var(--accent) 10%,white);
         color:var(--accent-dark)
@@ -447,7 +452,8 @@ button:disabled,input:disabled+span {
 }
 
 .answer-status-indicator.is-readonly {
-    cursor:default
+    cursor:default;
+    pointer-events: none;
 }
 
 .answer-status-indicator.is-animating {
