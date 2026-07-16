@@ -29,3 +29,4 @@ Question,Answer
 What is HTML?,A markup language for web pages
 What is CSS?,A stylesheet language
 What is JavaScript?,A programming language`;
+const MULTI_CHOICE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

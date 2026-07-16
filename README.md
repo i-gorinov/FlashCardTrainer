@@ -12,6 +12,7 @@ It runs fully client-side with no backend and no build step.
 - Optional shuffle mode with no repeated cards in one run.
 - Mark answers in Test mode as correct, incorrect, or unanswered.
 - Filter navigation in Test mode to hide selected answer categories.
+- Optional multi-choice mode in Test sessions when Distractor columns are present.
 - View live progress and score details in the status bar.
 - Reset session state at any time.
 - Open the Disclaimer in a modal dialog.
@@ -24,8 +25,9 @@ It runs fully client-side with no backend and no build step.
 	 - Practice: standard review flow.
 	 - Test: answer marking and score tracking are enabled.
 4. Use Shuffle cards if you want randomized order.
-5. Navigate cards with Previous and Next.
-6. Click the card to flip between question and answer.
+5. In Test mode, check Multi-choice (if the CSV contains Distractor columns) to display shuffled lettered answer options on the question side.
+6. Navigate cards with Previous and Next.
+7. Click the card to flip between question and answer.
 7. In Test mode, click the status indicator on the back side to cycle through:
 	 - Unanswered
 	 - Correct
@@ -39,6 +41,7 @@ The CSV parser expects:
 - At least one data row.
 - Header names containing both question and answer (case-insensitive).
 - An optional category header (case-insensitive) for question-side display.
+- Optional columns whose header starts with `Distractor` (case-insensitive) to enable multi-choice mode.
 
 Only rows where both fields are non-empty are imported.
 
@@ -50,6 +53,22 @@ What is HTML?,A markup language for web pages
 What is CSS?,A stylesheet language
 What is JavaScript?,A programming language
 ```
+
+### Optional Distractor Example
+
+Adding one or more columns whose header starts with `Distractor` (case-insensitive) enables multi-choice mode in Test sessions.
+
+```csv
+Question,Answer,Distractor,Distractor 2,Distractor 3
+What is the capital of France?,Paris,London,Tokyo,Amsterdam
+What language runs in a browser?,JavaScript,Python,Ruby,Go
+```
+
+When Multi-choice is checked in a Test session:
+
+- The question side shows the question followed by all answer options in a random order that is preserved for the session.
+- Each option is prefixed with a capital letter index: `A)`, `B)`, `C)`, etc.
+- The answer side shows only the correct answer with the same letter it was assigned on the question side.
 
 ### Optional Category Example
 
@@ -94,6 +113,11 @@ When category is present and non-empty, it appears centered at the top of the qu
 - Answer state can be cycled from the back-side indicator.
 - Navigation filter checkboxes can hide cards by answer state.
 - At most two hide filters can be active at once.
+- Multi-choice checkbox appears when the CSV contains Distractor columns.
+  - When checked, the question side displays the correct answer and all distractors in a shuffled, lettered order that is stable for the session.
+  - The answer side shows the correct answer with its assigned letter.
+  - Multi-choice is unchecked by default whenever the Test session is selected.
+  - Toggling Multi-choice preserves the current card position, answer statuses, and all session progress.
 
 ## Navigation Filters
 

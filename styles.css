@@ -341,7 +341,7 @@ button:disabled,input:disabled+span {
     backface-visibility:hidden;
     padding:clamp(18px,4vw,24px);
     display:grid;
-    align-content:center;
+    grid-template-rows:auto 1fr;
     justify-items:center;
     text-align:center;
     overflow:auto
@@ -357,10 +357,6 @@ button:disabled,input:disabled+span {
 }
 
 .flashcard-category {
-    position:absolute;
-    top:12px;
-    left:50%;
-    transform:translateX(-50%);
     margin:0;
     max-width:70%;
     color:var(--muted);
@@ -369,8 +365,17 @@ button:disabled,input:disabled+span {
     line-height:1.2;
     text-align:center;
     overflow-wrap:anywhere;
-    word-break:break-word;
-    z-index:2
+    word-break:break-word
+}
+
+.flashcard-content-area {
+    grid-row:2;
+    justify-self:stretch;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:0
 }
 
 .flashcard-face h2 {
@@ -596,6 +601,22 @@ button:disabled,input:disabled+span {
     border-radius:999px;
     font-size:1.4rem;
     line-height:1
+}
+
+.multi-choice-options {
+    text-align:left;
+    max-width:90%;
+    display:grid;
+    gap:6px
+}
+
+.multi-choice-options p {
+    margin:0;
+    max-width:100%;
+    font-size:clamp(.95rem,2.6vw,1.1rem);
+    line-height:1.4;
+    overflow-wrap:anywhere;
+    word-break:break-word
 }
 
 .disclaimer-frame {

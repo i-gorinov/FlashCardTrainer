@@ -14,6 +14,7 @@ function wireEvents() {
   elements.csvInput.addEventListener("change", handleFileUpload);
   elements.sessionButtons.forEach((button) => button.addEventListener("click", handleSessionTypeChange));
   elements.shuffleCardsCheckbox.addEventListener("change", handleShuffleCardsChange);
+  elements.multiChoiceCheckbox.addEventListener("change", handleMultiChoiceChange);
   elements.previousBtn.addEventListener("click", showPreviousCard);
   elements.nextBtn.addEventListener("click", showNextCard);
   elements.resetBtn.addEventListener("click", resetDeck);
@@ -50,6 +51,7 @@ function handleSessionTypeChange(event) {
   if (!selectedSessionType || selectedSessionType === state.sessionType) return;
   state.sessionType = selectedSessionType;
   applyDefaultShuffleForSession();
+  applyDefaultMultiChoiceForSession();
   updateModeFromShuffleControl();
   syncSessionControls();
   syncAnswerStatusIndicator();
@@ -60,6 +62,19 @@ function handleShuffleCardsChange() {
   if (state.cards.length > 0 && state.sessionStarted) resetDeck();
 }
 function applyDefaultShuffleForSession() { elements.shuffleCardsCheckbox.checked = state.sessionType === SessionType.TEST; }
+function applyDefaultMultiChoiceForSession() {
+  if (state.sessionType !== SessionType.TEST) return;
+  state.multiChoice = false;
+  elements.multiChoiceCheckbox.checked = false;
+}
+function syncMultiChoiceOptionVisibility() {
+  const hasDistractors = state.cards.some((card) => card.distractors && card.distractors.length > 0);
+  elements.multiChoiceOption.hidden = !hasDistractors || state.sessionType !== SessionType.TEST;
+}
+function handleMultiChoiceChange() {
+  state.multiChoice = elements.multiChoiceCheckbox.checked;
+  if (state.cards.length > 0 && state.sessionStarted) renderCurrentCard();
+}
 function updateModeFromShuffleControl() { state.mode = elements.shuffleCardsCheckbox.checked ? Mode.RANDOM_NO_REPEAT : Mode.SEQUENTIAL; }
 function syncSessionControls() {
   elements.sessionButtons.forEach((button) => {
@@ -67,12 +82,14 @@ function syncSessionControls() {
     button.classList.toggle("is-active", active);
     button.setAttribute("aria-pressed", String(active));
   });
+  syncMultiChoiceOptionVisibility();
   syncNavigationFilterControls();
 }
 function resetDeck() {
   if (state.cards.length === 0) return;
   state.sessionStarted = true;
   resetAnswerStatuses();
+  resetMultiChoiceOptionOrders();
   resetProgress();
   resetCoreState();
   state.order = createOrder(state.cards.length, state.mode);
@@ -114,7 +131,28 @@ function renderCurrentCard() {
   elements.questionCategory.textContent = category;
   elements.questionCategory.hidden = !category;
   elements.questionText.textContent = card.question;
-  elements.answerText.textContent = card.answer;
+  const multiChoiceActive = state.multiChoice && card.distractors && card.distractors.length > 0;
+  if (multiChoiceActive) {
+    if (!state.multiChoiceOptionOrders[state.currentCardIndex]) {
+      state.multiChoiceOptionOrders[state.currentCardIndex] = shuffle(
+        Array.from({ length: 1 + card.distractors.length }, (_, i) => i)
+      );
+    }
+    const order = state.multiChoiceOptionOrders[state.currentCardIndex];
+    const options = [card.answer, ...card.distractors];
+    elements.multiChoiceOptions.textContent = "";
+    order.forEach((optionIndex, i) => {
+      const p = document.createElement("p");
+      p.textContent = `${MULTI_CHOICE_LETTERS[i]}) ${options[optionIndex]}`;
+      elements.multiChoiceOptions.appendChild(p);
+    });
+    elements.multiChoiceOptions.hidden = false;
+    const correctPosition = order.indexOf(0);
+    elements.answerText.textContent = `${MULTI_CHOICE_LETTERS[correctPosition]}) ${card.answer}`;
+  } else {
+    elements.multiChoiceOptions.hidden = true;
+    elements.answerText.textContent = card.answer;
+  }
   elements.flashcard.classList.remove("is-flipped", "is-disabled");
   elements.flashcard.setAttribute("aria-disabled", "false");
   setCardState(CardState.ACTIVE);
@@ -200,6 +238,9 @@ function resetToEmptyState() {
   elements.practiceSessionBtn.setAttribute("aria-pressed", "true");
   elements.testSessionBtn.setAttribute("aria-pressed", "false");
   elements.shuffleCardsCheckbox.checked = false;
+  elements.multiChoiceCheckbox.checked = false;
+  elements.multiChoiceOption.hidden = true;
+  elements.multiChoiceOptions.hidden = true;
   setSessionControlsEnabled(false);
   syncSessionControls();
   elements.questionCategory.textContent = "";
@@ -241,6 +282,7 @@ function getNavigationFilterCheckboxes() {
 function setSessionControlsEnabled(enabled) {
   elements.sessionButtons.forEach((button) => { button.disabled = !enabled; button.setAttribute("aria-disabled", String(!enabled)); });
   elements.shuffleCardsCheckbox.disabled = !enabled;
+  elements.multiChoiceCheckbox.disabled = !enabled;
   syncNavigationFilterControls();
 }
 function setSelectedFileName(fileName) { elements.fileName.textContent = fileName; elements.fileName.title = fileName; }

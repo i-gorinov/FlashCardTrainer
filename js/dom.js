@@ -12,7 +12,7 @@ function getElements() {
   return {
     uploadBtn: requiredElement("#uploadBtn"), csvInput: requiredElement("#csvInput"), fileName: requiredElement("#fileName"),
     sessionButtons: requiredElementList(".session-toggle-btn"), practiceSessionBtn: requiredElement("#practiceSessionBtn"), testSessionBtn: requiredElement("#testSessionBtn"),
-    shuffleCardsCheckbox: requiredElement("#shuffleCardsCheckbox"), previousBtn: requiredElement("#previousBtn"), nextBtn: requiredElement("#nextBtn"), resetBtn: requiredElement("#resetBtn"),
+    shuffleCardsCheckbox: requiredElement("#shuffleCardsCheckbox"), multiChoiceCheckbox: requiredElement("#multiChoiceCheckbox"), multiChoiceOption: requiredElement("#multiChoiceOption"), multiChoiceOptions: requiredElement("#multiChoiceOptions"), previousBtn: requiredElement("#previousBtn"), nextBtn: requiredElement("#nextBtn"), resetBtn: requiredElement("#resetBtn"),
     status: requiredElement("#status"), flashcard: requiredElement("#flashcard"), answerStatusIndicators: requiredElementList(".answer-status-indicator"),
     questionText: requiredElement("#questionText"), answerText: requiredElement("#answerText"), questionCategory: requiredElement("#questionCategory"), questionHeading: requiredElement(".flashcard-front h2"), answerHeading: requiredElement(".flashcard-back h2"),
     hideCorrectCheckbox: requiredElement("#hideCorrectCheckbox"), hideIncorrectCheckbox: requiredElement("#hideIncorrectCheckbox"), hideNoMarkCheckbox: requiredElement("#hideNoMarkCheckbox"),

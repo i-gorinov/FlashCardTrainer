@@ -11,6 +11,8 @@ function createInitialState() {
     answerStatuses: [],
     navigationFilters: { correct: false, incorrect: false, noMark: false },
     progress: { viewedCount: 0, seenCards: new Set() },
+    multiChoice: false,
+    multiChoiceOptionOrders: [],
   };
 }
 const state = createInitialState();
@@ -18,7 +20,8 @@ function resetCoreState() { state.order = []; state.cursor = 0; state.currentCar
 function resetProgress() { state.progress.viewedCount = 0; state.progress.seenCards.clear(); }
 function resetNavigationFilters() { state.navigationFilters = { correct: false, incorrect: false, noMark: false }; }
 function resetAnswerStatuses() { state.answerStatuses = state.cards.map(() => AnswerStatus.UNANSWERED); }
-function resetSessionState() { state.sessionStarted = false; state.answerStatuses = []; resetCoreState(); resetProgress(); resetNavigationFilters(); }
+function resetMultiChoiceOptionOrders() { state.multiChoiceOptionOrders = state.cards.map(() => null); }
+function resetSessionState() { state.sessionStarted = false; state.answerStatuses = []; state.multiChoice = false; state.multiChoiceOptionOrders = []; resetCoreState(); resetProgress(); resetNavigationFilters(); }
 function setCards(cards) { state.cards = cards; resetSessionState(); }
 function resetAllState(selectedSessionType = SessionType.PRACTICE, selectedMode = Mode.SEQUENTIAL) {
   state.cards = [];
