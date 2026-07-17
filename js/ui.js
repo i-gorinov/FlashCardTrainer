@@ -22,6 +22,9 @@ function wireEvents() {
   elements.disclaimerLink.addEventListener("click", handleDisclaimerLinkClick);
   elements.closeDisclaimerBtn.addEventListener("click", closeDisclaimer);
   elements.disclaimerDialog.addEventListener("click", handleDisclaimerBackdropClick);
+  elements.userGuideLink.addEventListener("click", handleUserGuideLinkClick);
+  elements.closeUserGuideBtn.addEventListener("click", closeUserGuide);
+  elements.userGuideDialog.addEventListener("click", handleUserGuideBackdropClick);
   window.addEventListener("resize", handleViewportResize);
 }
 async function handleFileUpload(event) {
@@ -286,6 +289,9 @@ function readFileAsText(file) {
 function handleDisclaimerLinkClick(event) { if (!elements.disclaimerDialog.showModal) return; event.preventDefault(); elements.disclaimerDialog.showModal(); }
 function closeDisclaimer() { elements.disclaimerDialog.close(); }
 function handleDisclaimerBackdropClick(event) { if (event.target === elements.disclaimerDialog) closeDisclaimer(); }
+function handleUserGuideLinkClick(event) { if (!elements.userGuideDialog.showModal) return; event.preventDefault(); elements.userGuideDialog.showModal(); }
+function closeUserGuide() { elements.userGuideDialog.close(); }
+function handleUserGuideBackdropClick(event) { if (event.target === elements.userGuideDialog) closeUserGuide(); }
 function revealRenderedText() {
   elements.status.classList.remove("is-pending-render");
   elements.questionText.classList.remove("is-pending-render");

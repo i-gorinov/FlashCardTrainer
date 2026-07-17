@@ -79,11 +79,15 @@
       </section>
     </section>
 
-    <footer class="app-footer"><span class="copyright">© 2026 Igor Gorinov</span><a id="disclaimerLink" class="footer-link" href="disclaimer.html">Disclaimer</a></footer>
+    <footer class="app-footer"><span class="copyright">© 2026 Igor Gorinov</span><a id="userGuideLink" class="footer-link user-guide-link" href="documentation/user-guide.html">User Guide</a><a id="disclaimerLink" class="footer-link" href="disclaimer.html">Disclaimer</a></footer>
   </main>
   <dialog id="disclaimerDialog" class="disclaimer-dialog" aria-labelledby="disclaimerDialogTitle">
     <div class="disclaimer-dialog-header"><h2 id="disclaimerDialogTitle">Disclaimer</h2><button id="closeDisclaimerBtn" type="button" class="dialog-close-btn" aria-label="Close disclaimer">×</button></div>
     <iframe class="disclaimer-frame" src="disclaimer.html" title="Disclaimer content"></iframe>
+  </dialog>
+  <dialog id="userGuideDialog" class="disclaimer-dialog" aria-labelledby="userGuideTitleTitle">
+    <div class="disclaimer-dialog-header"><h2 id="userGuideTitleTitle">User Guide</h2><button id="closeUserGuideBtn" type="button" class="dialog-close-btn" aria-label="Close user guide">×</button></div>
+    <iframe class="disclaimer-frame" src="documentation/user-guide.html" title="User guide content"></iframe>
   </dialog>
   <script defer src="js/constants.js"></script>
   <script defer src="js/state.js"></script>

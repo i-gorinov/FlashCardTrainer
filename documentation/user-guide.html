@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flashcard Trainer - User Guide</title>
+  <link rel="stylesheet" href="user-guide.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <div class="guide-shell">
+    <header class="guide-header" id="top">
+      <h1>Flashcard Trainer</h1>
+      <p class="intro-summary">Learn and review CSV-based flashcard decks using card flipping, shuffled study sessions, multiple-choice options, answer marking, progress tracking and focused review filters.</p>
+      <div class="header-meta" aria-label="Document information">
+        <span>Version 1.0</span>
+        <span aria-hidden="true">•</span>
+        <span>© 2026 Igor Gorinov</span>
+      </div>
+    </header>
+
+    <nav class="toc" aria-labelledby="contents-heading">
+      <h2 id="contents-heading">Contents</h2>
+      <ol>
+        <li><a href="#quick-start">Quick Start</a></li>
+        <li><a href="#csv-file-format">CSV File Format</a></li>
+        <li><a href="#studying-flashcards">Studying Flashcards</a></li>
+        <li><a href="#navigation">Navigation</a></li>
+        <li><a href="#study-options">Study Options</a></li>
+        <li><a href="#marking-answers">Marking Answers</a></li>
+        <li><a href="#progress-tracking">Progress Tracking</a></li>
+        <li><a href="#filtering-cards">Filtering Cards</a></li>
+        <li><a href="#resetting-a-session">Resetting a Session</a></li>
+        <li><a href="#error-messages">Error Messages</a></li>
+        <li><a href="#best-practices">Best Practices</a></li>
+        <li><a href="#notes-and-limitations">Notes and Limitations</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </nav>
+
+    <main id="main-content">
+      <section id="quick-start" class="guide-section">
+        <h2>Quick Start</h2>
+        <ol class="steps">
+          <li>Click <strong>Upload CSV</strong>.</li>
+          <li>Select a CSV file containing your flashcards.</li>
+          <li>The study session starts automatically after the file is loaded.</li>
+          <li>Read the question shown on the card.</li>
+          <li>Click or tap the card to reveal the answer.</li>
+          <li>On the answer side, mark your result as <strong>Unanswered</strong>, <strong>Correct</strong> or <strong>Incorrect</strong>.</li>
+          <li>Move through the deck using the <strong>Previous</strong> and <strong>Next</strong> buttons.</li>
+          <li>Monitor your progress and score in the status bar.</li>
+        </ol>
+        <p class="note"><strong>Tip:</strong> If you are using the app for revision, keep <strong>Shuffle Cards</strong> enabled so you do not learn the order of the cards.</p>
+      </section>
+
+      <section id="csv-file-format" class="guide-section">
+        <h2>CSV File Format</h2>
+        <p>The CSV file must contain a header row and at least one flashcard row. The required columns are <code>Question</code> and <code>Answer</code>.</p>
+        <p>Column names are matched by header name, not by position, so columns may appear in any order.</p>
+
+        <h3>Minimum Required Format</h3>
+        <pre><code>Question,Answer
+What is HTML?,A markup language
+What is CSS?,A stylesheet language</code></pre>
+
+        <h3>Required Columns</h3>
+        <dl class="definition-list">
+          <div>
+            <dt><code>Question</code></dt>
+            <dd>The text shown on the front of the flashcard.</dd>
+          </div>
+          <div>
+            <dt><code>Answer</code></dt>
+            <dd>The text shown on the back of the flashcard.</dd>
+          </div>
+        </dl>
+
+        <h3>Optional Columns</h3>
+        <h4>Category</h4>
+        <p>The optional <code>Category</code> column displays a category label above the question. This is useful for larger decks that cover multiple topics.</p>
+        <pre><code>Question,Answer,Category
+What is HTML?,A markup language,Web Development</code></pre>
+
+        <h4>Multiple-Choice Distractors</h4>
+        <p>Columns beginning with <code>Distractor</code> are used to generate multiple-choice options. Distractors are incorrect answers shown alongside the correct answer.</p>
+        <pre><code>Question,Answer,Distractor1,Distractor2,Distractor3
+What is HTML?,Markup language,Database,Protocol,Operating System</code></pre>
+        <p>Any number of distractor columns may be supplied. The <strong>Multiple Choice</strong> option appears only when at least one card contains distractors.</p>
+      </section>
+
+      <section id="studying-flashcards" class="guide-section">
+        <h2>Studying Flashcards</h2>
+        <h3>Question Side</h3>
+        <p>The front of the card displays the question text. If the CSV includes a category, the category appears above the question. If Multiple Choice mode is enabled, the answer options are also shown on the question side.</p>
+        <h3>Answer Side</h3>
+        <p>Click or tap the card to flip it and reveal the answer. In Multiple Choice mode, the answer side shows the correct option letter and the answer text.</p>
+      </section>
+
+      <section id="navigation" class="guide-section">
+        <h2>Navigation</h2>
+        <p>Use the navigation buttons to move through the deck.</p>
+        <table>
+          <thead>
+            <tr><th>Button</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="nav-symbol">❮</span></td><td>Go to the previous available card.</td></tr>
+            <tr><td><span class="nav-symbol">❯</span></td><td>Go to the next available card.</td></tr>
+          </tbody>
+        </table>
+        <p>Navigation respects any active filters. For example, if <strong>Hide Correct</strong> is enabled, cards marked Correct are skipped.</p>
+      </section>
+
+      <section id="study-options" class="guide-section">
+        <h2>Study Options</h2>
+        <h3>Shuffle Cards</h3>
+        <p>When <strong>Shuffle Cards</strong> is enabled, cards are presented in random order and are not repeated during the session. Changing this setting restarts the current session.</p>
+        <h3>Multiple Choice</h3>
+        <p>The <strong>Multiple Choice</strong> option appears only when the loaded CSV contains distractor columns. When enabled, the app displays answer options on the question side and reveals the correct option when the card is flipped.</p>
+      </section>
+
+      <section id="marking-answers" class="guide-section">
+        <h2>Marking Answers</h2>
+        <p>After reviewing the answer, click the circular status indicator on the answer side of the card. Each click cycles through the available answer states.</p>
+        <ul class="status-list">
+          <li><span class="status-dot unanswered">○</span> <strong>Unanswered</strong>: no mark has been applied.</li>
+          <li><span class="status-dot correct">✓</span> <strong>Correct</strong>: you answered correctly.</li>
+          <li><span class="status-dot incorrect">✗</span> <strong>Incorrect</strong>: you answered incorrectly.</li>
+        </ul>
+        <p class="note"><strong>Note:</strong> Answer status can only be changed while viewing the answer side of the card.</p>
+      </section>
+
+      <section id="progress-tracking" class="guide-section">
+        <h2>Progress Tracking</h2>
+        <p>The status bar shows your current card position, the number of cards marked Correct, the number of cards marked Incorrect and your overall score.</p>
+        <h3>Desktop Format</h3>
+        <pre><code>Question 12/100 | Correct: 8 | Incorrect: 2 | Score: 8%</code></pre>
+        <h3>Mobile Format</h3>
+        <pre><code>12/100 | ✓8 | ✗2 | ★8%</code></pre>
+        <h3>Score Calculation</h3>
+        <p>The score is calculated as:</p>
+        <pre><code>Correct Answers ÷ Total Cards × 100</code></pre>
+        <p>Unanswered cards are included in the total card count, so they reduce the score until they are marked Correct.</p>
+      </section>
+
+      <section id="filtering-cards" class="guide-section">
+        <h2>Filtering Cards</h2>
+        <p>Filters let you focus on specific groups of cards. Filtered cards remain in the deck but are skipped during navigation.</p>
+        <ul>
+          <li><strong>Hide Correct</strong>: skips cards marked Correct.</li>
+          <li><strong>Hide Incorrect</strong>: skips cards marked Incorrect.</li>
+          <li><strong>Hide No Mark</strong>: skips cards that are still Unanswered.</li>
+        </ul>
+        <h3>Common Review Scenarios</h3>
+        <div class="scenario-grid">
+          <article>
+            <h4>Review Incorrect Answers Only</h4>
+            <p>Enable <strong>Hide Correct</strong> and <strong>Hide No Mark</strong>.</p>
+          </article>
+          <article>
+            <h4>Review Unanswered Cards Only</h4>
+            <p>Enable <strong>Hide Correct</strong> and <strong>Hide Incorrect</strong>.</p>
+          </article>
+          <article>
+            <h4>Review Correct Answers Only</h4>
+            <p>Enable <strong>Hide Incorrect</strong> and <strong>Hide No Mark</strong>.</p>
+          </article>
+        </div>
+        <p class="note"><strong>Note:</strong> The application limits filter combinations to prevent all cards from being hidden at the same time.</p>
+      </section>
+
+      <section id="resetting-a-session" class="guide-section">
+        <h2>Resetting a Session</h2>
+        <p>Click <strong>Reset</strong> to restart the current study session using the loaded CSV file and current study options.</p>
+        <p>Resetting a session will:</p>
+        <ul>
+          <li>Clear all answer markings.</li>
+          <li>Reset progress statistics.</li>
+          <li>Rebuild the study order.</li>
+          <li>Return to the first card in the new session.</li>
+        </ul>
+        <p>The loaded CSV file remains available and does not need to be uploaded again.</p>
+      </section>
+
+      <section id="error-messages" class="guide-section">
+        <h2>Error Messages</h2>
+        <p>You may see an error message if the selected CSV file cannot be used. Common causes include:</p>
+        <ul>
+          <li>The CSV file does not contain a header row and at least one data row.</li>
+          <li>The required <code>Question</code> or <code>Answer</code> column is missing.</li>
+          <li>The CSV contains malformed quoted text.</li>
+          <li>No valid question and answer pairs can be extracted.</li>
+        </ul>
+      </section>
+
+      <section id="best-practices" class="guide-section">
+        <h2>Best Practices</h2>
+        <ul>
+          <li>Use <strong>Shuffle Cards</strong> for revision and recall practice.</li>
+          <li>Mark every answer honestly to keep the score meaningful.</li>
+          <li>Use filters to focus on weaker areas after the first pass through the deck.</li>
+          <li>Add categories to organise larger decks by topic.</li>
+          <li>Add distractors to create exam-style multiple-choice practice.</li>
+          <li>Reset and repeat sessions until you consistently reach your target score.</li>
+        </ul>
+      </section>
+
+      <section id="notes-and-limitations" class="guide-section">
+        <h2>Notes and Limitations</h2>
+        <ul>
+          <li>Progress is not permanently saved.</li>
+          <li>Reloading the page starts a new session.</li>
+          <li>Answer markings are retained only for the current browser session.</li>
+          <li>Multiple Choice mode is available only when distractor columns exist.</li>
+          <li>The application runs in the browser and does not require server-side processing.</li>
+        </ul>
+      </section>
+
+      <section id="faq" class="guide-section faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <details>
+          <summary>Does column order matter?</summary>
+          <p>No. The application identifies columns by their header names, so columns may appear in any order.</p>
+        </details>
+        <details>
+          <summary>Are column names case-sensitive?</summary>
+          <p>No. Header names are matched without regard to letter case, so <code>Question</code>, <code>question</code> and <code>QUESTION</code> are treated the same.</p>
+        </details>
+        <details>
+          <summary>Why does the Multiple Choice option not appear?</summary>
+          <p>The loaded CSV file does not contain any usable distractor values. Add columns such as <code>Distractor1</code>, <code>Distractor2</code> and <code>Distractor3</code> if you want to use Multiple Choice mode.</p>
+        </details>
+        <details>
+          <summary>Can I save my progress?</summary>
+          <p>No. Progress, score and answer markings are available only during the current browser session.</p>
+        </details>
+        <details>
+          <summary>Why is the Next or Previous button disabled?</summary>
+          <p>There may be no available card in that direction, or the remaining cards may be hidden by the active filters.</p>
+        </details>
+        <details>
+          <summary>What happens when I click Reset?</summary>
+          <p>The study session restarts. All answer markings and progress statistics are cleared, but the loaded CSV file remains available.</p>
+        </details>
+        <details>
+          <summary>Is my CSV file uploaded anywhere?</summary>
+          <p>No. The CSV file is read and processed locally in your browser.</p>
+        </details>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
