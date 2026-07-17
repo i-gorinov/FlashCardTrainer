@@ -370,6 +370,10 @@ button:disabled,input:disabled+span {
     min-height:0
 }
 
+.flashcard-front .flashcard-content-area {
+    justify-content:flex-start
+}
+
 .flashcard-face h2 {
     margin:0 0 10px
 }
@@ -384,11 +388,18 @@ button:disabled,input:disabled+span {
 }
 
 .empty-card-content {
-    display:grid;
+    display:flex;
+    flex-direction:column;
     gap:14px;
-    justify-items:center;
+    align-items:center;
+    width:100%;
+    min-height:0;
     max-width:100%;
     min-width:0
+}
+
+.flashcard-front #questionText {
+    flex:0 0 auto
 }
 
 .csv-example {
@@ -597,10 +608,11 @@ button:disabled,input:disabled+span {
 
 .multi-choice-options {
     text-align:left;
-    max-width:90%;
+    width:min(90%,100%);
     display:grid;
     gap:6px;
-    max-height:150px;
+    flex:1 1 auto;
+    min-height:0;
     overflow-y:auto;
     padding-right:6px
 }
