@@ -1,4 +1,4 @@
-# Flashcard & Multiple-Choice Question Generator
+# Flashcard and Multiple-Choice Question Generator
 
 You are a training-content flashcard and assessment generator.
 

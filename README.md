@@ -16,6 +16,7 @@ It runs fully client-side with no backend and no build step.
 - View live progress and score details in the status bar.
 - Reset session state at any time.
 - Open the Disclaimer in a modal dialog.
+- View and download the AI CSV-generation prompt from a shared text file.
 
 ## How It Works
 
@@ -131,6 +132,8 @@ This project has no npm or build tooling. You can run it as static files.
 
 Open index.html in a modern browser.
 
+Note: the AI prompt preview in the user guide loads from a separate text file, so that feature requires a static server instead of opening the guide page directly with `file://`.
+
 ### Option 2: Use a Local Static Server
 
 Any static server works. Example with Python:
@@ -141,12 +144,16 @@ python -m http.server 8080
 
 Then open http://localhost:8080.
 
+Live Server in VS Code is also supported for local testing.
+
 ## Project Structure
 
 ```text
 .  
 |-- index.html            # Main application shell  
 |-- disclaimer.html       # Disclaimer page shown in dialog iframe  
+|-- ai-prompts/  
+|   |-- FlashcardTrainer_prompt.txt  # Shared AI prompt source used by the user guide  
 |-- css/  
 |   |-- styles.css        # App styling and responsive layout  
 |-- documentation/  
