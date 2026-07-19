@@ -16,6 +16,9 @@ It runs fully client-side with no backend and no build step.
 - View live progress and score details in the status bar.
 - Reset session state at any time.
 - Open the Disclaimer in a modal dialog.
+- Discover AI deck creation directly from the empty card state.
+- Use a guided AI deck creation dialog with a three-step quick-start workflow.
+- Create and save CSV files directly in the app by pasting AI-generated output, including on mobile devices.
 - View, copy, and on larger screens download the AI CSV-generation prompt from a shared text file.
 
 ## How It Works
@@ -31,6 +34,27 @@ It runs fully client-side with no backend and no build step.
 	 - Unanswered
 	 - Correct
 	 - Incorrect
+
+### AI Deck Quick Start
+
+When no deck is loaded, the empty card view includes a quick action: "Generate one with AI".
+
+The AI deck dialog provides:
+
+- A short three-step workflow:
+	- Open the AI Prompt
+	- Generate CSV output in an AI assistant
+	- Create and save a CSV file
+- An in-app CSV File Creator where you can:
+	- Paste AI-generated CSV output
+	- Enter a deck filename
+	- Save a reusable `.csv` file to your device
+
+The AI prompt uses the same shared prompt source and preserves responsive behavior:
+
+- Desktop and tablet: Copy and Download options remain available.
+- Mobile: Copy option only.
+- Prompt content loads from `ai-prompts/FlashcardTrainer_prompt.txt`.
 
 ## CSV Format
 

@@ -334,6 +334,22 @@
         copiedStateTimeoutId = window.setTimeout(clearCopiedState, 2000);
       }
 
+      async function openPromptDialog() {
+        if (!dialog.open) {
+          dialog.showModal();
+        }
+
+        if (window.parent !== window) {
+          window.parent.postMessage({ type: "flashcardPromptDialogOpened" }, "*");
+        }
+
+        try {
+          await ensurePromptLoaded();
+        } catch (error) {
+          promptText.textContent = "Unable to load the AI prompt file. Serve the site through Live Server or another static server and try again.";
+        }
+      }
+
       updatePromptViewportMode();
 
       window.addEventListener("resize", updatePromptViewportMode);
@@ -346,17 +362,11 @@
         // Ignore cross-window access issues and fall back to the local viewport.
       }
 
-      openBtn.addEventListener("click", async function () {
-        dialog.showModal();
+      openBtn.addEventListener("click", openPromptDialog);
 
-        if (window.parent !== window) {
-          window.parent.postMessage({ type: "flashcardPromptDialogOpened" }, "*");
-        }
-
-        try {
-          await ensurePromptLoaded();
-        } catch (error) {
-          promptText.textContent = "Unable to load the AI prompt file. Serve the site through Live Server or another static server and try again.";
+      window.addEventListener("message", function (event) {
+        if (event.data && event.data.type === "flashcardOpenPromptDialog") {
+          openPromptDialog();
         }
       });
 

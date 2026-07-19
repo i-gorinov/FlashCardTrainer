@@ -28,6 +28,7 @@
               <h2 hidden>Question</h2>
               <div class="empty-card-content">
                 <p id="questionText" class="is-pending-render"></p>
+                <p id="aiDeckDiscovery" class="empty-ai-discovery"><span>Don't have a deck yet? </span><button id="openAiDeckCreatorBtn" type="button" class="inline-action-link">Generate one with AI</button><span>.</span></p>
                 <div id="multiChoiceOptions" class="multi-choice-options" hidden></div>
                 <pre id="csvExample" class="csv-example is-pending-render" hidden></pre>
               </div>
@@ -88,6 +89,63 @@
   <dialog id="userGuideDialog" class="disclaimer-dialog" aria-labelledby="userGuideTitleTitle">
     <div class="disclaimer-dialog-header"><h2 id="userGuideTitleTitle">User Guide</h2><button id="closeUserGuideBtn" type="button" class="dialog-close-btn" aria-label="Close user guide">×</button></div>
     <iframe class="disclaimer-frame" src="documentation/user-guide.html" title="User guide content"></iframe>
+  </dialog>
+  <dialog id="aiDeckDialog" class="ai-deck-dialog" aria-labelledby="aiDeckDialogTitle">
+    <div class="disclaimer-dialog-header"><h2 id="aiDeckDialogTitle">Create a Deck with AI</h2><button id="closeAiDeckDialogBtn" type="button" class="dialog-close-btn" aria-label="Close AI deck creator">×</button></div>
+    <div class="ai-deck-dialog-body">
+      <p class="ai-deck-intro">Create a reusable CSV deck in three quick steps, then upload it to start studying.</p>
+      <ol class="ai-deck-steps">
+        <li>
+          <h3>Open the AI Prompt</h3>
+          <p>Use the built-in prompt template to guide your AI assistant.</p>
+          <button id="openAiPromptFromDeckBtn" type="button" class="secondary-action-btn">Open AI Prompt</button>
+        </li>
+        <li>
+          <h3>Generate CSV output</h3>
+          <p>Paste the prompt into your AI assistant and ask it to return CSV output.</p>
+        </li>
+        <li>
+          <h3>Create and save a CSV file</h3>
+          <p>Paste the generated CSV below, choose a filename, and save it on your device.</p>
+        </li>
+      </ol>
+      <section class="ai-csv-builder" aria-labelledby="aiCsvBuilderTitle">
+        <h3 id="aiCsvBuilderTitle">CSV File Creator</h3>
+        <label for="aiCsvFileNameInput">Deck filename</label>
+        <input id="aiCsvFileNameInput" class="ai-csv-filename" type="text" value="my-ai-deck.csv" autocomplete="off" spellcheck="false" />
+        <label for="aiCsvContentInput">AI-generated CSV output</label>
+        <textarea id="aiCsvContentInput" class="ai-csv-content" placeholder="Question,Answer&#10;What is HTML?,A markup language for web pages"></textarea>
+        <div class="ai-csv-actions">
+          <button id="saveAiCsvBtn" type="button" class="upload-btn">Save CSV File</button>
+          <p id="aiCsvSaveStatus" class="ai-csv-save-status" aria-live="polite"></p>
+        </div>
+      </section>
+    </div>
+  </dialog>
+  <dialog id="aiPromptDialog" class="prompt-dialog" aria-labelledby="aiPromptDialogTitle">
+    <div class="prompt-dialog-header">
+      <h2 id="aiPromptDialogTitle">AI Prompt</h2>
+      <div class="prompt-dialog-actions">
+        <button type="button" id="aiPromptCopyBtn" class="prompt-copy-btn" data-copied="false" aria-label="Copy AI prompt">
+          <span class="prompt-copy-icon" aria-hidden="true">
+            <svg class="prompt-copy-icon-clipboard" viewBox="0 0 24 24" focusable="false">
+              <rect x="9" y="9" width="11" height="11" rx="2"></rect>
+              <path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"></path>
+            </svg>
+            <svg class="prompt-copy-icon-check" viewBox="0 0 24 24" focusable="false">
+              <path d="M5 12.5 9.2 16.7 19 7"></path>
+            </svg>
+          </span>
+          <span class="prompt-copy-label">Copy</span>
+        </button>
+        <a id="aiPromptDownloadBtn" class="prompt-download-btn" download="FlashcardTrainer_prompt.txt">Download</a>
+        <button type="button" id="closeAiPromptDialogBtn" class="prompt-close-btn" aria-label="Close prompt">&times;</button>
+      </div>
+    </div>
+    <div class="prompt-dialog-body">
+      <pre id="aiPromptText" class="prompt-text">Loading&hellip;</pre>
+    </div>
+    <p id="aiPromptCopyStatus" class="prompt-copy-status" aria-live="polite"></p>
   </dialog>
   <script defer src="js/constants.js"></script>
   <script defer src="js/state.js"></script>

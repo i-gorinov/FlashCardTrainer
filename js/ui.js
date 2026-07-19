@@ -1,7 +1,16 @@
 let elements;
 let isPromptDialogOpen = false;
+let isUserGuideFrameLoaded = false;
+let isAiDeckPromptFlowActive = false;
+let aiPromptContent = "";
+let aiPromptCopiedTimeoutId = 0;
+const AI_PROMPT_URL = "ai-prompts/FlashcardTrainer_prompt.txt";
+const MOBILE_PROMPT_MAX_WIDTH = 760;
 function initializeApp() {
   elements = getElements();
+  isUserGuideFrameLoaded = Boolean(elements.userGuideFrame.contentDocument && elements.userGuideFrame.contentDocument.readyState === "complete");
+  updateAiPromptViewportMode();
+  elements.aiPromptDownloadBtn.href = AI_PROMPT_URL;
   wireEvents();
   state.mode = Mode.SEQUENTIAL;
   setReviewControlsEnabled(false);
@@ -27,6 +36,18 @@ function wireEvents() {
   elements.closeUserGuideBtn.addEventListener("click", closeUserGuide);
   elements.userGuideDialog.addEventListener("click", handleUserGuideBackdropClick);
   elements.userGuideDialog.addEventListener("cancel", handleUserGuideCancel);
+  elements.userGuideFrame.addEventListener("load", handleUserGuideFrameLoad);
+  elements.openAiDeckCreatorBtn.addEventListener("click", openAiDeckDialog);
+  elements.closeAiDeckDialogBtn.addEventListener("click", closeAiDeckDialog);
+  elements.aiDeckDialog.addEventListener("click", handleAiDeckDialogBackdropClick);
+  elements.aiDeckDialog.addEventListener("cancel", closeAiDeckDialog);
+  elements.openAiPromptFromDeckBtn.addEventListener("click", openAiPromptFromAiDeckDialog);
+  elements.saveAiCsvBtn.addEventListener("click", handleSaveAiCsvFile);
+  elements.aiPromptCopyBtn.addEventListener("click", handleAiPromptCopy);
+  elements.closeAiPromptDialogBtn.addEventListener("click", closeAiPromptDialog);
+  elements.aiPromptDialog.addEventListener("click", handleAiPromptDialogBackdropClick);
+  elements.aiPromptDialog.addEventListener("cancel", handleAiPromptDialogCancel);
+  elements.aiPromptDialog.addEventListener("close", handleAiPromptDialogClose);
   window.addEventListener("message", handleIframeMessage);
   window.addEventListener("resize", handleViewportResize);
 }
@@ -215,6 +236,7 @@ function setCardState(cardState) {
   elements.questionHeading.hidden = !isActive;
   elements.answerHeading.hidden = !isActive;
   elements.resetBtn.hidden = !isActive;
+  elements.aiDeckDiscovery.hidden = !isEmpty;
   elements.csvExample.hidden = !isEmpty;
 }
 function resetToEmptyState() {
@@ -280,6 +302,7 @@ function handleViewportResize() {
     const status = formatProgressText();
     updateStatus(status.message, status.isHtml);
   }
+  updateAiPromptViewportMode();
 }
 function readFileAsText(file) {
   return new Promise((resolve, reject) => {
@@ -292,10 +315,139 @@ function readFileAsText(file) {
 function handleDisclaimerLinkClick(event) { if (!elements.disclaimerDialog.showModal) return; event.preventDefault(); elements.disclaimerDialog.showModal(); }
 function closeDisclaimer() { elements.disclaimerDialog.close(); }
 function handleDisclaimerBackdropClick(event) { if (event.target === elements.disclaimerDialog) closeDisclaimer(); }
-function handleUserGuideLinkClick(event) { if (!elements.userGuideDialog.showModal) return; event.preventDefault(); elements.userGuideDialog.showModal(); }
+function handleUserGuideLinkClick(event) { event.preventDefault(); openUserGuideDialog(); }
 function closeUserGuide() { if (isPromptDialogOpen) return; elements.userGuideDialog.close(); }
 function handleUserGuideBackdropClick(event) { if (event.target === elements.userGuideDialog) closeUserGuide(); }
 function handleUserGuideCancel(event) { if (isPromptDialogOpen) event.preventDefault(); }
+function handleUserGuideFrameLoad() { isUserGuideFrameLoaded = true; }
+function openUserGuideDialog() { if (!elements.userGuideDialog.showModal) return; if (!elements.userGuideDialog.open) elements.userGuideDialog.showModal(); }
+function requestOpenPromptInUserGuide() {
+  const openPromptMessage = { type: "flashcardOpenPromptDialog" };
+  if (isUserGuideFrameLoaded && elements.userGuideFrame.contentWindow) {
+    elements.userGuideFrame.contentWindow.postMessage(openPromptMessage, "*");
+    return;
+  }
+  const openPromptOnLoad = () => {
+    if (elements.userGuideFrame.contentWindow) elements.userGuideFrame.contentWindow.postMessage(openPromptMessage, "*");
+  };
+  elements.userGuideFrame.addEventListener("load", openPromptOnLoad, { once: true });
+}
+function openAiDeckDialog() {
+  if (!elements.aiDeckDialog.showModal) return;
+  setAiCsvSaveStatus("");
+  if (!elements.aiDeckDialog.open) elements.aiDeckDialog.showModal();
+}
+function closeAiDeckDialog() { if (elements.aiDeckDialog.open) elements.aiDeckDialog.close(); }
+function handleAiDeckDialogBackdropClick(event) { if (event.target === elements.aiDeckDialog) closeAiDeckDialog(); }
+function openAiPromptFromAiDeckDialog() {
+  isAiDeckPromptFlowActive = true;
+  closeAiDeckDialog();
+  openAiPromptDialog();
+}
+function updateAiPromptViewportMode() {
+  document.body.dataset.appViewport = window.matchMedia(`(max-width: ${MOBILE_PROMPT_MAX_WIDTH}px)`).matches ? "mobile" : "desktop";
+}
+async function ensureAiPromptLoaded() {
+  if (aiPromptContent) {
+    elements.aiPromptText.textContent = aiPromptContent;
+    return aiPromptContent;
+  }
+  elements.aiPromptText.textContent = "Loading...";
+  const response = await fetch(AI_PROMPT_URL);
+  if (!response.ok) {
+    throw new Error("Failed to load AI prompt file.");
+  }
+  aiPromptContent = (await response.text()).trim();
+  elements.aiPromptText.textContent = aiPromptContent;
+  return aiPromptContent;
+}
+function clearAiPromptCopiedState() {
+  if (aiPromptCopiedTimeoutId) {
+    window.clearTimeout(aiPromptCopiedTimeoutId);
+    aiPromptCopiedTimeoutId = 0;
+  }
+  elements.aiPromptCopyBtn.dataset.copied = "false";
+  elements.aiPromptCopyBtn.setAttribute("aria-label", "Copy AI prompt");
+  elements.aiPromptCopyBtn.querySelector(".prompt-copy-label").textContent = "Copy";
+  elements.aiPromptCopyStatus.textContent = "";
+}
+function showAiPromptCopiedState() {
+  clearAiPromptCopiedState();
+  elements.aiPromptCopyBtn.dataset.copied = "true";
+  elements.aiPromptCopyBtn.setAttribute("aria-label", "AI prompt copied");
+  elements.aiPromptCopyBtn.querySelector(".prompt-copy-label").textContent = "Copied";
+  elements.aiPromptCopyStatus.textContent = "AI prompt copied to clipboard.";
+  aiPromptCopiedTimeoutId = window.setTimeout(clearAiPromptCopiedState, 2000);
+}
+async function openAiPromptDialog() {
+  updateAiPromptViewportMode();
+  elements.aiPromptDownloadBtn.href = AI_PROMPT_URL;
+  if (!elements.aiPromptDialog.open) elements.aiPromptDialog.showModal();
+  try {
+    await ensureAiPromptLoaded();
+  } catch (error) {
+    elements.aiPromptText.textContent = "Unable to load the AI prompt file. Serve the site through Live Server or another static server and try again.";
+  }
+}
+function closeAiPromptDialog() {
+  clearAiPromptCopiedState();
+  if (elements.aiPromptDialog.open) elements.aiPromptDialog.close();
+}
+function handleAiPromptDialogBackdropClick(event) {
+  if (event.target === elements.aiPromptDialog) closeAiPromptDialog();
+}
+function handleAiPromptDialogCancel() {
+  closeAiPromptDialog();
+}
+function handleAiPromptDialogClose() {
+  if (!isAiDeckPromptFlowActive) return;
+  isAiDeckPromptFlowActive = false;
+  openAiDeckDialog();
+}
+async function handleAiPromptCopy() {
+  elements.aiPromptCopyBtn.disabled = true;
+  try {
+    const promptText = await ensureAiPromptLoaded();
+    await navigator.clipboard.writeText(promptText);
+    showAiPromptCopiedState();
+  } catch (error) {
+    elements.aiPromptCopyStatus.textContent = "Unable to copy the AI prompt.";
+  } finally {
+    elements.aiPromptCopyBtn.disabled = false;
+  }
+}
+function sanitizeCsvFileName(fileName) {
+  const normalizedFileName = fileName.trim().replace(/[<>:"/\\|?*\x00-\x1F]/g, "-");
+  if (!normalizedFileName) return "";
+  return normalizedFileName.toLowerCase().endsWith(".csv") ? normalizedFileName : `${normalizedFileName}.csv`;
+}
+function setAiCsvSaveStatus(message, isError = false) {
+  elements.aiCsvSaveStatus.textContent = message;
+  elements.aiCsvSaveStatus.classList.toggle("is-error", isError);
+}
+function handleSaveAiCsvFile() {
+  const csvContent = elements.aiCsvContentInput.value.trim();
+  const csvFileName = sanitizeCsvFileName(elements.aiCsvFileNameInput.value);
+  if (!csvFileName) {
+    setAiCsvSaveStatus("Enter a file name before saving.", true);
+    return;
+  }
+  if (!csvContent) {
+    setAiCsvSaveStatus("Paste AI-generated CSV output before saving.", true);
+    return;
+  }
+  const csvBlob = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
+  const objectUrl = URL.createObjectURL(csvBlob);
+  const downloadLink = document.createElement("a");
+  downloadLink.href = objectUrl;
+  downloadLink.download = csvFileName;
+  downloadLink.style.display = "none";
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+  URL.revokeObjectURL(objectUrl);
+  setAiCsvSaveStatus(`Saved ${csvFileName}.`);
+}
 function handleIframeMessage(event) {
   if (event.source !== elements.userGuideFrame.contentWindow) return;
   if (event.data?.type === "flashcardPromptDialogOpened") {
