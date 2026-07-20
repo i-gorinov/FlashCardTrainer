@@ -138,21 +138,41 @@
     <section id="ai-generation" class="guide-section">
       <h2>Generating CSV files with AI</h2>
       <p>
-        Flashcard Trainer includes an AI-ready prompt that helps generate compatible CSV files from training material.
+        Flashcard Trainer includes an integrated AI-powered workflow to create CSV files directly from training material. You can access this from the empty card state or the User Guide.
       </p>
 
-      <p>
-        <button type="button" class="download-link" id="openPromptBtn">View AI prompt</button>
-      </p>
-
-      <h3>How to use the prompt</h3>
+      <h3>Quick start: From the empty card</h3>
       <ol class="steps">
-        <li>Open the AI prompt dialog.</li>
-        <li>Copy the prompt text into an AI chat, or download the prompt file on larger screens if you prefer.</li>
-        <li>Replace the <code>[INSERT CONTENT HERE]</code> section with training text, one or more URLs, or both.</li>
-        <li>Ask the AI to generate the CSV output.</li>
-        <li>Save the generated output as a <code>.csv</code> file.</li>
-        <li>Upload the CSV file into Flashcard Trainer.</li>
+        <li>When no deck is loaded, the card displays "Generate one with AI".</li>
+        <li>Click that link to open the <strong>Create a Deck with AI</strong> dialog.</li>
+        <li>Follow the three-step workflow to create and save a new CSV file.</li>
+      </ol>
+
+      <h3>Three-step workflow</h3>
+
+      <h4>Step 1: Open the AI Prompt</h4>
+      <p>Click <strong>Open AI Prompt</strong> to view the prompt template that guides your AI assistant.</p>
+      <ul>
+        <li>Copy the prompt text directly into your AI chat.</li>
+        <li>On larger screens, you can download the prompt file if you prefer.</li>
+      </ul>
+
+      <h4>Step 2: Generate CSV output</h4>
+      <ol class="steps">
+        <li>Paste the AI prompt into your AI assistant.</li>
+        <li>Replace the <code>[INSERT CONTENT HERE AS TEXT, URLs OR BOTH]</code> section with training text, one or more URLs, or both.</li>
+        <li>Submit the prompt to the AI assistant.</li>
+        <li>Copy the CSV output from the AI assistant.</li>
+      </ol>
+
+      <h4>Step 3: Create and save a CSV file</h4>
+      <ol class="steps">
+        <li>Return to the dialog if needed.</li>
+        <li>Paste the AI-generated CSV output into the <strong>AI-generated CSV output</strong> field.</li>
+        <li>Enter a deck filename (defaults to <code>my-ai-deck.csv</code>).</li>
+        <li>Click <strong>Save CSV File</strong>.</li>
+        <li>The file downloads to your device.</li>
+        <li>Upload the file using the <strong>Upload CSV</strong> button to start studying.</li>
       </ol>
 
       <h3>Source material</h3>
@@ -165,6 +185,14 @@
 
       <p class="note">
         For URLs, use links to the actual training material pages. A general homepage or landing page is unlikely to produce useful results because the prompt does not ask the AI to recursively crawl an entire website.
+      </p>
+
+      <h3>Accessing the AI prompt from the User Guide</h3>
+      <p>
+        You can also view and copy the AI prompt directly from this guide:
+      </p>
+      <p>
+        <button type="button" class="download-link" id="openPromptBtn">View AI prompt</button>
       </p>
     </section>
 
@@ -211,7 +239,7 @@
 
       <details>
         <summary>How do I create a CSV file using AI?</summary>
-        <p>Download the AI prompt from the Generating CSV files with AI section, paste it into an AI chat, add your training material, and save the generated output as a CSV file.</p>
+        <p>Use the "Generate one with AI" link from the empty card, or access the AI Deck Creator from the User Guide. Follow the three-step workflow: open the AI prompt, paste it into your AI assistant with your training material, then paste the generated CSV into the File Creator and save it.</p>
       </details>
 
       <details>

@@ -156,11 +156,13 @@ This project has no npm or build tooling. You can run it as static files.
 
 Open index.html in a modern browser.
 
-Note: the AI prompt preview and copy action in the user guide load from a separate text file, so that feature requires a static server instead of opening the guide page directly with `file://`.
+Note: Some features that load external files (such as the AI prompt and user guide) work best when served through a static server rather than opening `index.html` directly with `file://`.
 
 ### Option 2: Use a Local Static Server
 
-Any static server works. Example with Python:
+A static server is recommended to ensure all features work correctly, especially the AI prompt loading.
+
+Example with Python:
 
 ```powershell
 python -m http.server 8080
