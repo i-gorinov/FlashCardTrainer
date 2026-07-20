@@ -7,12 +7,11 @@ It runs fully client-side with no backend and no build step.
 
 - Upload a CSV deck with Question and Answer columns.
 - Optionally include a Category column shown on the question side.
+- Optionally include Distractor columns to enable the multi-choice mode.
 - Flip cards by clicking the card.
-- Use one unified review workflow with no session selection.
 - Optional shuffle mode with no repeated cards in one run.
 - Mark answers as correct, incorrect, or unanswered.
 - Filter navigation to hide selected answer categories.
-- Optional multi-choice mode when Distractor columns are present.
 - View live progress and score details in the status bar.
 - Reset session state at any time.
 - Open the Disclaimer in a modal dialog.
