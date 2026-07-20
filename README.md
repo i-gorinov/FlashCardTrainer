@@ -36,7 +36,7 @@ It runs fully client-side with no backend and no build step.
 
 ### AI Deck Quick Start
 
-When no deck is loaded, the empty card view includes two quick actions: "Generate one with AI" and a "View CSV format requirements" link that opens the User Guide directly at the CSV file format section.
+When no deck is loaded, the empty card view shows a coherent empty state with three elements in order: "Upload a CSV file to begin.", a "View CSV format requirements" link that opens the User Guide directly at the CSV file format section, and "Don't have a deck yet? Generate one with AI."
 
 The AI deck dialog provides:
 

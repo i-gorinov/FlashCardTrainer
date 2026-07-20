@@ -434,6 +434,10 @@ button:disabled,input:disabled+span {
     color:var(--muted)
 }
 
+p.empty-ai-gap {
+    margin-top:1em
+}
+
 .inline-action-link {
     display:inline;
     width:auto;

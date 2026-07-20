@@ -27,10 +27,13 @@
             <div class="flashcard-content-area">
               <h2 hidden>Question</h2>
               <div class="empty-card-content">
-                <p id="questionText" class="is-pending-render"></p>
-                <p id="aiDeckDiscovery" class="empty-ai-discovery"><span>Don't have a deck yet? </span><button id="openAiDeckCreatorBtn" type="button" class="inline-action-link">Generate one with AI</button><span>.</span></p>
+                <div id="emptyCardView">
+                  <p class="empty-ai-discovery">Upload a CSV file to begin.</p>
+                  <p id="csvFormatLink" class="empty-ai-discovery"><button id="csvFormatLinkBtn" type="button" class="inline-action-link">View CSV format requirements</button></p>
+                  <p id="aiDeckDiscovery" class="empty-ai-discovery empty-ai-gap"><span>Don't have a deck yet? </span><button id="openAiDeckCreatorBtn" type="button" class="inline-action-link">Generate one with AI</button><span>.</span></p>
+                </div>
+                <p id="questionText" hidden></p>
                 <div id="multiChoiceOptions" class="multi-choice-options" hidden></div>
-                <p id="csvFormatLink" class="empty-ai-discovery" hidden><button id="csvFormatLinkBtn" type="button" class="inline-action-link">View CSV format requirements</button></p>
               </div>
             </div>
           </article>

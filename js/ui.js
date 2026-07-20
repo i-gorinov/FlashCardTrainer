@@ -237,8 +237,8 @@ function setCardState(cardState) {
   elements.questionHeading.hidden = !isActive;
   elements.answerHeading.hidden = !isActive;
   elements.resetBtn.hidden = !isActive;
-  elements.aiDeckDiscovery.hidden = !isEmpty;
-  elements.csvFormatLink.hidden = !isEmpty;
+  elements.emptyCardView.hidden = !isEmpty;
+  elements.questionText.hidden = isEmpty;
 }
 function resetToEmptyState() {
   resetAllState(Mode.SEQUENTIAL);
@@ -250,8 +250,7 @@ function resetToEmptyState() {
   syncStudyControls();
   elements.questionCategory.textContent = "";
   elements.questionCategory.hidden = true;
-  elements.questionText.textContent = EMPTY_CARD_TEXT;
-  elements.answerText.textContent = EMPTY_CARD_TEXT;
+  elements.answerText.textContent = "";
   elements.flashcard.classList.remove("is-flipped");
   setControlsEnabled(false);
   setCardState(CardState.EMPTY);

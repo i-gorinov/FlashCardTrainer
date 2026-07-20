@@ -19,5 +19,4 @@ const ANSWER_STATUS_META = Object.freeze({
   [AnswerStatus.CORRECT]: { label: "correct", symbol: "✓" },
   [AnswerStatus.INCORRECT]: { label: "incorrect", symbol: "✗" },
 });
-const EMPTY_CARD_TEXT = "Upload a CSV file to begin.";
 const MULTI_CHOICE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
