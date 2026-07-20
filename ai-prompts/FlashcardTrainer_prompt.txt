@@ -398,7 +398,7 @@ Output only the explanatory note.
 
 # Source(s)
 
-[INSERT CONTENT HERE]
+[INSERT CONTENT HERE AS TEXT, URLs OR BOTH]
 
 
 -------------------
