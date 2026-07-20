@@ -14,6 +14,7 @@ It runs fully client-side with no backend and no build step.
 - Filter navigation to hide selected answer categories.
 - View live progress and score details in the status bar.
 - Reset session state at any time.
+- On mobile, the reset control collapses to an icon-only button.
 - Open the Disclaimer in a modal dialog.
 - Discover AI deck creation directly from the empty card state.
 - Use a guided AI deck creation dialog with a three-step quick-start workflow.
