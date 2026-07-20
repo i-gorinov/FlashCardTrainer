@@ -13,7 +13,7 @@ It runs fully client-side with no backend and no build step.
 - Mark answers as correct, incorrect, or unanswered.
 - Filter navigation to hide selected answer categories.
 - View live progress and score details in the status bar.
-- Reset session state at any time.
+- Reset session state at any time, with a confirmation prompt to prevent accidental progress loss.
 - On mobile, the reset control collapses to an icon-only button.
 - Open the Disclaimer in a modal dialog.
 - Discover AI deck creation directly from the empty card state.
@@ -26,7 +26,7 @@ It runs fully client-side with no backend and no build step.
 1. Open the app in a browser.
 2. Click Upload CSV and choose a file.
 3. Review starts in scoring mode with Shuffle cards enabled by default.
-4. Optionally toggle Shuffle cards.
+4. Optionally toggle Shuffle cards. If a session is in progress, a confirmation dialog appears before the session resets.
 5. Check Multi-choice (if the CSV contains Distractor columns) to display shuffled lettered answer options on the question side.
 6. Navigate cards with Previous and Next.
 7. Click the card to flip between question and answer.
@@ -34,6 +34,10 @@ It runs fully client-side with no backend and no build step.
 	 - Unanswered
 	 - Correct
 	 - Incorrect
+
+A **Session Reset Warning** dialog appears before any action that would discard an active learning session (Reset, loading a new CSV, or changing the Shuffle Cards setting).
+The dialog only appears once at least one card has been viewed.
+Cancelling the dialog leaves the current session completely unchanged.
 
 ### AI Deck Quick Start
 

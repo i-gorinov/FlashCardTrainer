@@ -85,6 +85,14 @@
 
     <footer class="app-footer"><span class="copyright">© 2026 Igor Gorinov</span><a id="userGuideLink" class="footer-link user-guide-link" href="documentation/user-guide.html">User Guide</a><a id="disclaimerLink" class="footer-link" href="disclaimer.html">Disclaimer</a></footer>
   </main>
+  <dialog id="sessionResetConfirmDialog" class="confirm-dialog" aria-labelledby="sessionResetConfirmTitle">
+    <h2 id="sessionResetConfirmTitle">Session Reset Warning</h2>
+    <p>Current progress and answer marks will be lost.</p>
+    <div class="confirm-dialog-actions">
+      <button id="cancelSessionResetBtn" type="button" class="secondary-action-btn">Cancel</button>
+      <button id="okSessionResetBtn" type="button">OK</button>
+    </div>
+  </dialog>
   <dialog id="disclaimerDialog" class="disclaimer-dialog" aria-labelledby="disclaimerDialogTitle">
     <div class="disclaimer-dialog-header"><h2 id="disclaimerDialogTitle">Disclaimer</h2><button id="closeDisclaimerBtn" type="button" class="dialog-close-btn" aria-label="Close disclaimer">×</button></div>
     <iframe class="disclaimer-frame" src="disclaimer.html" title="Disclaimer content"></iframe>

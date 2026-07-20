@@ -24,7 +24,7 @@ function wireEvents() {
   elements.multiChoiceCheckbox.addEventListener("change", handleMultiChoiceChange);
   elements.previousBtn.addEventListener("click", showPreviousCard);
   elements.nextBtn.addEventListener("click", showNextCard);
-  elements.resetBtn.addEventListener("click", resetDeck);
+  elements.resetBtn.addEventListener("click", handleResetBtnClick);
   elements.flashcard.addEventListener("click", toggleCardFlip);
   elements.answerStatusIndicators.forEach((indicator) => indicator.addEventListener("click", handleAnswerStatusIndicatorClick));
   getNavigationFilterCheckboxes().forEach((checkbox) => checkbox.addEventListener("change", handleNavigationFilterChange));
@@ -54,6 +54,7 @@ function wireEvents() {
 async function handleFileUpload(event) {
   const file = event.target.files?.[0];
   if (!file) { setSelectedFileName("No file chosen"); return; }
+  if (!await confirmSessionReset()) { event.target.value = ""; return; }
   setSelectedFileName(file.name);
   try {
     updateStatus("Loading CSV...");
@@ -71,7 +72,13 @@ async function handleFileUpload(event) {
     updateStatus(error.message || "Could not read the selected file.");
   }
 }
-function handleShuffleCardsChange() {
+async function handleShuffleCardsChange() {
+  if (state.cards.length > 0 && state.sessionStarted) {
+    if (!await confirmSessionReset()) {
+      elements.shuffleCardsCheckbox.checked = state.mode === Mode.RANDOM_NO_REPEAT;
+      return;
+    }
+  }
   updateModeFromShuffleControl();
   if (state.cards.length > 0 && state.sessionStarted) resetDeck();
 }
@@ -92,6 +99,34 @@ function updateModeFromShuffleControl() { state.mode = elements.shuffleCardsChec
 function syncStudyControls() {
   syncMultiChoiceOptionVisibility();
   syncNavigationFilterControls();
+}
+function hasActiveMeaningfulSession() {
+  return state.cards.length > 0 && state.sessionStarted && state.progress.viewedCount > 0;
+}
+function confirmSessionReset() {
+  if (!hasActiveMeaningfulSession()) return Promise.resolve(true);
+  return new Promise((resolve) => {
+    function resolveOk() { cleanup(); resolve(true); }
+    function resolveCancel() { cleanup(); resolve(false); }
+    function handleBackdropClick(event) { if (event.target === elements.sessionResetConfirmDialog) resolveCancel(); }
+    function handleNativeCancel(event) { event.preventDefault(); resolveCancel(); }
+    function cleanup() {
+      elements.okSessionResetBtn.removeEventListener("click", resolveOk);
+      elements.cancelSessionResetBtn.removeEventListener("click", resolveCancel);
+      elements.sessionResetConfirmDialog.removeEventListener("click", handleBackdropClick);
+      elements.sessionResetConfirmDialog.removeEventListener("cancel", handleNativeCancel);
+      if (elements.sessionResetConfirmDialog.open) elements.sessionResetConfirmDialog.close();
+    }
+    elements.okSessionResetBtn.addEventListener("click", resolveOk);
+    elements.cancelSessionResetBtn.addEventListener("click", resolveCancel);
+    elements.sessionResetConfirmDialog.addEventListener("click", handleBackdropClick);
+    elements.sessionResetConfirmDialog.addEventListener("cancel", handleNativeCancel);
+    elements.sessionResetConfirmDialog.showModal();
+  });
+}
+async function handleResetBtnClick() {
+  if (!await confirmSessionReset()) return;
+  resetDeck();
 }
 function resetDeck() {
   if (state.cards.length === 0) return;
