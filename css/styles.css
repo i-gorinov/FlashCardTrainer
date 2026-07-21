@@ -405,7 +405,7 @@ button:disabled,input:disabled+span {
 
 .flashcard:not(.is-disabled) .flashcard-back::before {
     content:"✓";
-    color:rgba(21,128,61,.16)
+    color:rgba(10, 63, 30, 0.16)
 }
 
 .flashcard-category {
@@ -435,6 +435,10 @@ button:disabled,input:disabled+span {
 }
 
 .flashcard-front .flashcard-content-area {
+    justify-content:center
+}
+
+.flashcard-front:has(#multiChoiceOptions:not([hidden])) .flashcard-content-area {
     justify-content:flex-start
 }
 
