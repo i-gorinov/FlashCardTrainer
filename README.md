@@ -5,7 +5,7 @@ It runs fully client-side with no backend and no build step.
 
 ## Highlights
 
-- Upload a CSV deck with FC-Question and FC-Answer columns.
+- Upload a CSV deck with Question and Answer columns.
 - Optionally include a Category column shown on the question side.
 - Optionally include MC-Question, MC-Answer, and MC-Distractor columns per row to enable multi-choice for those rows.
 - Flip cards by clicking the card.
@@ -69,19 +69,19 @@ Each row represents a single knowledge point. The CSV parser expects:
 
 - A header row.
 - At least one data row.
-- `FC-Question` and `FC-Answer` columns (case-insensitive) — both required.
+- `Question` and `Answer` columns (case-insensitive) — both required.
 - Naming convention for supported columns:
 
 ```csv
-Category,FC-Question,FC-Answer,MC-Question,MC-Answer,MC-Distractor-1,MC-Distractor-2,MC-Distractor-3
+Category,Question,Answer,MC-Question,MC-Answer,MC-Distractor-1,MC-Distractor-2,MC-Distractor-3
 ```
 
-Only rows where both `FC-Question` and `FC-Answer` are non-empty are imported. MC values remain optional per row. The MC section is stored for a row only when `MC-Question`, `MC-Answer`, and at least one `MC-Distractor` column are non-empty.
+Only rows where both `Question` and `Answer` are non-empty are imported. MC values remain optional per row. The MC section is stored for a row only when `MC-Question`, `MC-Answer`, and at least one `MC-Distractor` column are non-empty.
 
 ### Minimal Example
 
 ```csv
-FC-Question,FC-Answer
+Question,Answer
 What is HTML?,A markup language for web pages
 What is CSS?,A stylesheet language
 What is JavaScript?,A programming language
@@ -92,7 +92,7 @@ What is JavaScript?,A programming language
 Including all columns enables multi-choice mode for those cards.
 
 ```csv
-Category,FC-Question,FC-Answer,MC-Question,MC-Answer,MC-Distractor-1,MC-Distractor-2,MC-Distractor-3
+Category,Question,Answer,MC-Question,MC-Answer,MC-Distractor-1,MC-Distractor-2,MC-Distractor-3
 Web,What is HTML?,A markup language for web pages,Which technology defines the structure of a web page?,HTML,CSS,JavaScript,SQL
 Web,What is CSS?,A stylesheet language,Which language controls the visual style of a web page?,CSS,HTML,JavaScript,Python
 ```
@@ -112,7 +112,7 @@ Decks can mix row types:
 ### Optional Category Example
 
 ```csv
-FC-Answer,Category,FC-Question
+Answer,Category,Question
 Paris,Geography,What is the capital of France?
 4,,What is 2+2?
 Pacific Ocean,GEOGRAPHY,Largest ocean?
@@ -130,9 +130,9 @@ When category is present and non-empty, it appears centered at the top of the qu
 ### Validation Errors You May See
 
 - CSV must include the header row and at least one data row in the Flashcard Trainer format.
-- CSV header must include 'FC-Question' and 'FC-Answer'. Naming convention: 'Category', 'FC-Question', 'FC-Answer', 'MC-Question', 'MC-Answer', 'MC-Distractor-1', 'MC-Distractor-2', 'MC-Distractor-3'.
+- CSV header must include 'Question' and 'Answer'. Naming convention: 'Category', 'Question', 'Answer', 'MC-Question', 'MC-Answer', 'MC-Distractor-1', 'MC-Distractor-2', 'MC-Distractor-3'.
 - CSV contains an unterminated quoted field.
-- No usable rows were found. Each row must include non-empty 'FC-Question' and 'FC-Answer' values. MC fields are optional per row.
+- No usable rows were found. Each row must include non-empty 'Question' and 'Answer' values. MC fields are optional per row.
 
 ## Review Behavior
 

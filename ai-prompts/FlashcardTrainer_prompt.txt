@@ -60,20 +60,20 @@ Bias towards Understand and Apply questions. Use Remember questions mainly for e
 Each row must test one clear knowledge point only.
 
 The flashcard and multiple-choice parts must assess the same knowledge point:
-- FC-Question and MC-Question must test the same idea.
-- FC-Answer and MC-Answer must represent the same correct knowledge.
+- Question and MC-Question must test the same idea.
+- Answer and MC-Answer must represent the same correct knowledge.
 - The MC-Question may add context but must not introduce an additional knowledge point.
 
 ## 5. Flashcard Requirements
 
-FC-Question must:
+Question must:
 - Be concise, direct, and self-contained.
 - Encourage active recall rather than recognition.
 - Identify exactly what knowledge is being tested.
 - Use plain language and avoid unnecessary context.
 
-FC-Answer must:
-- Correctly answer the FC-Question.
+Answer must:
+- Correctly answer the Question.
 - Be explicitly supported by the source.
 - Use the minimum wording needed for correctness.
 - Usually be 1 to 8 words.
@@ -84,7 +84,7 @@ FC-Answer must:
 ## 6. Multiple-Choice Requirements
 
 MC-Question must:
-- Test the same knowledge point as the FC-Question.
+- Test the same knowledge point as the Question.
 - Be clear and self-contained.
 - Provide enough context for meaningful assessment.
 - Use concise scenarios where supported by the source, especially for procedures, decisions, conditions, exceptions, constraints, best practices, and common mistakes.
@@ -152,7 +152,7 @@ Do not output internal scores or reasoning.
 Output only CSV unless an inaccessible-source note is required.
 
 CSV header:
-"Category","FC-Question","FC-Answer","MC-Question","MC-Answer","MC-Distractor-1","MC-Distractor-2","MC-Distractor-3"
+"Category","Question","Answer","MC-Question","MC-Answer","MC-Distractor-1","MC-Distractor-2","MC-Distractor-3"
 
 CSV rules:
 - Exactly 8 columns per row.

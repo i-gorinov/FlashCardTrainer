@@ -72,7 +72,7 @@ async function handleFileUpload(event) {
     const text = await readFileAsText(file);
     const parsedDeck = await parseCardsFromCsv(text);
     if (parsedDeck.cards.length === 0) {
-      throw new Error("No usable rows were found. Each row must include non-empty 'FC-Question' and 'FC-Answer' values. MC fields are optional per row.");
+      throw new Error("No usable rows were found. Each row must include non-empty 'Question' and 'Answer' values. MC fields are optional per row.");
     }
     setCards(parsedDeck.cards);
     setHasMultiChoiceColumns(parsedDeck.hasMultiChoiceColumns);
@@ -189,7 +189,7 @@ function renderCurrentCard() {
   elements.questionCategory.textContent = category;
   elements.questionCategory.hidden = !category;
   const multiChoiceActive = state.multiChoice && isCardMultiChoiceCapable(card);
-  elements.questionText.textContent = multiChoiceActive ? card.mcQuestion : card.fcQuestion;
+  elements.questionText.textContent = multiChoiceActive ? card.mcQuestion : card.question;
   if (multiChoiceActive) {
     if (!state.multiChoiceOptionOrders[state.currentCardIndex]) {
       state.multiChoiceOptionOrders[state.currentCardIndex] = shuffle(
@@ -211,7 +211,7 @@ function renderCurrentCard() {
     elements.answerText.textContent = `${MULTI_CHOICE_LETTERS[correctPosition]}) ${card.mcAnswer}`;
   } else {
     elements.multiChoiceOptions.hidden = true;
-    elements.answerText.textContent = card.fcAnswer;
+    elements.answerText.textContent = card.answer;
   }
   elements.flashcard.classList.remove("is-flipped", "is-disabled");
   elements.flashcard.setAttribute("aria-disabled", "false");

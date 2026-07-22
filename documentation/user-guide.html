@@ -45,21 +45,21 @@
     <section id="csv-format" class="guide-section">
       <h2>CSV file format</h2>
       <p>
-        Your CSV file must include a header row and at least one data row. The required columns are <code>FC-Question</code> and <code>FC-Answer</code>. All other supported columns are optional.
+        Your CSV file must include a header row and at least one data row. The required columns are <code>Question</code> and <code>Answer</code>. All other supported columns are optional.
       </p>
 
       <h3>Supported header layout</h3>
       <p>Use this header layout for best compatibility:</p>
-      <pre><code>Category,FC-Question,FC-Answer,MC-Question,MC-Answer,MC-Distractor-1,MC-Distractor-2,MC-Distractor-3</code></pre>
+      <pre><code>Category,Question,Answer,MC-Question,MC-Answer,MC-Distractor-1,MC-Distractor-2,MC-Distractor-3</code></pre>
 
       <h3>Required columns</h3>
       <dl class="definition-list">
         <div>
-          <dt><code>FC-Question</code></dt>
+          <dt><code>Question</code></dt>
           <dd>The flashcard question shown on the front of the card.</dd>
         </div>
         <div>
-          <dt><code>FC-Answer</code></dt>
+          <dt><code>Answer</code></dt>
           <dd>The flashcard answer shown on the back of the card.</dd>
         </div>
       </dl>
@@ -85,12 +85,12 @@
       </dl>
 
       <h3>Example</h3>
-      <pre><code>"Category","FC-Question","FC-Answer","MC-Question","MC-Answer","MC-Distractor-1","MC-Distractor-2","MC-Distractor-3"
+      <pre><code>"Category","Question","Answer","MC-Question","MC-Answer","MC-Distractor-1","MC-Distractor-2","MC-Distractor-3"
 "Web","What is HTML?","A markup language for web pages","Which technology defines the structure of a web page?","HTML","CSS","JavaScript","SQL"
 "Web","What is CSS?","A stylesheet language","Which language controls the visual style of a web page?","CSS","HTML","JavaScript","Python"</code></pre>
 
       <p class="note">
-        Column names are not case-sensitive. Empty rows are ignored. Rows without both <code>FC-Question</code> and <code>FC-Answer</code> are skipped. Multiple-choice values are optional per row, and a row becomes MC-capable only when <code>MC-Question</code>, <code>MC-Answer</code>, and at least one <code>MC-Distractor</code> column are non-empty.
+        Column names are not case-sensitive. Empty rows are ignored. Rows without both <code>Question</code> and <code>Answer</code> are skipped. Multiple-choice values are optional per row, and a row becomes MC-capable only when <code>MC-Question</code>, <code>MC-Answer</code>, and at least one <code>MC-Distractor</code> column are non-empty.
       </p>
     </section>
 
@@ -100,7 +100,7 @@
         <li>Select <strong>Upload CSV</strong>.</li>
         <li>Choose a CSV file from your device.</li>
         <li>The first card is shown after the file is successfully loaded.</li>
-        <li>If the file cannot be read, check that it includes the required <code>FC-Question</code> and <code>FC-Answer</code> columns.</li>
+        <li>If the file cannot be read, check that it includes the required <code>Question</code> and <code>Answer</code> columns.</li>
       </ol>
     </section>
 
@@ -177,7 +177,7 @@
       <ol class="steps">
         <li>Paste the AI prompt into your AI assistant.</li>
         <li>Replace the <code>[INSERT CONTENT HERE AS TEXT, URLs OR BOTH]</code> section with training text, one or more URLs, or both.</li>
-        <li>Keep the required flashcard fields in every row: <code>FC-Question</code> and <code>FC-Answer</code>. Add MC fields only for rows that should support Multi-choice mode.</li>
+        <li>Keep the required flashcard fields in every row: <code>Question</code> and <code>Answer</code>. Add MC fields only for rows that should support Multi-choice mode.</li>
         <li>Submit the prompt to the AI assistant.</li>
         <li>Copy the CSV output from the AI assistant.</li>
       </ol>
@@ -219,9 +219,9 @@
       <h3>CSV content</h3>
       <ul>
         <li>The app expects a CSV file with a header row.</li>
-        <li>The <code>FC-Question</code> and <code>FC-Answer</code> columns are required.</li>
+        <li>The <code>Question</code> and <code>Answer</code> columns are required.</li>
         <li><code>Category</code>, <code>MC-Question</code>, <code>MC-Answer</code>, and <code>MC-Distractor-1/2/3</code> are optional.</li>
-        <li>Cards with a missing FC-Question or FC-Answer are ignored.</li>
+        <li>Cards with a missing Question or Answer are ignored.</li>
         <li>A deck can mix flashcard-only rows with flashcard-plus-MC rows.</li>
         <li>Very large files may take longer to process in the browser.</li>
       </ul>
@@ -248,12 +248,12 @@
 
       <details>
         <summary>What CSV columns are required?</summary>
-        <p>The required columns are <code>FC-Question</code> and <code>FC-Answer</code>. You can also include <code>Category</code>, <code>MC-Question</code>, <code>MC-Answer</code>, and <code>MC-Distractor-1/2/3</code>. Flashcard fields are mandatory; MC fields are optional per row.</p>
+        <p>The required columns are <code>Question</code> and <code>Answer</code>. You can also include <code>Category</code>, <code>MC-Question</code>, <code>MC-Answer</code>, and <code>MC-Distractor-1/2/3</code>. Flashcard fields are mandatory; MC fields are optional per row.</p>
       </details>
 
       <details>
         <summary>Do column names have to use exact capitalisation?</summary>
-        <p>No. Column names are matched without case sensitivity, so <code>FC-Question</code>, <code>fc-question</code>, and <code>FC-QUESTION</code> are treated the same.</p>
+        <p>No. Column names are matched without case sensitivity, so <code>Question</code>, <code>question</code>, and <code>QUESTION</code> are treated the same.</p>
       </details>
 
       <details>
