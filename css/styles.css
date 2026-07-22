@@ -64,6 +64,12 @@ h1 {
     border:1px solid color-mix(in srgb,var(--accent) 20%,white)
 }
 
+.status-bar.is-alert {
+    background:#fff6e9;
+    border:1px solid #f59e0b;
+    box-shadow:inset 0 0 0 1px rgba(180,83,9,.12)
+}
+
 .status-bar:has(#resetBtn[hidden]) {
     justify-content:center
 }
@@ -83,6 +89,11 @@ h1 {
     flex:1 1 240px;
     min-width:0;
     overflow-wrap:anywhere
+}
+
+.status.is-alert {
+    color:#9a3412;
+    font-weight:700
 }
 
 .status-icon {

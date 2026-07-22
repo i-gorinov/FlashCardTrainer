@@ -8,6 +8,10 @@ let navigationFilterCheckboxes = [];
 let isMobileViewportResult = false;
 const AI_PROMPT_URL = "ai-prompts/FlashcardTrainer_prompt.txt";
 const MOBILE_PROMPT_MAX_WIDTH = 760;
+const StatusVariant = Object.freeze({
+  DEFAULT: "default",
+  ALERT: "alert",
+});
 function initializeApp() {
   elements = getElements();
   navigationFilterCheckboxes = initializeNavigationFilterCheckboxes();
@@ -66,9 +70,12 @@ async function handleFileUpload(event) {
   try {
     updateStatus("Loading CSV...");
     const text = await readFileAsText(file);
-    const parsedCards = await parseCardsFromCsv(text);
-    if (parsedCards.length === 0) throw new Error("The CSV file does not contain any usable cards.");
-    setCards(parsedCards);
+    const parsedDeck = await parseCardsFromCsv(text);
+    if (parsedDeck.cards.length === 0) {
+      throw new Error("No usable rows were found. Each row must include non-empty 'FC-Question' and 'FC-Answer' values. MC fields are optional per row.");
+    }
+    setCards(parsedDeck.cards);
+    setHasMultiChoiceColumns(parsedDeck.hasMultiChoiceColumns);
     applyDefaultStudyOptions();
     updateModeFromShuffleControl();
     setReviewControlsEnabled(true);
@@ -76,7 +83,7 @@ async function handleFileUpload(event) {
     resetDeck();
   } catch (error) {
     resetToEmptyState();
-    updateStatus(error.message || "Could not read the selected file.");
+    updateStatus(error.message || "Could not read the selected file.", false, StatusVariant.ALERT);
   }
 }
 async function handleShuffleCardsChange() {
@@ -95,8 +102,7 @@ function applyDefaultStudyOptions() {
   elements.multiChoiceCheckbox.checked = false;
 }
 function syncMultiChoiceOptionVisibility() {
-  const hasMultiChoiceCards = state.cards.some((card) => isCardMultiChoiceCapable(card));
-  elements.multiChoiceOption.hidden = !hasMultiChoiceCards;
+  elements.multiChoiceOption.hidden = !state.hasMultiChoiceColumns;
 }
 async function handleMultiChoiceChange() {
   if (state.cards.length > 0 && state.sessionStarted) {
@@ -345,11 +351,18 @@ function setReviewControlsEnabled(enabled) {
   syncNavigationFilterControls();
 }
 function setSelectedFileName(fileName) { elements.fileName.textContent = fileName; elements.fileName.title = fileName; }
-function updateStatus(message, isHtml = false) {
+function updateStatus(message, isHtml = false, variant = StatusVariant.DEFAULT) {
+  const isAlert = variant === StatusVariant.ALERT;
+
+  elements.statusBar.classList.toggle("is-alert", isAlert);
+  elements.status.classList.toggle("is-alert", isAlert);
+  elements.status.setAttribute("aria-live", isAlert ? "assertive" : "polite");
+
   if (isHtml) {
     elements.status.innerHTML = message;
     return;
   }
+
   elements.status.textContent = message;
 }
 function isMobileViewport() {

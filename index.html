@@ -102,7 +102,7 @@
   <dialog id="aiDeckDialog" class="ai-deck-dialog" aria-labelledby="aiDeckDialogTitle">
     <div class="disclaimer-dialog-header"><h2 id="aiDeckDialogTitle">Create a Deck with AI</h2><button id="closeAiDeckDialogBtn" type="button" class="dialog-close-btn" aria-label="Close AI deck creator">×</button></div>
     <div class="ai-deck-dialog-body">
-      <p class="ai-deck-intro">Create a reusable CSV deck in three quick steps, then upload it to start studying.</p>
+      <p class="ai-deck-intro">Create a reusable CSV deck in three quick steps, then upload it to start studying. Flashcard fields are required in every row; multiple-choice fields are optional per row.</p>
       <ol class="ai-deck-steps">
         <li>
           <h3>Open the AI Prompt</h3>
@@ -111,7 +111,7 @@
         </li>
         <li>
           <h3>Generate CSV output</h3>
-          <p>Paste the prompt into your AI assistant and replace the placeholder in the Source(s) section with your learning material.</p>
+          <p>Paste the prompt into your AI assistant and replace the placeholder in the Source(s) section with your learning material. Use the full 8-column header, keep flashcard fields filled in every row, and include MC fields only when needed.</p>
         </li>
         <li>
           <h3>Create and save a CSV file</h3>
@@ -123,7 +123,7 @@
         <label for="aiCsvFileNameInput">Deck filename</label>
         <input id="aiCsvFileNameInput" class="ai-csv-filename" type="text" value="my-ai-deck.csv" autocomplete="off" spellcheck="false" />
         <label for="aiCsvContentInput">AI-generated CSV output</label>
-        <textarea id="aiCsvContentInput" class="ai-csv-content" placeholder="Question,Answer&#10;What is HTML?,A markup language for web pages"></textarea>
+        <textarea id="aiCsvContentInput" class="ai-csv-content" placeholder="Category,FC-Question,FC-Answer,MC-Question,MC-Answer,MC-Distractor-1,MC-Distractor-2,MC-Distractor-3&#10;Web,What is HTML?,A markup language for web pages,,,,,&#10;Web,What is CSS?,A stylesheet language,Which language controls web page styling?,CSS,HTML,JavaScript,Python"></textarea>
         <div class="ai-csv-actions">
           <button id="saveAiCsvBtn" type="button" class="upload-btn">Save CSV File</button>
           <p id="aiCsvSaveStatus" class="ai-csv-save-status" aria-live="polite"></p>

@@ -11,6 +11,7 @@ function createInitialState() {
     navigationFilters: { correct: false, incorrect: false, noMark: false },
     progress: { viewedCount: 0, seenCards: new Set() },
     multiChoice: false,
+    hasMultiChoiceColumns: false,
     multiChoiceOptionOrders: [],
   };
 }
@@ -22,10 +23,12 @@ function resetAnswerStatuses() { state.answerStatuses = state.cards.map(() => An
 function resetMultiChoiceOptionOrders() { state.multiChoiceOptionOrders = state.cards.map(() => null); }
 function resetSessionState() { state.sessionStarted = false; state.answerStatuses = []; state.multiChoice = false; state.multiChoiceOptionOrders = []; resetCoreState(); resetProgress(); resetNavigationFilters(); }
 function setCards(cards) { state.cards = cards; resetSessionState(); }
+function setHasMultiChoiceColumns(hasMultiChoiceColumns) { state.hasMultiChoiceColumns = hasMultiChoiceColumns; }
 function resetAllState(selectedMode = Mode.SEQUENTIAL) {
   state.cards = [];
   state.mode = selectedMode;
   state.cardState = CardState.EMPTY;
+  state.hasMultiChoiceColumns = false;
   resetSessionState();
 }
 function markCardViewed(cardIndex) {

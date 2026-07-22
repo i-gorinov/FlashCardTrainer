@@ -45,8 +45,12 @@
     <section id="csv-format" class="guide-section">
       <h2>CSV file format</h2>
       <p>
-        Your CSV file must include a header row and at least one data row. The required columns are <code>FC-Question</code> and <code>FC-Answer</code>.
+        Your CSV file must include a header row and at least one data row. The required columns are <code>FC-Question</code> and <code>FC-Answer</code>. All other supported columns are optional.
       </p>
+
+      <h3>Supported header layout</h3>
+      <p>Use this header layout for best compatibility:</p>
+      <pre><code>Category,FC-Question,FC-Answer,MC-Question,MC-Answer,MC-Distractor-1,MC-Distractor-2,MC-Distractor-3</code></pre>
 
       <h3>Required columns</h3>
       <dl class="definition-list">
@@ -86,7 +90,7 @@
 "Web","What is CSS?","A stylesheet language","Which language controls the visual style of a web page?","CSS","HTML","JavaScript","Python"</code></pre>
 
       <p class="note">
-        Column names are not case-sensitive. Empty rows are ignored. Rows without both <code>FC-Question</code> and <code>FC-Answer</code> are skipped. The MC section is only active for a card when <code>MC-Question</code>, <code>MC-Answer</code>, and at least one <code>MC-Distractor</code> column are non-empty.
+        Column names are not case-sensitive. Empty rows are ignored. Rows without both <code>FC-Question</code> and <code>FC-Answer</code> are skipped. Multiple-choice values are optional per row, and a row becomes MC-capable only when <code>MC-Question</code>, <code>MC-Answer</code>, and at least one <code>MC-Distractor</code> column are non-empty.
       </p>
     </section>
 
@@ -136,7 +140,7 @@
     <section id="multi-choice" class="guide-section">
       <h2>Multi-choice mode</h2>
       <p>
-        Multi-choice mode is available when at least one card includes valid MC content: <code>MC-Question</code>, <code>MC-Answer</code>, and at least one <code>MC-Distractor</code> value. When enabled, only cards with valid MC content are shown.
+        Flashcard and Multi-choice are separate study modes. Flashcard mode studies all imported rows. Multi-choice mode becomes available when the CSV header includes <code>MC-Question</code>, <code>MC-Answer</code>, and at least one <code>MC-Distractor</code> column. When Multi-choice mode is enabled, only MC-capable rows are shown.
       </p>
       <p>
         The front of each MC card shows <code>MC-Question</code> followed by the correct MC answer mixed with distractors in random order. The back shows the correct option only. Distractors should be plausible but clearly incorrect for the specific question.
@@ -173,6 +177,7 @@
       <ol class="steps">
         <li>Paste the AI prompt into your AI assistant.</li>
         <li>Replace the <code>[INSERT CONTENT HERE AS TEXT, URLs OR BOTH]</code> section with training text, one or more URLs, or both.</li>
+        <li>Keep the required flashcard fields in every row: <code>FC-Question</code> and <code>FC-Answer</code>. Add MC fields only for rows that should support Multi-choice mode.</li>
         <li>Submit the prompt to the AI assistant.</li>
         <li>Copy the CSV output from the AI assistant.</li>
       </ol>
@@ -215,7 +220,9 @@
       <ul>
         <li>The app expects a CSV file with a header row.</li>
         <li>The <code>FC-Question</code> and <code>FC-Answer</code> columns are required.</li>
+        <li><code>Category</code>, <code>MC-Question</code>, <code>MC-Answer</code>, and <code>MC-Distractor-1/2/3</code> are optional.</li>
         <li>Cards with a missing FC-Question or FC-Answer are ignored.</li>
+        <li>A deck can mix flashcard-only rows with flashcard-plus-MC rows.</li>
         <li>Very large files may take longer to process in the browser.</li>
       </ul>
 
@@ -241,7 +248,7 @@
 
       <details>
         <summary>What CSV columns are required?</summary>
-        <p>The required columns are <code>FC-Question</code> and <code>FC-Answer</code>. You can also include <code>Category</code>, <code>MC-Question</code>, <code>MC-Answer</code>, and <code>MC-Distractor-1/2/3</code> for multi-choice mode.</p>
+        <p>The required columns are <code>FC-Question</code> and <code>FC-Answer</code>. You can also include <code>Category</code>, <code>MC-Question</code>, <code>MC-Answer</code>, and <code>MC-Distractor-1/2/3</code>. Flashcard fields are mandatory; MC fields are optional per row.</p>
       </details>
 
       <details>

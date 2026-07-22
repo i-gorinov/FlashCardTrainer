@@ -5,7 +5,7 @@ async function parseCardsFromCsv(csvText) {
   const nonEmptyRows = rows.filter((row) => row.some((cell) => cell.trim().length > 0));
 
   if (nonEmptyRows.length < 2) {
-    throw new Error("CSV must include a header row and at least one data row.");
+    throw new Error("CSV must include the header row and at least one data row in the Flashcard Trainer format.");
   }
 
   const header = nonEmptyRows[0].map(normalizeHeaderCell);
@@ -19,8 +19,10 @@ async function parseCardsFromCsv(csvText) {
     .filter((i) => i !== -1);
 
   if (fcQuestionIndex === -1 || fcAnswerIndex === -1) {
-    throw new Error("CSV header must include both 'FC-Question' and 'FC-Answer' columns.");
+    throw new Error("CSV header must include 'FC-Question' and 'FC-Answer'. Naming convention: 'Category', 'FC-Question', 'FC-Answer', 'MC-Question', 'MC-Answer', 'MC-Distractor-1', 'MC-Distractor-2', 'MC-Distractor-3'.");
   }
+
+  const hasMultiChoiceColumns = mcQuestionIndex !== -1 && mcAnswerIndex !== -1 && mcDistractorIndices.length > 0;
 
   const cards = [];
 
@@ -44,7 +46,7 @@ async function parseCardsFromCsv(csvText) {
     }
   }
 
-  return cards;
+  return { cards, hasMultiChoiceColumns };
 }
 
 function normalizeHeaderCell(value) {

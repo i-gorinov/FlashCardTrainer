@@ -7,7 +7,7 @@ It runs fully client-side with no backend and no build step.
 
 - Upload a CSV deck with FC-Question and FC-Answer columns.
 - Optionally include a Category column shown on the question side.
-- Optionally include MC-Question, MC-Answer, and MC-Distractor columns to enable multi-choice mode.
+- Optionally include MC-Question, MC-Answer, and MC-Distractor columns per row to enable multi-choice for those rows.
 - Flip cards by clicking the card.
 - Optional shuffle mode with no repeated cards in one run.
 - Mark answers as correct, incorrect, or unanswered.
@@ -29,9 +29,10 @@ It runs fully client-side with no backend and no build step.
 3. Review starts in scoring mode with Shuffle cards enabled by default.
 4. Optionally toggle Shuffle cards. If a session is in progress, a confirmation dialog appears before the session resets.
 5. Check Multi-choice (if at least one card contains MC-Question, MC-Answer, and at least one MC-Distractor) to study MC cards with shuffled lettered answer options.
-6. Navigate cards with Previous and Next.
-7. Click the card to flip between question and answer.
-8. Click the status indicator on the back side to cycle through:
+6. Flashcard and Multi-choice are separate study modes: with Multi-choice off, all flashcards are available; with Multi-choice on, only MC-capable cards are shown.
+7. Navigate cards with Previous and Next.
+8. Click the card to flip between question and answer.
+9. Click the status indicator on the back side to cycle through:
 	 - Unanswered
 	 - Correct
 	 - Incorrect
@@ -50,6 +51,7 @@ The AI deck dialog provides:
 	- Open the AI Prompt
 	- Generate CSV output in an AI assistant
 	- Create and save a CSV file
+- Explicit guidance that every row must include flashcard fields and that multiple-choice fields are optional.
 - An in-app CSV File Creator where you can:
 	- Paste AI-generated CSV output
 	- Enter a deck filename
@@ -68,10 +70,13 @@ Each row represents a single knowledge point. The CSV parser expects:
 - A header row.
 - At least one data row.
 - `FC-Question` and `FC-Answer` columns (case-insensitive) — both required.
-- An optional `Category` column (case-insensitive) for question-side display.
-- Optional `MC-Question`, `MC-Answer`, `MC-Distractor-1`, `MC-Distractor-2`, `MC-Distractor-3` columns (case-insensitive) to enable multi-choice mode per card.
+- Naming convention for supported columns:
 
-Only rows where both `FC-Question` and `FC-Answer` are non-empty are imported. The MC section is only stored for a card when `MC-Question`, `MC-Answer`, and at least one `MC-Distractor` column are non-empty.
+```csv
+Category,FC-Question,FC-Answer,MC-Question,MC-Answer,MC-Distractor-1,MC-Distractor-2,MC-Distractor-3
+```
+
+Only rows where both `FC-Question` and `FC-Answer` are non-empty are imported. MC values remain optional per row. The MC section is stored for a row only when `MC-Question`, `MC-Answer`, and at least one `MC-Distractor` column are non-empty.
 
 ### Minimal Example
 
@@ -99,6 +104,11 @@ When Multi-choice is checked:
 - Each option is prefixed with a capital letter index: `A)`, `B)`, `C)`, etc.
 - The answer side shows only the correct answer with the same letter it was assigned on the question side.
 
+Decks can mix row types:
+
+- Flashcard-only rows with blank MC columns.
+- Flashcard-plus-MC rows with valid MC values.
+
 ### Optional Category Example
 
 ```csv
@@ -119,10 +129,10 @@ When category is present and non-empty, it appears centered at the top of the qu
 
 ### Validation Errors You May See
 
-- CSV must include a header row and at least one data row.
-- CSV header must include both 'FC-Question' and 'FC-Answer' columns.
+- CSV must include the header row and at least one data row in the Flashcard Trainer format.
+- CSV header must include 'FC-Question' and 'FC-Answer'. Naming convention: 'Category', 'FC-Question', 'FC-Answer', 'MC-Question', 'MC-Answer', 'MC-Distractor-1', 'MC-Distractor-2', 'MC-Distractor-3'.
 - CSV contains an unterminated quoted field.
-- The CSV file does not contain any usable cards.
+- No usable rows were found. Each row must include non-empty 'FC-Question' and 'FC-Answer' values. MC fields are optional per row.
 
 ## Review Behavior
 
@@ -136,8 +146,9 @@ When category is present and non-empty, it appears centered at the top of the qu
 - Answer state can be cycled from the back-side indicator.
 - Navigation filter checkboxes can hide cards by answer state.
 - At most two hide filters can be active at once.
-- Multi-choice checkbox appears when at least one card has valid MC content (`MC-Question`, `MC-Answer`, and at least one `MC-Distractor`).
+- Multi-choice checkbox appears when the header includes `MC-Question`, `MC-Answer`, and at least one `MC-Distractor` column.
 - When checked, only MC-capable cards are shown.
+- Multi-choice does not replace flashcard mode; it is a separate mode with its own card visibility rules.
 - In Multi-choice mode, the question side uses `MC-Question` and displays the correct answer with all distractors in a shuffled, lettered order that is stable for the session.
 - The answer side shows the correct answer with its assigned letter.
 - Multi-choice is unchecked by default whenever a deck is loaded.
