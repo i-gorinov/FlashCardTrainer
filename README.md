@@ -142,7 +142,7 @@ When category is present and non-empty, it appears centered at the top of the qu
 - The answer side shows the correct answer with its assigned letter.
 - Multi-choice is unchecked by default whenever a deck is loaded.
 - Shuffle is enabled by default whenever a deck is loaded.
-- Toggling Multi-choice preserves answer statuses and review progress.
+- Toggling Multi-choice while a session is in progress triggers a session reset confirmation. On confirmation, current progress and answer marks are cleared and a new session begins in the selected mode. On cancellation, the checkbox reverts and the session is unchanged.
 
 ## Navigation Filters
 

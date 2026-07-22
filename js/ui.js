@@ -98,21 +98,15 @@ function syncMultiChoiceOptionVisibility() {
   const hasMultiChoiceCards = state.cards.some((card) => isCardMultiChoiceCapable(card));
   elements.multiChoiceOption.hidden = !hasMultiChoiceCards;
 }
-function handleMultiChoiceChange() {
-  state.multiChoice = elements.multiChoiceCheckbox.checked;
-  if (state.cards.length === 0 || !state.sessionStarted) return;
-
-  if (!isCardVisibleInNavigation(state.currentCardIndex)) {
-    const firstVisibleCursor = getVisibleCardCursor(-1, 1);
-    if (firstVisibleCursor === -1) {
-      updateNavigationControls(true);
+async function handleMultiChoiceChange() {
+  if (state.cards.length > 0 && state.sessionStarted) {
+    if (!await confirmSessionReset()) {
+      elements.multiChoiceCheckbox.checked = state.multiChoice;
       return;
     }
-    state.cursor = firstVisibleCursor;
-    state.currentCardIndex = state.order[firstVisibleCursor];
   }
-
-  renderCurrentCard();
+  state.multiChoice = elements.multiChoiceCheckbox.checked;
+  if (state.cards.length > 0 && state.sessionStarted) resetDeck();
 }
 function updateModeFromShuffleControl() { state.mode = elements.shuffleCardsCheckbox.checked ? Mode.RANDOM_NO_REPEAT : Mode.SEQUENTIAL; }
 function syncStudyControls() {
