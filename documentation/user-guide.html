@@ -68,7 +68,7 @@
         </div>
         <div>
           <dt><code>MC-Question</code></dt>
-          <dd>The multiple-choice question phrasing. Optional; stored for future study mode use.</dd>
+          <dd>The multiple-choice question shown on the front when multi-choice mode is active. Required together with MC-Answer and at least one distractor to enable multi-choice for this card.</dd>
         </div>
         <div>
           <dt><code>MC-Answer</code></dt>
@@ -86,7 +86,7 @@
 "Web","What is CSS?","A stylesheet language","Which language controls the visual style of a web page?","CSS","HTML","JavaScript","Python"</code></pre>
 
       <p class="note">
-        Column names are not case-sensitive. Empty rows are ignored. Rows without both <code>FC-Question</code> and <code>FC-Answer</code> are skipped. The MC section is only active for a card when both <code>MC-Answer</code> and at least one <code>MC-Distractor</code> column are non-empty.
+        Column names are not case-sensitive. Empty rows are ignored. Rows without both <code>FC-Question</code> and <code>FC-Answer</code> are skipped. The MC section is only active for a card when <code>MC-Question</code>, <code>MC-Answer</code>, and at least one <code>MC-Distractor</code> column are non-empty.
       </p>
     </section>
 
@@ -136,10 +136,10 @@
     <section id="multi-choice" class="guide-section">
       <h2>Multi-choice mode</h2>
       <p>
-        Multi-choice mode is available when at least one card includes MC-Answer and MC-Distractor columns. When enabled, the front of the card shows the correct MC answer mixed with the distractors.
+        Multi-choice mode is available when at least one card includes valid MC content: <code>MC-Question</code>, <code>MC-Answer</code>, and at least one <code>MC-Distractor</code> value. When enabled, only cards with valid MC content are shown.
       </p>
       <p>
-        The back of the card shows the correct option. Distractors should be plausible but clearly incorrect for the specific question.
+        The front of each MC card shows <code>MC-Question</code> followed by the correct MC answer mixed with distractors in random order. The back shows the correct option only. Distractors should be plausible but clearly incorrect for the specific question.
       </p>
     </section>
 
@@ -241,12 +241,12 @@
 
       <details>
         <summary>What CSV columns are required?</summary>
-        <p>The required columns are <code>Question</code> and <code>Answer</code>. You can also include <code>Category</code> and distractor columns for multi-choice mode.</p>
+        <p>The required columns are <code>FC-Question</code> and <code>FC-Answer</code>. You can also include <code>Category</code>, <code>MC-Question</code>, <code>MC-Answer</code>, and <code>MC-Distractor-1/2/3</code> for multi-choice mode.</p>
       </details>
 
       <details>
         <summary>Do column names have to use exact capitalisation?</summary>
-        <p>No. Column names are matched without case sensitivity, so <code>Question</code>, <code>question</code>, and <code>QUESTION</code> are treated the same.</p>
+        <p>No. Column names are matched without case sensitivity, so <code>FC-Question</code>, <code>fc-question</code>, and <code>FC-QUESTION</code> are treated the same.</p>
       </details>
 
       <details>

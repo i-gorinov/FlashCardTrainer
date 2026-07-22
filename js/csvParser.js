@@ -35,8 +35,8 @@ async function parseCardsFromCsv(csvText) {
     if (fcQuestion && fcAnswer) {
       const card = { fcQuestion, fcAnswer };
       if (category) card.category = category;
-      if (mcAnswer && mcDistractors.length > 0) {
-        if (mcQuestion) card.mcQuestion = mcQuestion;
+      if (mcQuestion && mcAnswer && mcDistractors.length > 0) {
+        card.mcQuestion = mcQuestion;
         card.mcAnswer = mcAnswer;
         card.mcDistractors = mcDistractors;
       }

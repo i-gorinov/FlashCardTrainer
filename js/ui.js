@@ -95,12 +95,24 @@ function applyDefaultStudyOptions() {
   elements.multiChoiceCheckbox.checked = false;
 }
 function syncMultiChoiceOptionVisibility() {
-  const hasDistractors = state.cards.some((card) => card.mcDistractors && card.mcDistractors.length > 0);
-  elements.multiChoiceOption.hidden = !hasDistractors;
+  const hasMultiChoiceCards = state.cards.some((card) => isCardMultiChoiceCapable(card));
+  elements.multiChoiceOption.hidden = !hasMultiChoiceCards;
 }
 function handleMultiChoiceChange() {
   state.multiChoice = elements.multiChoiceCheckbox.checked;
-  if (state.cards.length > 0 && state.sessionStarted) renderCurrentCard();
+  if (state.cards.length === 0 || !state.sessionStarted) return;
+
+  if (!isCardVisibleInNavigation(state.currentCardIndex)) {
+    const firstVisibleCursor = getVisibleCardCursor(-1, 1);
+    if (firstVisibleCursor === -1) {
+      updateNavigationControls(true);
+      return;
+    }
+    state.cursor = firstVisibleCursor;
+    state.currentCardIndex = state.order[firstVisibleCursor];
+  }
+
+  renderCurrentCard();
 }
 function updateModeFromShuffleControl() { state.mode = elements.shuffleCardsCheckbox.checked ? Mode.RANDOM_NO_REPEAT : Mode.SEQUENTIAL; }
 function syncStudyControls() {
@@ -143,7 +155,14 @@ function resetDeck() {
   resetProgress();
   resetCoreState();
   state.order = createOrder(state.cards.length, state.mode);
-  state.currentCardIndex = state.order[0];
+  const firstVisibleCursor = getVisibleCardCursor(-1, 1);
+  if (firstVisibleCursor === -1) {
+    setControlsEnabled(true);
+    updateNavigationControls(true);
+    return;
+  }
+  state.cursor = firstVisibleCursor;
+  state.currentCardIndex = state.order[firstVisibleCursor];
   renderCurrentCard();
   setControlsEnabled(true);
 }
@@ -169,8 +188,8 @@ function renderCurrentCard() {
   const category = (card.category || "").trim();
   elements.questionCategory.textContent = category;
   elements.questionCategory.hidden = !category;
-  elements.questionText.textContent = card.fcQuestion;
-  const multiChoiceActive = state.multiChoice && card.mcDistractors && card.mcDistractors.length > 0;
+  const multiChoiceActive = state.multiChoice && isCardMultiChoiceCapable(card);
+  elements.questionText.textContent = multiChoiceActive ? card.mcQuestion : card.fcQuestion;
   if (multiChoiceActive) {
     if (!state.multiChoiceOptionOrders[state.currentCardIndex]) {
       state.multiChoiceOptionOrders[state.currentCardIndex] = shuffle(

@@ -16,6 +16,7 @@ function getNavigationState(enabled) {
   return { canGoPrevious: getVisibleCardCursor(state.cursor, -1) !== -1, canGoNext: getVisibleCardCursor(state.cursor, 1) !== -1 };
 }
 function isCardVisibleInNavigation(cardIndex) {
+  if (state.multiChoice && !isCardMultiChoiceCapable(state.cards[cardIndex])) return false;
   const cardStatus = state.answerStatuses[cardIndex] || AnswerStatus.UNANSWERED;
   if (cardStatus === AnswerStatus.CORRECT) return !state.navigationFilters.correct;
   if (cardStatus === AnswerStatus.INCORRECT) return !state.navigationFilters.incorrect;

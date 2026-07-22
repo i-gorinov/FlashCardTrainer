@@ -7,7 +7,7 @@ It runs fully client-side with no backend and no build step.
 
 - Upload a CSV deck with FC-Question and FC-Answer columns.
 - Optionally include a Category column shown on the question side.
-- Optionally include MC-Answer and MC-Distractor columns to enable multi-choice mode.
+- Optionally include MC-Question, MC-Answer, and MC-Distractor columns to enable multi-choice mode.
 - Flip cards by clicking the card.
 - Optional shuffle mode with no repeated cards in one run.
 - Mark answers as correct, incorrect, or unanswered.
@@ -28,7 +28,7 @@ It runs fully client-side with no backend and no build step.
 2. Click Upload CSV and choose a file.
 3. Review starts in scoring mode with Shuffle cards enabled by default.
 4. Optionally toggle Shuffle cards. If a session is in progress, a confirmation dialog appears before the session resets.
-5. Check Multi-choice (if the CSV contains MC-Answer and MC-Distractor columns) to display shuffled lettered answer options on the question side.
+5. Check Multi-choice (if at least one card contains MC-Question, MC-Answer, and at least one MC-Distractor) to study MC cards with shuffled lettered answer options.
 6. Navigate cards with Previous and Next.
 7. Click the card to flip between question and answer.
 8. Click the status indicator on the back side to cycle through:
@@ -71,7 +71,7 @@ Each row represents a single knowledge point. The CSV parser expects:
 - An optional `Category` column (case-insensitive) for question-side display.
 - Optional `MC-Question`, `MC-Answer`, `MC-Distractor-1`, `MC-Distractor-2`, `MC-Distractor-3` columns (case-insensitive) to enable multi-choice mode per card.
 
-Only rows where both `FC-Question` and `FC-Answer` are non-empty are imported. The MC section is only stored for a card when `MC-Answer` and at least one `MC-Distractor` column are non-empty.
+Only rows where both `FC-Question` and `FC-Answer` are non-empty are imported. The MC section is only stored for a card when `MC-Question`, `MC-Answer`, and at least one `MC-Distractor` column are non-empty.
 
 ### Minimal Example
 
@@ -94,7 +94,8 @@ Web,What is CSS?,A stylesheet language,Which language controls the visual style 
 
 When Multi-choice is checked:
 
-- The question side shows the question followed by all answer options in a random order that is preserved for the session.
+- Only MC-capable cards are shown while Multi-choice mode is active.
+- The question side shows `MC-Question` followed by all answer options in a random order that is preserved for the session.
 - Each option is prefixed with a capital letter index: `A)`, `B)`, `C)`, etc.
 - The answer side shows only the correct answer with the same letter it was assigned on the question side.
 
@@ -135,12 +136,13 @@ When category is present and non-empty, it appears centered at the top of the qu
 - Answer state can be cycled from the back-side indicator.
 - Navigation filter checkboxes can hide cards by answer state.
 - At most two hide filters can be active at once.
-- Multi-choice checkbox appears when the CSV contains MC-Answer and MC-Distractor columns.
-- When checked, the question side displays the correct answer and all distractors in a shuffled, lettered order that is stable for the session.
+- Multi-choice checkbox appears when at least one card has valid MC content (`MC-Question`, `MC-Answer`, and at least one `MC-Distractor`).
+- When checked, only MC-capable cards are shown.
+- In Multi-choice mode, the question side uses `MC-Question` and displays the correct answer with all distractors in a shuffled, lettered order that is stable for the session.
 - The answer side shows the correct answer with its assigned letter.
 - Multi-choice is unchecked by default whenever a deck is loaded.
 - Shuffle is enabled by default whenever a deck is loaded.
-- Toggling Multi-choice preserves the current card position, answer statuses, and all review progress.
+- Toggling Multi-choice preserves answer statuses and review progress.
 
 ## Navigation Filters
 

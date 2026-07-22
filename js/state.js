@@ -33,3 +33,11 @@ function markCardViewed(cardIndex) {
   state.progress.seenCards.add(cardIndex);
   state.progress.viewedCount += 1;
 }
+
+function isCardMultiChoiceCapable(card) {
+  if (!card) return false;
+  const mcQuestion = (card.mcQuestion || "").trim();
+  const mcAnswer = (card.mcAnswer || "").trim();
+  const distractors = Array.isArray(card.mcDistractors) ? card.mcDistractors : [];
+  return mcQuestion.length > 0 && mcAnswer.length > 0 && distractors.length > 0;
+}
