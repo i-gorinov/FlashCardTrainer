@@ -29,7 +29,9 @@ function wireEvents() {
   elements.uploadBtn.addEventListener("click", handleUploadBtnClick);
   elements.csvInput.addEventListener("change", handleFileUpload);
   elements.shuffleCardsCheckbox.addEventListener("change", handleShuffleCardsChange);
-  elements.multiChoiceCheckbox.addEventListener("change", handleMultiChoiceChange);
+  elements.flashcardsModeBtn.addEventListener("click", handleFlashcardsModeClick);
+  elements.multipleChoiceModeBtn.addEventListener("click", handleMultipleChoiceModeClick);
+  elements.studyModeSelector.addEventListener("keydown", handleStudyModeSelectorKeyDown);
   elements.previousBtn.addEventListener("click", showPreviousCard);
   elements.nextBtn.addEventListener("click", showNextCard);
   elements.resetBtn.addEventListener("click", handleResetBtnClick);
@@ -99,24 +101,72 @@ async function handleShuffleCardsChange() {
 function applyDefaultStudyOptions() {
   elements.shuffleCardsCheckbox.checked = true;
   state.multiChoice = false;
-  elements.multiChoiceCheckbox.checked = false;
+  syncStudyModeSelector();
 }
-function syncMultiChoiceOptionVisibility() {
-  elements.multiChoiceOption.hidden = !state.hasMultiChoiceColumns;
+function syncStudyModeSelector() {
+  if (!state.hasMultiChoiceColumns && state.multiChoice) {
+    state.multiChoice = false;
+  }
+
+  const flashcardsActive = !state.multiChoice;
+
+  elements.flashcardsModeBtn.classList.toggle("is-active", flashcardsActive);
+  elements.flashcardsModeBtn.setAttribute("aria-checked", String(flashcardsActive));
+  elements.flashcardsModeBtn.tabIndex = flashcardsActive ? 0 : -1;
+
+  elements.multipleChoiceModeBtn.classList.toggle("is-active", !flashcardsActive);
+  elements.multipleChoiceModeBtn.setAttribute("aria-checked", String(!flashcardsActive));
+  elements.multipleChoiceModeBtn.tabIndex = flashcardsActive ? -1 : 0;
 }
-async function handleMultiChoiceChange() {
+async function changeStudyMode(nextMultiChoice) {
+  if (nextMultiChoice === state.multiChoice) {
+    syncStudyModeSelector();
+    return;
+  }
+  if (nextMultiChoice && !state.hasMultiChoiceColumns) {
+    syncStudyModeSelector();
+    return;
+  }
   if (state.cards.length > 0 && state.sessionStarted) {
     if (!await confirmSessionReset()) {
-      elements.multiChoiceCheckbox.checked = state.multiChoice;
+      syncStudyModeSelector();
       return;
     }
   }
-  state.multiChoice = elements.multiChoiceCheckbox.checked;
+  state.multiChoice = nextMultiChoice;
+  syncStudyModeSelector();
   if (state.cards.length > 0 && state.sessionStarted) resetDeck();
+}
+function handleFlashcardsModeClick() {
+  void changeStudyMode(false);
+}
+function handleMultipleChoiceModeClick() {
+  void changeStudyMode(true);
+}
+function handleStudyModeSelectorKeyDown(event) {
+  const key = event.key;
+  if (key !== "ArrowLeft" && key !== "ArrowRight" && key !== "Home" && key !== "End") return;
+
+  event.preventDefault();
+
+  if (key === "ArrowLeft" || key === "Home") {
+    elements.flashcardsModeBtn.focus();
+    void changeStudyMode(false);
+    return;
+  }
+
+  if (!state.hasMultiChoiceColumns) {
+    elements.flashcardsModeBtn.focus();
+    syncStudyModeSelector();
+    return;
+  }
+
+  elements.multipleChoiceModeBtn.focus();
+  void changeStudyMode(true);
 }
 function updateModeFromShuffleControl() { state.mode = elements.shuffleCardsCheckbox.checked ? Mode.RANDOM_NO_REPEAT : Mode.SEQUENTIAL; }
 function syncStudyControls() {
-  syncMultiChoiceOptionVisibility();
+  syncStudyModeSelector();
   syncNavigationFilterControls();
 }
 function hasActiveMeaningfulSession() {
@@ -303,8 +353,7 @@ function setCardState(cardState) {
 function resetToEmptyState() {
   resetAllState(Mode.SEQUENTIAL);
   elements.shuffleCardsCheckbox.checked = false;
-  elements.multiChoiceCheckbox.checked = false;
-  elements.multiChoiceOption.hidden = true;
+  syncStudyModeSelector();
   elements.multiChoiceOptions.hidden = true;
   setReviewControlsEnabled(false);
   syncStudyControls();
@@ -347,7 +396,8 @@ function getNavigationFilterCheckboxes() {
 }
 function setReviewControlsEnabled(enabled) {
   elements.shuffleCardsCheckbox.disabled = !enabled;
-  elements.multiChoiceCheckbox.disabled = !enabled;
+  elements.flashcardsModeBtn.disabled = !enabled;
+  elements.multipleChoiceModeBtn.disabled = !enabled || !state.hasMultiChoiceColumns;
   syncNavigationFilterControls();
 }
 function setSelectedFileName(fileName) { elements.fileName.textContent = fileName; elements.fileName.title = fileName; }

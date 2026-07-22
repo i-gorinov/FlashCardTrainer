@@ -28,11 +28,12 @@ It runs fully client-side with no backend and no build step.
 2. Click Upload CSV and choose a file.
 3. Review starts in scoring mode with Shuffle cards enabled by default.
 4. Optionally toggle Shuffle cards. If a session is in progress, a confirmation dialog appears before the session resets.
-5. Check Multi-choice (if at least one card contains MC-Question, MC-Answer, and at least one MC-Distractor) to study MC cards with shuffled lettered answer options.
-6. Flashcard and Multi-choice are separate study modes: with Multi-choice off, all flashcards are available; with Multi-choice on, only MC-capable cards are shown.
-7. Navigate cards with Previous and Next.
-8. Click the card to flip between question and answer.
-9. Click the status indicator on the back side to cycle through:
+5. Use the segmented mode selector to switch between Flashcards and Multiple Choice.
+6. Multiple Choice mode is available when at least one card contains MC-Question, MC-Answer, and at least one MC-Distractor.
+7. Flashcards and Multiple Choice are separate study modes: Flashcards includes all imported rows, while Multiple Choice shows only MC-capable rows.
+8. Navigate cards with Previous and Next.
+9. Click the card to flip between question and answer.
+10. Click the status indicator on the back side to cycle through:
 	 - Unanswered
 	 - Correct
 	 - Incorrect
@@ -97,7 +98,7 @@ Web,What is HTML?,A markup language for web pages,Which technology defines the s
 Web,What is CSS?,A stylesheet language,Which language controls the visual style of a web page?,CSS,HTML,JavaScript,Python
 ```
 
-When Multi-choice is checked:
+When Multiple Choice is active:
 
 - Only MC-capable cards are shown while Multi-choice mode is active.
 - The question side shows `MC-Question` followed by all answer options in a random order that is preserved for the session.
@@ -146,14 +147,15 @@ When category is present and non-empty, it appears centered at the top of the qu
 - Answer state can be cycled from the back-side indicator.
 - Navigation filter checkboxes can hide cards by answer state.
 - At most two hide filters can be active at once.
-- Multi-choice checkbox appears when the header includes `MC-Question`, `MC-Answer`, and at least one `MC-Distractor` column.
-- When checked, only MC-capable cards are shown.
+- The segmented mode selector includes `Flashcards` and `Multiple Choice`.
+- The `Multiple Choice` segment is available when the header includes `MC-Question`, `MC-Answer`, and at least one `MC-Distractor` column.
+- When `Multiple Choice` is active, only MC-capable cards are shown.
 - Multi-choice does not replace flashcard mode; it is a separate mode with its own card visibility rules.
 - In Multi-choice mode, the question side uses `MC-Question` and displays the correct answer with all distractors in a shuffled, lettered order that is stable for the session.
 - The answer side shows the correct answer with its assigned letter.
-- Multi-choice is unchecked by default whenever a deck is loaded.
+- `Flashcards` is selected by default whenever a deck is loaded.
 - Shuffle is enabled by default whenever a deck is loaded.
-- Toggling Multi-choice while a session is in progress triggers a session reset confirmation. On confirmation, current progress and answer marks are cleared and a new session begins in the selected mode. On cancellation, the checkbox reverts and the session is unchanged.
+- Switching between `Flashcards` and `Multiple Choice` while a session is in progress triggers a session reset confirmation. On confirmation, current progress and answer marks are cleared and a new session begins in the selected mode. On cancellation, the selection reverts and the session is unchanged.
 
 ## Navigation Filters
 

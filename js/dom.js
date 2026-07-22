@@ -11,7 +11,7 @@ function requiredElementList(selector, root = document) {
 function getElements() {
   return {
     uploadBtn: requiredElement("#uploadBtn"), csvInput: requiredElement("#csvInput"), fileName: requiredElement("#fileName"),
-    shuffleCardsCheckbox: requiredElement("#shuffleCardsCheckbox"), multiChoiceCheckbox: requiredElement("#multiChoiceCheckbox"), multiChoiceOption: requiredElement("#multiChoiceOption"), multiChoiceOptions: requiredElement("#multiChoiceOptions"), previousBtn: requiredElement("#previousBtn"), nextBtn: requiredElement("#nextBtn"), resetBtn: requiredElement("#resetBtn"),
+    shuffleCardsCheckbox: requiredElement("#shuffleCardsCheckbox"), studyModeSelector: requiredElement("#studyModeSelector"), flashcardsModeBtn: requiredElement("#flashcardsModeBtn"), multipleChoiceModeBtn: requiredElement("#multipleChoiceModeBtn"), multiChoiceOptions: requiredElement("#multiChoiceOptions"), previousBtn: requiredElement("#previousBtn"), nextBtn: requiredElement("#nextBtn"), resetBtn: requiredElement("#resetBtn"),
     statusBar: requiredElement(".status-bar"), status: requiredElement("#status"), flashcard: requiredElement("#flashcard"), answerStatusIndicators: requiredElementList(".answer-status-indicator"), emptyCardView: requiredElement("#emptyCardView"),
     questionText: requiredElement("#questionText"), answerText: requiredElement("#answerText"), questionCategory: requiredElement("#questionCategory"),
     hideCorrectCheckbox: requiredElement("#hideCorrectCheckbox"), hideIncorrectCheckbox: requiredElement("#hideIncorrectCheckbox"), hideNoMarkCheckbox: requiredElement("#hideNoMarkCheckbox"),

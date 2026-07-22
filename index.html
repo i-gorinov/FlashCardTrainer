@@ -66,10 +66,11 @@
         <p id="fileName" class="file-name" aria-live="polite">No file chosen</p>
       </section>
       <section class="control-group review-controls" aria-label="Review controls">
-        <div class="study-options-row" aria-label="Review options">
-          <label class="shuffle-option"><input id="shuffleCardsCheckbox" type="checkbox" disabled /><span>Shuffle cards</span></label>
-          <label id="multiChoiceOption" class="shuffle-option" hidden><input id="multiChoiceCheckbox" type="checkbox" disabled /><span>Multi-choice</span></label>
+        <div id="studyModeSelector" class="mode-selector" role="radiogroup" aria-label="Study mode">
+          <button id="flashcardsModeBtn" class="mode-segment is-active" type="button" role="radio" aria-checked="true" disabled>Flashcards</button>
+          <button id="multipleChoiceModeBtn" class="mode-segment" type="button" role="radio" aria-checked="false" disabled>Multiple Choice</button>
         </div>
+        <label class="shuffle-option"><input id="shuffleCardsCheckbox" type="checkbox" disabled /><span>Shuffle cards</span></label>
         <div class="navigation-filter-section" aria-label="Navigation filter">
           <span class="control-label">Hide:</span>
           <div class="navigation-filter-options">
