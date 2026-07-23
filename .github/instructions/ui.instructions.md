@@ -59,6 +59,27 @@ Preserve existing accessibility support, including:
 
 Do not remove accessibility attributes unless replacing them with an equivalent or better approach.
 
+## Button Standards
+
+The application uses a shared button system.
+
+Reuse existing button styles whenever possible:
+- btn-primary for primary actions
+- btn-secondary for secondary actions
+- btn-icon for icon-only actions
+
+When adding new buttons:
+- Apply the appropriate shared button class.
+- Preserve existing disabled behaviour.
+- Preserve existing hover, active, and focus-visible behaviour.
+- Ensure icon-only buttons include meaningful aria-label text.
+- Keep desktop and mobile behaviour consistent with existing patterns.
+
+Avoid:
+- Creating feature-specific button styling when an existing button type is suitable.
+- Duplicating button styling already provided by shared classes.
+- Inline button styling.
+
 ## Keyboard Behaviour
 
 Do not add keyboard navigation or keyboard shortcuts unless explicitly requested.

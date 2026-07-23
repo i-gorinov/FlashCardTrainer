@@ -48,6 +48,24 @@ Keep responsibilities separated by module:
   - Rendering.
   - User interaction orchestration.
 
+- `css/styles.css`
+  - Shared visual design system.
+  - Shared button styles.
+  - Shared interaction states.
+
+## Shared UI Patterns
+
+Visual patterns that are reused throughout the application should remain centralised.
+
+Examples include:
+- button styles
+- dialog close controls
+- navigation controls
+- focus-visible behaviour
+- disabled-state styling
+
+Before introducing new UI patterns, check whether an existing shared implementation should be reused or extended.
+
 ## Separation of Concerns
 
 When adding or changing functionality:
