@@ -235,9 +235,9 @@ function renderCurrentCard() {
   const card = state.cards[state.currentCardIndex];
   if (!card) return;
   markCardViewed(state.currentCardIndex);
-  const category = (card.category || "").trim();
-  elements.questionCategory.textContent = category;
-  elements.questionCategory.hidden = !category;
+  const topic = (card.topic || "").trim();
+  elements.questionTopic.textContent = topic;
+  elements.questionTopic.hidden = !topic;
   const multiChoiceActive = state.multiChoice && isCardMultiChoiceCapable(card);
   elements.questionText.textContent = multiChoiceActive ? card.mcQuestion : card.question;
   if (multiChoiceActive) {
@@ -357,8 +357,8 @@ function resetToEmptyState() {
   elements.multiChoiceOptions.hidden = true;
   setReviewControlsEnabled(false);
   syncStudyControls();
-  elements.questionCategory.textContent = "";
-  elements.questionCategory.hidden = true;
+  elements.questionTopic.textContent = "";
+  elements.questionTopic.hidden = true;
   elements.answerText.textContent = "";
   elements.flashcard.classList.remove("is-flipped");
   setControlsEnabled(false);

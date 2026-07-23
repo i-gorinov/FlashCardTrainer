@@ -6,7 +6,7 @@ It runs fully client-side with no backend and no build step.
 ## Highlights
 
 - Upload a CSV deck with Question and Answer columns.
-- Optionally include a Category column shown on the question side.
+- Optionally include a Topic column shown on the question side.
 - Optionally include MC-Question, MC-Answer, and MC-Distractor columns per row to enable multi-choice for those rows.
 - Flip cards by clicking the card.
 - Optional shuffle mode with no repeated cards in one run.
@@ -74,7 +74,7 @@ Each row represents a single knowledge point. The CSV parser expects:
 - Naming convention for supported columns:
 
 ```csv
-Category,Question,Answer,MC-Question,MC-Answer,MC-Distractor-1,MC-Distractor-2,MC-Distractor-3
+Topic,Question,Answer,MC-Question,MC-Answer,MC-Distractor-1,MC-Distractor-2,MC-Distractor-3
 ```
 
 Only rows where both `Question` and `Answer` are non-empty are imported. MC values remain optional per row. The MC section is stored for a row only when `MC-Question`, `MC-Answer`, and at least one `MC-Distractor` column are non-empty.
@@ -93,7 +93,7 @@ What is JavaScript?,A programming language
 Including all columns enables multi-choice mode for those cards.
 
 ```csv
-Category,Question,Answer,MC-Question,MC-Answer,MC-Distractor-1,MC-Distractor-2,MC-Distractor-3
+Topic,Question,Answer,MC-Question,MC-Answer,MC-Distractor-1,MC-Distractor-2,MC-Distractor-3
 Web,What is HTML?,A markup language for web pages,Which technology defines the structure of a web page?,HTML,CSS,JavaScript,SQL
 Web,What is CSS?,A stylesheet language,Which language controls the visual style of a web page?,CSS,HTML,JavaScript,Python
 ```
@@ -110,16 +110,18 @@ Decks can mix row types:
 - Flashcard-only rows with blank MC columns.
 - Flashcard-plus-MC rows with valid MC values.
 
-### Optional Category Example
+### Optional Topic Example
 
 ```csv
-Answer,Category,Question
-Paris,Geography,What is the capital of France?
+Answer,Topic,Question
+Paris,Capital Cities,What is the capital of France?
 4,,What is 2+2?
-Pacific Ocean,GEOGRAPHY,Largest ocean?
+Pacific Ocean,Oceans,Largest ocean?
 ```
 
-When category is present and non-empty, it appears centered at the top of the question side only.
+When topic is present and non-empty, it appears centered at the top of the question side only.
+
+Legacy note: the parser still accepts `Category` for older decks when `Topic` is not provided. If both headers exist, `Topic` is used.
 
 ### Supported Parsing Behavior
 
@@ -131,7 +133,7 @@ When category is present and non-empty, it appears centered at the top of the qu
 ### Validation Errors You May See
 
 - CSV must include the header row and at least one data row in the Flashcard Trainer format.
-- CSV header must include 'Question' and 'Answer'. Naming convention: 'Category', 'Question', 'Answer', 'MC-Question', 'MC-Answer', 'MC-Distractor-1', 'MC-Distractor-2', 'MC-Distractor-3'.
+- CSV header must include 'Question' and 'Answer'. Naming convention: 'Topic', 'Question', 'Answer', 'MC-Question', 'MC-Answer', 'MC-Distractor-1', 'MC-Distractor-2', 'MC-Distractor-3'.
 - CSV contains an unterminated quoted field.
 - No usable rows were found. Each row must include non-empty 'Question' and 'Answer' values. MC fields are optional per row.
 
@@ -165,7 +167,7 @@ Filters are available for:
 - Incorrect
 - No Mark
 
-When filters hide a category, Next and Previous skip hidden cards.
+When filters hide a status group, Next and Previous skip hidden cards.
 Filters are disabled when no deck is loaded.
 
 ## Running Locally
@@ -229,7 +231,7 @@ Use an up-to-date browser for best compatibility.
 
 - Data is in-memory only; no persistence between reloads.
 - No import/export of answer results.
-- CSV import supports question and answer mapping with optional category.
+- CSV import supports question and answer mapping with optional topic.
 - Very large CSV files may still take noticeable time to parse.
 
 ## Troubleshooting

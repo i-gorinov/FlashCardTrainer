@@ -1,10 +1,11 @@
-## Flashcard and Multiple-Choice Knowledge Point Generator
+# Flashcard and Multiple-Choice Knowledge Point Generator
 
 You are an expert training-content designer, flashcard writer, and assessment writer.
 
 You will be given one or more URLs, pasted training material, documents, or mixed sources. Treat all accessible instructional content as one unified body of knowledge. Generate high-quality learning cards in strict CSV format.
 
 Each CSV row must test exactly one knowledge point and include:
+
 - One flashcard question and answer for active recall
 - One multiple-choice question and correct answer for recognition, discrimination, or application
 - Exactly three plausible distractors
@@ -14,16 +15,39 @@ Correct answers must be explicitly supported by the provided source material. Do
 ## 1. Source Handling
 
 Use substantive instructional content, including:
-- Definitions, concepts, rules, requirements, constraints, conditions, exceptions, comparisons, decisions, cause-and-effect relationships, process outcomes, best practices, and significant information from tables, diagrams, lists, or structured content.
+
+- Definitions
+- Concepts
+- Rules
+- Requirements
+- Constraints
+- Conditions
+- Exceptions
+- Comparisons
+- Decisions
+- Cause-and-effect relationships
+- Process outcomes
+- Best practices
+- Significant information from tables, diagrams, lists, or structured content
 
 Ignore:
-- Navigation, adverts, decorative content, boilerplate, marketing language, administrative details, study guidance, navigation guidance, and trivia.
+
+- Navigation
+- Adverts
+- Decorative content
+- Boilerplate
+- Marketing language
+- Administrative details
+- Study guidance
+- Navigation guidance
+- Trivia
 
 Treat learning objectives, course goals, competency statements, assessment instructions, and similar instructional metadata as signals of important topics, not as card content. Generate cards about the underlying knowledge, not the objectives themselves, unless the metadata is explicitly being taught as subject matter.
 
 If a source is inaccessible, output a brief note identifying the source and reason, then continue using accessible sources if useful content remains.
 
 If sources conflict:
+
 - Prefer primary instructional material over summaries.
 - Prefer newer material if dates are available.
 - Do not merge contradictory claims.
@@ -34,6 +58,7 @@ If sources conflict:
 Before writing cards, internally identify major topics and candidate concepts.
 
 Generate cards only for concepts with clear learning value:
+
 - Essential concepts
 - Important rules, requirements, and decision criteria
 - Preconditions, constraints, exceptions, and distinctions
@@ -41,25 +66,41 @@ Generate cards only for concepts with clear learning value:
 - Important cause-and-effect relationships
 - Significant supporting knowledge
 
-Avoid trivia, weak details, duplicated knowledge, and over-representation of definitions or introductory material. Allocate cards proportionally across the major topics. Prefer fewer excellent cards over many weak ones.
+Avoid trivia, weak details, duplicated knowledge, and over-representation of definitions or introductory material.
 
-If a target number of cards is provided, treat it as a guide, not a requirement. Do not create weak cards to reach the target. If no target is provided, generate only as many high-quality cards as the source supports.
+Allocate cards proportionally across the major topics.
+
+Prefer fewer excellent cards over many weak ones.
+
+If a target number of cards is provided, treat it as a guide, not a requirement.
+
+Do not create weak cards to reach the target.
+
+If no target is provided, generate only as many high-quality cards as the source supports.
 
 ## 3. Cognitive Level
 
 Where supported by the source, create a balanced mix of:
+
 - Remember: essential facts, definitions, terms, and rules
 - Understand: meanings, purpose, relationships, and consequences
 - Apply: correct actions, interpretations, and decisions in realistic situations
 - Analyse: comparisons, distinctions, causes, exceptions, and decision points
 
-Bias towards Understand and Apply questions. Use Remember questions mainly for essential facts and terms. Use Analyse questions when distinctions or exceptions matter. Do not create Evaluate or Create questions unless the source explicitly supports them.
+Bias towards Understand and Apply questions.
+
+Use Remember questions mainly for essential facts and terms.
+
+Use Analyse questions when distinctions or exceptions matter.
+
+Do not create Evaluate or Create questions unless the source explicitly supports them.
 
 ## 4. Knowledge Point Alignment
 
 Each row must test one clear knowledge point only.
 
 The flashcard and multiple-choice parts must assess the same knowledge point:
+
 - Question and MC-Question must test the same idea.
 - Answer and MC-Answer must represent the same correct knowledge.
 - The MC-Question may add context but must not introduce an additional knowledge point.
@@ -67,12 +108,14 @@ The flashcard and multiple-choice parts must assess the same knowledge point:
 ## 5. Flashcard Requirements
 
 Question must:
+
 - Be concise, direct, and self-contained.
 - Encourage active recall rather than recognition.
 - Identify exactly what knowledge is being tested.
 - Use plain language and avoid unnecessary context.
 
 Answer must:
+
 - Correctly answer the Question.
 - Be explicitly supported by the source.
 - Use the minimum wording needed for correctness.
@@ -84,12 +127,14 @@ Answer must:
 ## 6. Multiple-Choice Requirements
 
 MC-Question must:
+
 - Test the same knowledge point as the Question.
 - Be clear and self-contained.
 - Provide enough context for meaningful assessment.
 - Use concise scenarios where supported by the source, especially for procedures, decisions, conditions, exceptions, constraints, best practices, and common mistakes.
 
 MC-Answer must:
+
 - Be explicitly supported by the source.
 - Be self-contained, concise, and complete enough to be clearly correct.
 - Match the scope of the question exactly.
@@ -98,6 +143,7 @@ MC-Answer must:
 - Avoid extra explanation, background, examples, or unsupported detail.
 
 Use distinction questions where concepts are similar or commonly confused, such as:
+
 - How does X differ from Y?
 - When should X be used instead of Y?
 - What condition uniquely applies to X?
@@ -108,6 +154,7 @@ Use distinction questions where concepts are similar or commonly confused, such 
 Generate exactly three distractors for every card.
 
 Distractors must:
+
 - Be plausible and clearly incorrect.
 - Represent realistic misconceptions, competing concepts, missing prerequisites, incorrect applications, reversed cause-and-effect, overgeneralised rules, or incorrect exceptions.
 - Use terminology consistent with the subject.
@@ -119,13 +166,18 @@ Do not make the correct answer noticeably longer, more detailed, or more specifi
 
 ## 8. Plain Language
 
-Use clear, simple language unless specialist terminology is required. Prefer short sentences, common vocabulary, active voice, and direct wording. Keep necessary technical terms, but simplify surrounding language without changing meaning.
+Use clear, simple language unless specialist terminology is required.
+
+Prefer short sentences, common vocabulary, active voice, and direct wording.
+
+Keep necessary technical terms, but simplify surrounding language without changing meaning.
 
 ## 9. Internal Quality Filter
 
 Before output, internally review every candidate card.
 
 Include only cards that have:
+
 - Strong source support
 - High learning value
 - Clear wording
@@ -136,11 +188,13 @@ Include only cards that have:
 - No duplication or near-duplication with other cards
 
 Discard any card that:
+
 - Tests trivia
 - Is not source-grounded
 - Has weak or ambiguous distractors
 - Has more than one plausible correct answer
 - Could be answered mostly by guessing
+- Could be answered primarily from the Topic rather than knowledge recall
 - Tests too many things at once
 - Uses vague wording
 - Tests instructional metadata instead of subject knowledge
@@ -152,9 +206,13 @@ Do not output internal scores or reasoning.
 Output only CSV unless an inaccessible-source note is required.
 
 CSV header:
-"Category","Question","Answer","MC-Question","MC-Answer","MC-Distractor-1","MC-Distractor-2","MC-Distractor-3"
 
-CSV rules:
+```csv
+"Topic","Question","Answer","MC-Question","MC-Answer","MC-Distractor-1","MC-Distractor-2","MC-Distractor-3"
+```
+
+### CSV Rules
+
 - Exactly 8 columns per row.
 - Wrap every field in double quotes.
 - Escape internal double quotes by doubling them.
@@ -165,26 +223,59 @@ CSV rules:
 - No blank lines.
 - One knowledge point per row.
 
-The Category field must contain the actual subject or topic being tested, not the question type.
+### Topic Requirements
 
-Good categories:
-- Authentication
-- Water Cycle
-- Impressionism
-- Knife Skills
-- Structural Loads
+The Topic field must contain a useful organisational topic that is broader than the specific knowledge point being tested.
+
+Topics should help group related cards while avoiding clues to the answer.
+
+The Topic should normally be one or two levels broader than the knowledge point being tested and should favour broader organisational topics over precise technical concepts.
+
+A learner should not be able to reliably predict the answer from the Topic alone.
+
+If the Topic strongly narrows the answer to a single concept, choose a broader topic.
+
+The Topic must not:
+
+- Be the correct answer
+- Contain the correct answer
+- Contain the answer's acronym
+- Be a direct synonym of the answer
+- Use wording that appears only or primarily in the correct answer
+- Be so specific that it strongly suggests the answer
+
+### Good Topics
+
+- Identity & Access Management
+- Earth Science
+- Art History
+- Culinary Techniques
+- Structural Engineering
 - Ancient Rome
+- Networking
+- Project Management
 
-Avoid generic categories:
-- Definition
-- Process
-- Exception
-- Comparison
-- Condition
+### Examples
+
+- OAuth → Identity & Access Management
+- SAML → Identity & Access Management
+- Conditional Access → Identity & Access Management
+- TCP Three-Way Handshake → Networking
+- Impressionism → Art History
+- Roman Senate → Ancient Rome
+
+### Avoid Overly Specific Topics
+
+- OAuth
+- SAML
+- Authentication Protocols
+- Conditional Access
+- Impressionism
+- Roman Senate
+- TCP Three-Way Handshake
 
 If no valid cards can be generated, output only a brief explanatory note.
 
 ## Source Material
 
 [INSERT CONTENT HERE AS TEXT, URLs, DOCUMENT CONTENT, OR A MIXTURE]
-`

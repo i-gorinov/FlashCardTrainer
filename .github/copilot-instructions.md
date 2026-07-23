@@ -47,3 +47,17 @@ When implementing changes:
 - Prefer updating documentation in the same change as the code update.
 - Flag any documentation gaps, ambiguities, or outdated content discovered during the task, even if unrelated to the requested change.
 - Never assume documentation is correct without reviewing it against the implementation.
+
+# Protected Content Files
+
+Files under the following folder are maintained manually and are considered authoritative content:
+
+- ai-prompts/
+
+Rules:
+- Never modify files under ai-prompts/.
+- Never suggest wording improvements for files under ai-prompts/.
+- Never reformat files under ai-prompts/.
+- Never update files under ai-prompts/ as part of a feature implementation.
+- Treat files under ai-prompts/ as read-only reference content.
+- Only modify files under ai-prompts/ if the user explicitly requests a change to a specific file in that folder.

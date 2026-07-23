@@ -465,7 +465,7 @@ button:disabled,input:disabled+span {
     color:rgba(10, 63, 30, 0.16)
 }
 
-.flashcard-category {
+.flashcard-topic {
     margin:0;
     max-width:70%;
     color:var(--muted);

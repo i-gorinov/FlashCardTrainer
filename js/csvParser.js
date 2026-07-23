@@ -11,7 +11,8 @@ async function parseCardsFromCsv(csvText) {
   const header = nonEmptyRows[0].map(normalizeHeaderCell);
   const questionIndex = header.indexOf("question");
   const answerIndex = header.indexOf("answer");
-  const categoryIndex = header.indexOf("category");
+  const topicIndex = header.indexOf("topic");
+  const legacyCategoryIndex = header.indexOf("category");
   const mcQuestionIndex = header.indexOf("mc-question");
   const mcAnswerIndex = header.indexOf("mc-answer");
   const mcDistractorIndices = ["mc-distractor-1", "mc-distractor-2", "mc-distractor-3"]
@@ -19,7 +20,7 @@ async function parseCardsFromCsv(csvText) {
     .filter((i) => i !== -1);
 
   if (questionIndex === -1 || answerIndex === -1) {
-    throw new Error("CSV header must include 'Question' and 'Answer'. Naming convention: 'Category', 'Question', 'Answer', 'MC-Question', 'MC-Answer', 'MC-Distractor-1', 'MC-Distractor-2', 'MC-Distractor-3'.");
+    throw new Error("CSV header must include 'Question' and 'Answer'. Naming convention: 'Topic', 'Question', 'Answer', 'MC-Question', 'MC-Answer', 'MC-Distractor-1', 'MC-Distractor-2', 'MC-Distractor-3'.");
   }
 
   const hasMultiChoiceColumns = mcQuestionIndex !== -1 && mcAnswerIndex !== -1 && mcDistractorIndices.length > 0;
@@ -29,14 +30,16 @@ async function parseCardsFromCsv(csvText) {
   for (const row of nonEmptyRows.slice(1)) {
     const question = (row[questionIndex] || "").trim();
     const answer = (row[answerIndex] || "").trim();
-    const category = categoryIndex === -1 ? "" : (row[categoryIndex] || "").trim();
+    const topic = topicIndex === -1
+      ? (legacyCategoryIndex === -1 ? "" : (row[legacyCategoryIndex] || "").trim())
+      : (row[topicIndex] || "").trim();
     const mcQuestion = mcQuestionIndex === -1 ? "" : (row[mcQuestionIndex] || "").trim();
     const mcAnswer = mcAnswerIndex === -1 ? "" : (row[mcAnswerIndex] || "").trim();
     const mcDistractors = mcDistractorIndices.map((i) => (row[i] || "").trim()).filter(Boolean);
 
     if (question && answer) {
       const card = { question, answer };
-      if (category) card.category = category;
+      if (topic) card.topic = topic;
       if (mcQuestion && mcAnswer && mcDistractors.length > 0) {
         card.mcQuestion = mcQuestion;
         card.mcAnswer = mcAnswer;
