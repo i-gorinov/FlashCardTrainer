@@ -274,6 +274,9 @@ The Topic must not:
 - Roman Senate
 - TCP Three-Way Handshake
 
+### Cards Order and Grouping
+- Before generating the CSV, assign a Topic to each card, then group all cards by Topic and output rows sorted by Topic (A-Z). Keep all cards for a Topic together and do not interleave Topics.
+
 If no valid cards can be generated, output only a brief explanatory note.
 
 ## Source Material
