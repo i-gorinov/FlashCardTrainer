@@ -282,3 +282,8 @@ If no valid cards can be generated, output only a brief explanatory note.
 ## Source Material
 
 [INSERT CONTENT HERE AS TEXT, URLs, DOCUMENT CONTENT, OR A MIXTURE]
+
+
+
+---------------------
+© 2026 Igor Gorinov
