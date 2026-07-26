@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.3] - 2026-07-26
+
+### Changed
+- Clarified AI Deck Creator terminology and source-material options in the User Guide for clearer authoring workflows.
+- Refined the shared AI prompt instructions to improve guidance clarity and consistency for CSV deck generation.
+
 ## [1.5.2] - 2026-07-24
 
 ### Changed

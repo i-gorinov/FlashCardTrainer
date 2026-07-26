@@ -1,4 +1,4 @@
 const APP_INFO = Object.freeze({
   name: "Flashcard Trainer",
-  version: "1.5.2",
+  version: "1.5.3",
 });
