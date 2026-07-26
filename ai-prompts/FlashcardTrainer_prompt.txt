@@ -279,7 +279,16 @@ The Topic must not:
 
 If no valid cards can be generated, output only a brief explanatory note.
 
-## Source Material
+## Source Material Processing
+- Attempt to access and process every supplied URL.
+- Never silently skip, ignore, or exclude a URL.
+- For each URL that cannot be processed, output a brief accessibility report before the CSV containing:
+  - URL
+  - Access status
+  - Specific reason it could not be used
+- Continue generating cards from all successfully processed sources.
+
+## Source Material:
 
 [INSERT CONTENT HERE AS TEXT, URLs, DOCUMENT CONTENT, OR A MIXTURE]
 
