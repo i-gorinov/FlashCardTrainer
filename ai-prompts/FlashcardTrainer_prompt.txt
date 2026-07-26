@@ -7,6 +7,7 @@ You will be given one or more URLs, pasted training material, documents, or mixe
 Generate high-quality learning cards in strict CSV format.
 
 Each CSV row must contain:
+
 - One flashcard question and answer for active recall
 - One multiple-choice question and correct answer for recognition, discrimination, application, or analysis
 - Exactly three plausible, competitive distractors
@@ -17,9 +18,10 @@ Prioritise source-grounded learning value over volume. Prefer fewer excellent ca
 
 Do not guess, infer unstated conclusions, add unsupported facts, or use external knowledge to create correct answers or distractors.
 
-A knowledge point is eligible for output only if it can support:
+A knowledge point is eligible only if it can support:
+
 - One clearly correct answer explicitly supported by the source
-- Three realistic competing distractors grounded in real source concepts, actions, states, conditions, tools, roles, methods, outcomes, or classifications
+- Three realistic competing distractors grounded in real source concepts, actions, states, conditions, tools, roles, methods, outcomes, commands, configurations, classifications, or limitations
 - One option set where all four choices are professional, plausible, parallel, and from the same answer family
 
 If a knowledge point cannot support all of the above, discard it.
@@ -29,6 +31,7 @@ Many useful flashcard knowledge points are unsuitable for multiple-choice questi
 ## 1. Source Handling
 
 Use substantive instructional content, including:
+
 - Definitions
 - Concepts
 - Rules
@@ -44,6 +47,7 @@ Use substantive instructional content, including:
 - Significant information from tables, diagrams, lists, or structured content
 
 Ignore:
+
 - Navigation
 - Adverts
 - Decorative content
@@ -59,6 +63,7 @@ Treat learning objectives, course goals, competency statements, assessment instr
 Attempt to access and process every supplied URL. Never silently skip, ignore, or exclude a URL.
 
 If a source is inaccessible, output a brief accessibility report before the CSV containing:
+
 - URL
 - Access status
 - Specific reason it could not be used
@@ -66,6 +71,7 @@ If a source is inaccessible, output a brief accessibility report before the CSV 
 Then continue generating cards from all successfully processed sources if useful content remains.
 
 If sources conflict:
+
 - Prefer primary instructional material over summaries.
 - Prefer newer material if dates are available.
 - Do not merge contradictory claims.
@@ -77,6 +83,7 @@ If the source does not explicitly support a knowledge point, do not generate a c
 ## 2. Internal Source Mapping
 
 Before writing any cards, internally build a source-grounded map of:
+
 - Major topics
 - Subtopics
 - Candidate knowledge points
@@ -88,6 +95,7 @@ Before writing any cards, internally build a source-grounded map of:
 An answer family is a set of options that answer the same kind of question.
 
 Examples of answer families:
+
 - Actions
 - Causes
 - Conditions
@@ -108,36 +116,10 @@ Do not create a multiple-choice item until you have identified the answer family
 
 All four multiple-choice options must belong to the same answer family.
 
-## 3. MCQ Eligibility Gate
+## 3. Knowledge Point Selection
 
-Before generating a card, apply this gate.
+Generate cards only for concepts with clear learning value, especially:
 
-A candidate knowledge point is eligible for a multiple-choice card only if the source material provides enough real material to create a competitive option set.
-
-The option set must contain:
-- One correct option that directly answers the question
-- Three incorrect options that are real source-grounded alternatives from the same answer family
-- Four options that a learner with partial knowledge of the source could reasonably consider before applying the specific distinction being tested
-
-If fewer than three realistic source-grounded competitors exist, discard the candidate knowledge point.
-
-Do not invent weak alternatives to complete an option set.
-
-Do not use obviously poor, careless, exaggerated, or unprofessional actions as distractors.
-
-Do not use a distractor whose wrongness is obvious from common sense alone.
-
-Do not create a card merely because the correct answer is important. The card is valid only if the full option set is valid.
-
-For action, recommendation, remediation, troubleshooting, configuration, process, or best-practice questions, generate the card only if the source contains at least four professional alternatives in the same answer family:
-- The documented correct choice
-- Three realistic competing choices that are incorrect for this specific scenario
-
-If the source teaches only one recommended action for a situation and does not provide realistic neighbouring actions, do not create a multiple-choice card for that knowledge point.
-
-## 4. Card Selection and Coverage
-
-Generate cards only for concepts with clear learning value:
 - Essential concepts
 - Important rules, requirements, and decision criteria
 - Preconditions, constraints, exceptions, and distinctions
@@ -146,9 +128,20 @@ Generate cards only for concepts with clear learning value:
 - Significant supporting knowledge
 - Concepts needed to make correct decisions or avoid realistic errors
 
+When multiple candidate knowledge points compete for inclusion, prioritise in this order:
+
+1. Decision-making knowledge
+2. Preconditions, constraints, and exceptions
+3. Common confusions and distinctions
+4. Cause-and-effect relationships
+5. Procedures and workflows
+6. Definitions and terminology
+7. Isolated facts, labels, or feature names
+
 Prioritise concepts that affect decision making, interpretation, troubleshooting, configuration, usage, classification, or behaviour before generating cards about feature names, labels, or isolated facts.
 
 Avoid:
+
 - Trivia
 - Weak details
 - Duplicated knowledge
@@ -165,21 +158,49 @@ If a target number of cards is provided, treat it as a guide, not a requirement.
 
 If no target is provided, generate only as many high-quality cards as the source supports.
 
+## 4. MCQ Eligibility Gate
+
+Before generating a card, apply this gate.
+
+A candidate knowledge point is eligible for a multiple-choice card only if the source material provides enough real material to create a competitive option set.
+
+The option set must contain:
+
+- One correct option that directly answers the question
+- Three incorrect options that are real source-grounded alternatives from the same answer family
+- Four options that a learner with partial knowledge of the source could reasonably consider before applying the specific distinction being tested
+
+If fewer than three realistic source-grounded competitors exist, discard the candidate knowledge point.
+
+Do not invent weak alternatives to complete an option set.
+
+Do not create a card merely because the correct answer is important. The card is valid only if the full option set is valid.
+
+For action, recommendation, remediation, troubleshooting, configuration, process, or best-practice questions, generate the card only if the source contains at least four professional alternatives in the same answer family:
+
+- The documented correct choice
+- Three realistic competing choices that are incorrect for this specific scenario
+
+If the source teaches only one recommended action for a situation and does not provide realistic neighbouring actions, do not create a multiple-choice card for that knowledge point.
+
 ## 5. Cognitive Level and Difficulty
 
 Where supported by the source, create a balanced mix of:
+
 - Remember: essential facts, definitions, terms, and rules
 - Understand: meanings, purposes, relationships, and consequences
 - Apply: correct actions, interpretations, and decisions in realistic situations
 - Analyse: comparisons, distinctions, causes, exceptions, decision points, and common confusions
 
 Bias towards Understand, Apply, and Analyse questions only when the source explicitly supports:
+
 - The scenario
 - The decision criteria
 - The correct answer
 - Three realistic source-grounded competitors
 
 When the source supports it, prefer testing:
+
 - Why something matters
 - When something applies
 - Under what conditions something is true
@@ -197,6 +218,7 @@ Whenever two or more source concepts perform related functions, differ by condit
 Do not create Evaluate or Create questions unless the source explicitly supports them.
 
 Target an approximate difficulty distribution where the source supports it:
+
 - 20-30% Remember
 - 40-50% Understand
 - 20-30% Apply
@@ -211,12 +233,14 @@ Avoid making the deck mostly recognition-based. A learner should often need to u
 Each row must test one clear knowledge point only.
 
 The flashcard and multiple-choice parts must assess the same knowledge point:
+
 - Question and MC-Question must test the same idea.
 - Answer and MC-Answer must represent the same correct knowledge.
 - MC-Question may add realistic context but must not introduce an additional knowledge point.
 - MC-Question may test the same knowledge point at a slightly higher cognitive level than the flashcard, but it must not shift to a different fact, condition, feature, or outcome.
 
 Reject any card where:
+
 - The flashcard tests one idea but the multiple-choice question tests another.
 - The flashcard asks for a term while the multiple-choice question asks for an unrelated benefit, condition, or procedure.
 - The correct MC-Answer contains additional unsupported knowledge that is not required by the flashcard answer.
@@ -226,6 +250,7 @@ Reject any card where:
 ## 7. Flashcard Requirements
 
 Question must:
+
 - Be concise, direct, and self-contained.
 - Encourage active recall rather than recognition.
 - Identify exactly what knowledge is being tested.
@@ -235,6 +260,7 @@ Question must:
 - Avoid vague prompts such as "What is important about X?" unless the expected answer is clearly constrained.
 
 Answer must:
+
 - Correctly answer the Question.
 - Be explicitly supported by the source.
 - Use the minimum wording needed for correctness.
@@ -249,6 +275,7 @@ For example, prefer "Tab key" over "Tab" when the shorter answer could be unclea
 ## 8. Multiple-Choice Question Requirements
 
 MC-Question must:
+
 - Test the same knowledge point as the Question.
 - Be clear and self-contained.
 - Provide enough context for meaningful assessment.
@@ -259,6 +286,7 @@ MC-Question must:
 - Avoid direct "Which one is X?" wording when a stronger scenario, distinction, or decision question is supported by the source.
 
 MC-Answer must:
+
 - Be explicitly supported by the source.
 - Be self-contained, concise, and complete enough to be clearly correct.
 - Match the scope of the question exactly.
@@ -268,6 +296,7 @@ MC-Answer must:
 - Avoid being noticeably more precise, technical, qualified, or information-rich than the distractors unless accuracy absolutely requires it.
 
 Use distinction questions where concepts are similar or commonly confused, such as:
+
 - When should X be used instead of Y?
 - What condition uniquely applies to X?
 - Why would X be inappropriate in this case?
@@ -278,65 +307,59 @@ Use distinction questions where concepts are similar or commonly confused, such 
 
 When a source contains several related capabilities, plans, tools, steps, commands, roles, conditions, or outcomes, prefer questions that require learners to distinguish among them.
 
-## 9. Distractor Requirements
+Do not use action or troubleshooting stems unless the source provides enough same-family competing actions or troubleshooting choices for a strong option set.
+
+## 9. MCQ Option Quality Standard
 
 Generate exactly three distractors for every multiple-choice item.
 
 A distractor is valid only if it is:
-- A real source-grounded concept, action, condition, state, method, tool, role, outcome, limitation, command, configuration choice, or classification
+
+- A real source-grounded concept, action, condition, state, method, tool, role, outcome, limitation, command, configuration choice, classification, or workflow step
 - From the same answer family as the correct answer
 - A realistic competitor for the specific question
 - Clearly incorrect under the source material for the scenario being tested
 - Plausible to a learner who has studied the material but misunderstood the specific distinction, condition, recommendation, limitation, or decision
 
-Distractors must be grounded in the source as real alternatives, not invented merely to be wrong.
-
 A distractor may be incorrect because:
-- It applies under a different condition
-- It solves a different but nearby problem
-- It belongs to a different step in the same workflow
-- It uses a different source-supported tool, method, role, state, or configuration
-- It confuses two similar source concepts
-- It overgeneralises a source rule
-- It applies a source-supported idea in the wrong context
-- It reverses a source-supported relationship in a realistic way
-- It selects a neighbouring source-supported option that does not fit this scenario
 
-A distractor must not be incorrect simply because it is obviously careless, silly, extreme, vague, unprofessional, or outside normal practice.
+- It applies under a different condition.
+- It solves a different but nearby problem.
+- It belongs to a different step in the same workflow.
+- It uses a different source-supported tool, method, role, state, or configuration.
+- It confuses two similar source concepts.
+- It overgeneralises a source rule.
+- It applies a source-supported idea in the wrong context.
+- It reverses a source-supported relationship in a realistic way.
+- It selects a neighbouring source-supported option that does not fit this scenario.
 
-Distractors must:
-- Belong to the same answer family as the correct answer.
-- Belong to the same decision, scenario, workflow, or problem being tested.
+A distractor must not be incorrect simply because it is silly, careless, exaggerated, vague, unprofessional, outside normal practice, or obviously wrong through common sense alone.
+
+The full option set must:
+
+- Answer the same type of question.
+- Come from the same answer family.
+- Come from the same general decision, scenario, workflow, or problem space.
+- Be parallel in grammar and structure.
+- Be similar in style, reading level, specificity, abstraction, and informational density.
 - Fit the question stem grammatically and semantically.
-- Be plausible to a learner with partial knowledge of the source.
 - Use terminology consistent with the source.
-- Match the correct answer in grammar, style, reading level, level of abstraction, semantic category, and approximate informational density.
 - Be self-contained.
-- Be clearly incorrect under the source material.
-- Remain plausible after the learner reads the full question.
-- Be close enough to the correct answer that the learner must use source knowledge to choose correctly.
-- Be wrong for a meaningful subject-matter reason.
-
-Distractors must not:
-- Be absurd, humorous, exaggerated, careless, or obviously artificial.
-- Be generic bad advice.
-- Be obviously unreasonable, self-defeating, or contrary to normal professional practice unless the source explicitly teaches that misconception as a realistic error.
-- Be made wrong by adding obviously negative, dismissive, or careless wording.
-- Come from a different answer family than the correct answer.
-- Be obviously wrong through common sense alone.
-- Be duplicated or near-duplicated.
-- Be partially correct.
-- Be correct under another reasonable interpretation.
-- Be weaker only because they are vague while the correct answer is specific.
-- Create an "odd one out" pattern.
-- Use noticeably different wording, length, specificity, technicality, or informational density from the correct answer.
-- Be made incorrect only by adding extreme words such as always, never, only, all, none, or every unless the source specifically supports that contrast.
-- Contain clues that make them easy to eliminate without knowing the source.
-- Be generic filler when source-based competing options are available.
-- Be merely related to the topic rather than a genuine competing alternative.
-- Be the simple opposite of the correct answer unless the source explicitly teaches that error as a realistic misconception.
+- Contain only one clearly correct answer.
+- Require source knowledge rather than general test-taking strategy.
+- Avoid clues based on length, grammar, wording, technicality, absolutes, qualification, or detail level.
+- Avoid an "odd one out" pattern.
+- Avoid duplicated or near-duplicated options.
+- Avoid partially correct distractors.
+- Avoid distractors that could be correct under another reasonable interpretation.
+- Avoid generic bad advice or generic filler.
+- Avoid options that are merely related to the topic rather than genuine competing alternatives.
+- Avoid making the correct answer the only specific, technical, qualified, or detailed option.
+- Avoid making distractors wrong only by adding extreme words such as always, never, only, all, none, or every unless the source specifically supports that contrast.
+- Avoid the simple opposite of the correct answer unless the source explicitly teaches that error as a realistic misconception.
 
 Use same-family alternatives:
+
 - If the correct answer is an action, use other documented professional actions as distractors.
 - If the correct answer is a cause, use other documented plausible causes.
 - If the correct answer is a condition, use other documented plausible conditions.
@@ -345,57 +368,28 @@ Use same-family alternatives:
 - If the correct answer is a troubleshooting factor, use other documented troubleshooting factors.
 - If the correct answer is a source state, version, branch, mode, scope, or configuration, use other documented states, versions, branches, modes, scopes, or configurations.
 
-If there are not three source-grounded same-family distractors, discard the card.
+Before outputting each MCQ, internally test the option set:
 
-## 10. Option Set Quality
-
-For every multiple-choice item, internally check the full option set before output.
-
-The four options must:
-- Answer the same type of question.
-- Come from the same answer family.
-- Come from the same general decision, scenario, workflow, or problem space.
-- Be parallel in grammar and structure.
-- Be similar in specificity and level of abstraction.
-- Be similar in informational density.
-- Be similar enough that a learner cannot identify the answer by style alone.
-- Contain only one clearly correct answer.
-- Avoid clues based on length, wording, technicality, absolutes, qualification, or detail level.
-- Require source knowledge rather than general test-taking strategy.
-- Be options that a learner who studied the source could reasonably consider before applying the specific distinction being tested.
-
-After constructing the options, test the item against these questions:
 - Are all four options real source-grounded alternatives?
 - Are all four options from the same answer family?
 - Are all four options professional and plausible on their own?
 - Could a learner who studied the source but misunderstood the specific point reasonably consider each option?
 - Is only one option fully correct under the source?
 - Does selecting the correct option require knowing the source material?
-- Is the correct answer not identifiable by length, detail, grammar, or wording?
+- Is the correct answer not identifiable by length, detail, grammar, wording, or technicality?
 - Are the distractors wrong for meaningful subject-matter reasons?
 - Are the distractors genuine competitors rather than obviously poor choices?
 
 If any answer is no, rewrite the item. If it cannot be fixed without weakening the card, discard the card.
 
-Reject or rewrite any item where:
-- One option is obviously different from the others.
-- The correct answer is the only specific or technical option.
-- The correct answer is the only option with a condition, purpose, limitation, or example.
-- The distractors can be eliminated without knowing the source material.
-- The wording of the Topic, Question, or MC-Question points to the MC-Answer.
-- More than one option could be defended as correct.
-- The correct answer is longer, more detailed, or more qualified than all distractors.
-- The wrong options are merely related alternatives rather than meaningful competitors.
-- The option set tests recognition of vocabulary when a stronger item is possible.
-- Any distractor is obviously unreasonable, self-defeating, careless, artificial, or easily rejected through common sense alone.
-
-## 11. Topic Requirements
+## 10. Topic Requirements
 
 The Topic field must contain a useful organisational topic that groups related cards without revealing the answer.
 
 Topics should normally describe the relevant subject area, process area, skill area, or conceptual area being tested. They should be broader than the specific knowledge point, but not so broad that they become unhelpful.
 
 Choose topics that are:
+
 - Useful for organising study material.
 - Specific enough to reflect the source content.
 - Broad enough to group several related cards.
@@ -407,6 +401,7 @@ The Topic should usually be one level broader than the knowledge point. Use two 
 Prefer reusing an existing topic when the knowledge point naturally fits it. Avoid creating a new topic unless it meaningfully improves organisation.
 
 The Topic must not:
+
 - Be the correct answer.
 - Contain the correct answer.
 - Contain the answer's acronym.
@@ -417,19 +412,22 @@ The Topic must not:
 - Fragment related cards into unnecessarily narrow topics.
 
 Good topic behaviour:
+
 - OAuth, SAML, and Conditional Access → Identity & Access Management
 - TCP handshakes and DNS failures → Network Communication or Network Troubleshooting
 - Ice cream churning and ice crystal formation → Ice Cream Texture Development
 
 Poor topic behaviour:
+
 - Too specific: OAuth, SAML, TCP Three-Way Handshake, Ice crystal formation
 - Too generic: Technology, Software, Food, Desserts, Science
 
-## 12. Plain Language
+## 11. Plain Language
 
 Use clear, simple language unless specialist terminology is required.
 
 Prefer:
+
 - Short sentences
 - Common vocabulary
 - Active voice
@@ -438,6 +436,7 @@ Prefer:
 Keep necessary technical terms, but simplify surrounding language without changing meaning.
 
 Avoid:
+
 - Overly academic phrasing
 - Ambiguous pronouns
 - Unnecessary setup
@@ -447,13 +446,14 @@ Avoid:
 
 Questions should be easy to understand but not easy to answer without knowing the material.
 
-## 13. Question Diversity
+## 12. Question Diversity
 
 Avoid generating a repetitive deck made mostly of the same question pattern.
 
 Do not generate more than three consecutive cards using the same question pattern unless the source provides no better alternative.
 
 Vary question stems using:
+
 - Definitions
 - Purposes
 - Conditions
@@ -469,12 +469,14 @@ Vary question stems using:
 - Comparisons between similar concepts
 
 Avoid overusing:
+
 - What is X?
 - What does X do?
 - Which option describes X?
 - Which feature does X provide?
 
 When source material supports a valid option set, prefer:
+
 - Which action is appropriate in this situation?
 - Which condition must be true?
 - Which outcome follows?
@@ -485,45 +487,33 @@ When source material supports a valid option set, prefer:
 
 Do not use action or troubleshooting stems unless the source provides enough same-family competing actions or troubleshooting choices for a strong option set.
 
-## 14. Internal Quality Filter
+## 13. Internal Quality Filter
 
 Before output, internally review every candidate card.
 
 Include only cards that have:
-- Strong source support.
-- A directly supported knowledge point.
-- High learning value.
-- Clear wording.
-- One knowledge point.
-- Strong active recall.
-- One clearly correct MC-Answer.
-- Three plausible, competitive, source-grounded, same-family distractors.
-- Distractors drawn from the closest available competing source concepts.
-- Distractors believable to learners with partial knowledge of the source.
-- Parallel answer options.
-- A useful Topic.
-- No answer leakage from Topic, Question, MC-Question, or option wording.
-- No duplication or near-duplication with other cards.
-- A suitable cognitive level for the source material.
-- No avoidable reliance on simple recognition.
-- No obvious test-taking clues.
 
-Before generating each card, verify that the knowledge point passes the MCQ Eligibility Gate.
-
-Before generating distractors, verify that the correct answer is explicitly supported by the source.
-
-After generating distractors, verify that each distractor is:
-- Source-grounded
-- Same-family
-- Professional
-- Plausible
-- Incorrect for a meaningful source-based reason
+- Strong source support
+- One directly supported knowledge point
+- High learning value
+- Clear wording
+- Strong active recall
+- One clearly correct MC-Answer
+- Three plausible, competitive, source-grounded, same-family distractors
+- Distractors drawn from the closest available competing source concepts
+- Parallel answer options
+- A useful Topic
+- No answer leakage from Topic, Question, MC-Question, or option wording
+- No duplication or near-duplication with other cards
+- A suitable cognitive level for the source material
+- No avoidable reliance on simple recognition
+- No obvious test-taking clues
 
 Discard any card that:
+
 - Tests trivia.
 - Is not source-grounded.
-- Has weak, invented, unrelated, or ambiguous distractors.
-- Has distractors from a different answer family than the correct answer.
+- Has weak, invented, unrelated, ambiguous, or different-family distractors.
 - Has distractors that are obviously poor choices or easily rejected through common sense alone.
 - Has distractors that are merely related to the topic rather than genuine competitors.
 - Has more than one plausible correct answer.
@@ -543,14 +533,16 @@ Discard any card that:
 
 Do not output internal scores, reasoning, source mapping, eligibility checks, or review notes.
 
-## 15. CSV Output Format
+## 14. CSV Output Format
 
 Output only CSV unless an inaccessible-source note is required.
 
 CSV header:
+
 "Topic","Question","Answer","MC-Question","MC-Answer","MC-Distractor-1","MC-Distractor-2","MC-Distractor-3"
 
 CSV rules:
+
 - Exactly 8 columns per row.
 - Wrap every field in double quotes.
 - Escape internal double quotes by doubling them.
@@ -562,6 +554,7 @@ CSV rules:
 - One knowledge point per row.
 
 Cards order and grouping:
+
 - Assign a Topic to each card before generating the CSV.
 - Group all cards by Topic.
 - Output rows sorted by Topic A-Z.
@@ -577,6 +570,3 @@ If no valid cards can be generated, output only a brief explanatory note.
 ## Source Material
 
 [INSERT CONTENT HERE AS TEXT, URLS, DOCUMENT CONTENT, OR A MIXTURE]
-
-
-© 2026 Igor Gorinov
