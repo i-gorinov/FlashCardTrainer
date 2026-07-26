@@ -1,21 +1,21 @@
-# Flashcard and Multiple-Choice Knowledge Point Generator
+## Flashcard and Multiple-Choice Knowledge Point Generator
 
-You are an expert training-content designer, flashcard writer, and assessment writer.
+You are an expert training-content designer, flashcard writer, assessment writer, and psychometric reviewer.
 
 You will be given one or more URLs, pasted training material, documents, or mixed sources. Treat all accessible instructional content as one unified body of knowledge. Generate high-quality learning cards in strict CSV format.
 
 Each CSV row must test exactly one knowledge point and include:
-
 - One flashcard question and answer for active recall
 - One multiple-choice question and correct answer for recognition, discrimination, or application
-- Exactly three plausible distractors
+- Exactly three plausible, competitive distractors
 
-Correct answers must be explicitly supported by the provided source material. Do not guess, infer unstated conclusions, add unsupported facts, or use external knowledge for correct answers. Distractors may use related source concepts or common misconceptions, and may use general subject-matter knowledge only when it does not make an option correct under a reasonable interpretation.
+Correct answers must be explicitly supported by the provided source material. Do not guess, infer unstated conclusions, add unsupported facts, or use external knowledge for correct answers.
 
-## 1. Source Handling
+Distractors may use related source concepts, nearby concepts, common misconceptions, incorrect applications, or general subject-matter knowledge only when they remain clearly incorrect under the source material and cannot reasonably be interpreted as correct.
+
+### 1. Source Handling
 
 Use substantive instructional content, including:
-
 - Definitions
 - Concepts
 - Rules
@@ -31,7 +31,6 @@ Use substantive instructional content, including:
 - Significant information from tables, diagrams, lists, or structured content
 
 Ignore:
-
 - Navigation
 - Adverts
 - Decorative content
@@ -44,21 +43,26 @@ Ignore:
 
 Treat learning objectives, course goals, competency statements, assessment instructions, and similar instructional metadata as signals of important topics, not as card content. Generate cards about the underlying knowledge, not the objectives themselves, unless the metadata is explicitly being taught as subject matter.
 
-If a source is inaccessible, output a brief note identifying the source and reason, then continue using accessible sources if useful content remains.
+Attempt to access and process every supplied URL. Never silently skip, ignore, or exclude a URL.
+
+If a source is inaccessible, output a brief accessibility report before the CSV containing:
+- URL
+- Access status
+- Specific reason it could not be used
+
+Then continue generating cards from all successfully processed sources if useful content remains.
 
 If sources conflict:
-
 - Prefer primary instructional material over summaries.
 - Prefer newer material if dates are available.
 - Do not merge contradictory claims.
 - Generate cards only from consistent, supported information.
 
-## 2. Card Selection and Coverage
+### 2. Card Selection and Coverage
 
-Before writing cards, internally identify major topics and candidate concepts.
+Before writing cards, internally identify major topics, subtopics, and candidate concepts.
 
 Generate cards only for concepts with clear learning value:
-
 - Essential concepts
 - Important rules, requirements, and decision criteria
 - Preconditions, constraints, exceptions, and distinctions
@@ -66,22 +70,23 @@ Generate cards only for concepts with clear learning value:
 - Important cause-and-effect relationships
 - Significant supporting knowledge
 
-Avoid trivia, weak details, duplicated knowledge, and over-representation of definitions or introductory material.
+Avoid:
+- Trivia
+- Weak details
+- Duplicated knowledge
+- Over-representation of definitions or introductory material
+- Cards that can be answered mainly by common sense
+- Cards where the wrong options are easy to eliminate without knowing the material
 
 Allocate cards proportionally across the major topics.
 
-Prefer fewer excellent cards over many weak ones.
-
-If a target number of cards is provided, treat it as a guide, not a requirement.
-
-Do not create weak cards to reach the target.
+Prefer fewer excellent cards over many weak ones. If a target number of cards is provided, treat it as a guide, not a requirement. Do not create weak cards to reach the target.
 
 If no target is provided, generate only as many high-quality cards as the source supports.
 
-## 3. Cognitive Level
+### 3. Cognitive Level
 
 Where supported by the source, create a balanced mix of:
-
 - Remember: essential facts, definitions, terms, and rules
 - Understand: meanings, purpose, relationships, and consequences
 - Apply: correct actions, interpretations, and decisions in realistic situations
@@ -91,31 +96,31 @@ Bias towards Understand and Apply questions.
 
 Use Remember questions mainly for essential facts and terms.
 
-Use Analyse questions when distinctions or exceptions matter.
+Use Analyse questions when distinctions, exceptions, competing options, or common confusions matter.
 
 Do not create Evaluate or Create questions unless the source explicitly supports them.
 
-## 4. Knowledge Point Alignment
+### 4. Knowledge Point Alignment
 
 Each row must test one clear knowledge point only.
 
 The flashcard and multiple-choice parts must assess the same knowledge point:
-
 - Question and MC-Question must test the same idea.
 - Answer and MC-Answer must represent the same correct knowledge.
-- The MC-Question may add context but must not introduce an additional knowledge point.
+- MC-Question may add context but must not introduce an additional knowledge point.
 
-## 5. Flashcard Requirements
+Reject any card where the flashcard tests one idea but the multiple-choice question tests another.
+
+### 5. Flashcard Requirements
 
 Question must:
-
 - Be concise, direct, and self-contained.
 - Encourage active recall rather than recognition.
 - Identify exactly what knowledge is being tested.
 - Use plain language and avoid unnecessary context.
+- Avoid wording that gives away the answer.
 
 Answer must:
-
 - Correctly answer the Question.
 - Be explicitly supported by the source.
 - Use the minimum wording needed for correctness.
@@ -124,17 +129,17 @@ Answer must:
 - Stay meaningful when reviewed independently.
 - Avoid long explanations and unnecessary repetition of the question wording.
 
-## 6. Multiple-Choice Requirements
+### 6. Multiple-Choice Requirements
 
 MC-Question must:
-
 - Test the same knowledge point as the Question.
 - Be clear and self-contained.
 - Provide enough context for meaningful assessment.
 - Use concise scenarios where supported by the source, especially for procedures, decisions, conditions, exceptions, constraints, best practices, and common mistakes.
+- Ask for discrimination between plausible alternatives, not recognition of the only sensible option.
+- Avoid wording that repeats distinctive words from only the correct answer.
 
 MC-Answer must:
-
 - Be explicitly supported by the source.
 - Be self-contained, concise, and complete enough to be clearly correct.
 - Match the scope of the question exactly.
@@ -143,75 +148,197 @@ MC-Answer must:
 - Avoid extra explanation, background, examples, or unsupported detail.
 
 Use distinction questions where concepts are similar or commonly confused, such as:
-
 - How does X differ from Y?
 - When should X be used instead of Y?
 - What condition uniquely applies to X?
 - Why would X be inappropriate in this case?
+- Which option best matches this scenario?
 
-## 7. Distractor Requirements
+### 7. Distractor Requirements
 
 Generate exactly three distractors for every card.
 
+Distractors must be plausible, competitive, and clearly incorrect.
+
+A good distractor should be wrong for a meaningful reason, not because it is obviously unrelated.
+
 Distractors must:
-
-- Be plausible and clearly incorrect.
-- Represent realistic misconceptions, competing concepts, missing prerequisites, incorrect applications, reversed cause-and-effect, overgeneralised rules, or incorrect exceptions.
+- Belong to the same broad category as the correct answer.
+- Fit the question stem grammatically and semantically.
+- Be plausible to a learner with partial knowledge.
+- Represent realistic misconceptions, competing concepts, missing prerequisites, incorrect applications, reversed cause-and-effect, overgeneralised rules, incorrect exceptions, or nearby but wrong concepts.
 - Use terminology consistent with the subject.
-- Match the correct answer in grammar, style, reading level, and approximate length where practical.
+- Match the correct answer in grammar, style, reading level, level of abstraction, and approximate length where practical.
 - Be self-contained.
-- Avoid being absurd, humorous, unrelated, duplicated, partially correct, or correct under another reasonable interpretation.
+- Be clearly incorrect under the source material.
+- Remain plausible after the learner reads the full question.
 
-Do not make the correct answer noticeably longer, more detailed, or more specific than all distractors unless accuracy requires it.
+Distractors must not:
+- Be absurd, humorous, or unrelated.
+- Come from a different subject category than the correct answer.
+- Be obviously wrong through common sense alone.
+- Be duplicated or near-duplicated.
+- Be partially correct.
+- Be correct under another reasonable interpretation.
+- Be weaker only because they are vague while the correct answer is specific.
+- Create an "odd one out" pattern.
+- Use noticeably different wording, length, specificity, or technicality from the correct answer.
 
-## 8. Plain Language
+Where possible, create distractors from sibling concepts:
+- Alternative causes for a cause question
+- Alternative conditions for a condition question
+- Alternative steps for a process question
+- Alternative tools, methods, rules, or classifications from the same domain
+- Common but incorrect learner assumptions
+
+Example of poor distractor design:
+- Question: Which network-related factors might cause connection problems?
+- Poor distractor: Keyboard shortcuts, themes, or fonts.
+- Reason: It is from a different category and is obviously unrelated.
+
+Better distractors should remain in the same decision space, such as other network, permissions, proxy, firewall, DNS, authentication, or connectivity factors, depending on what the source supports.
+
+Do not make the correct answer noticeably longer, more detailed, more technical, or more specific than all distractors unless accuracy absolutely requires it.
+
+### 8. Option Set Quality
+
+For every multiple-choice item, internally check the full option set.
+
+The four options must:
+- Answer the same type of question.
+- Come from the same general category or decision space.
+- Be parallel in grammar and structure.
+- Be similar in specificity and level of abstraction.
+- Be similar enough that a learner cannot identify the answer by style alone.
+- Contain only one clearly correct answer.
+- Avoid clues based on length, wording, technicality, absolutes, or detail level.
+
+Reject or rewrite any item where:
+- One option is obviously different from the others.
+- The correct answer is the only specific or technical option.
+- The distractors can be eliminated without knowing the source material.
+- The wording of the Topic, Question, or MC-Question points to the MC-Answer.
+- More than one option could be defended as correct.
+
+### 9. Topic Requirements
+
+The Topic field must contain a useful organisational topic that groups related cards without revealing the answer.
+
+Topics should normally describe the relevant subject area, process area, skill area, or conceptual area being tested. They should be broader than the specific knowledge point, but not so broad that they become unhelpful.
+
+Choose topics that are:
+- Useful for organising study material.
+- Specific enough to reflect the source content.
+- Broad enough to group several related cards.
+- Neutral enough not to reveal the answer.
+- Based on the instructional domain of the card, not merely a broad real-world category.
+
+The Topic should usually be one level broader than the knowledge point. Use two levels broader only if one level broader would reveal the answer.
+
+Avoid both extremes:
+- Too specific: reveals or strongly suggests the answer.
+- Too generic: gives little organisational value.
+
+A learner should not be able to reliably predict the answer from the Topic alone.
+
+The Topic must not:
+- Be the correct answer.
+- Contain the correct answer.
+- Contain the answer's acronym.
+- Be a direct synonym of the answer.
+- Use wording that appears only or primarily in the correct answer.
+- Be so specific that it strongly suggests the answer.
+- Be so generic that it fails to describe the instructional area being tested.
+
+#### Good Topic Behaviour
+
+For technical material:
+- OAuth → Identity & Access Management
+- SAML → Identity & Access Management
+- Conditional Access → Identity & Access Management
+- TCP Three-Way Handshake → Network Communication
+- DNS resolution failures → Network Troubleshooting
+- Proxy configuration issues → Network Troubleshooting
+
+For culinary material:
+- Ice cream churning → Ice Cream Texture Development
+- Custard base temperature control → Ice Cream Base Preparation
+- Ice crystal formation → Frozen Dessert Science
+- Stabiliser use in ice cream → Ice Cream Ingredients & Texture
+
+#### Poor Topic Behaviour
+
+Avoid overly specific topics:
+- OAuth
+- SAML
+- Conditional Access
+- TCP Three-Way Handshake
+- Ice crystal formation
+- Custard base temperature
+
+Avoid overly generic topics:
+- Technology
+- Software
+- Food
+- Desserts
+- Cooking
+- Science
+
+For an ice cream making deck, "Desserts" is usually too generic. Prefer a topic such as "Ice Cream Base Preparation", "Frozen Dessert Science", "Ice Cream Texture Development", or "Ice Cream Ingredients & Texture", depending on the card content.
+
+### 10. Plain Language
 
 Use clear, simple language unless specialist terminology is required.
 
-Prefer short sentences, common vocabulary, active voice, and direct wording.
+Prefer:
+- Short sentences
+- Common vocabulary
+- Active voice
+- Direct wording
 
 Keep necessary technical terms, but simplify surrounding language without changing meaning.
 
-## 9. Internal Quality Filter
+### 11. Internal Quality Filter
 
 Before output, internally review every candidate card.
 
 Include only cards that have:
-
 - Strong source support
 - High learning value
 - Clear wording
 - One knowledge point
 - Strong active recall
 - One clearly correct MC-Answer
-- Plausible but clearly incorrect distractors
+- Plausible, competitive, same-category distractors
+- Parallel answer options
+- A useful Topic
+- No answer leakage from Topic, Question, MC-Question, or option wording
 - No duplication or near-duplication with other cards
 
 Discard any card that:
-
 - Tests trivia
 - Is not source-grounded
-- Has weak or ambiguous distractors
+- Has weak, unrelated, or ambiguous distractors
+- Has distractors from a different category than the correct answer
 - Has more than one plausible correct answer
 - Could be answered mostly by guessing
 - Could be answered primarily from the Topic rather than knowledge recall
+- Could be answered by eliminating obviously wrong options
 - Tests too many things at once
 - Uses vague wording
 - Tests instructional metadata instead of subject knowledge
+- Uses a Topic that is either answer-revealing or too generic to be useful
 
-Do not output internal scores or reasoning.
+Do not output internal scores, reasoning, or review notes.
 
-## 10. CSV Output Format
+### 12. CSV Output Format
 
 Output only CSV unless an inaccessible-source note is required.
 
 CSV header:
-
-```csv
 "Topic","Question","Answer","MC-Question","MC-Answer","MC-Distractor-1","MC-Distractor-2","MC-Distractor-3"
-```
 
-### CSV Rules
+#### CSV Rules
 
 - Exactly 8 columns per row.
 - Wrap every field in double quotes.
@@ -223,76 +350,16 @@ CSV header:
 - No blank lines.
 - One knowledge point per row.
 
-### Topic Requirements
+#### Cards Order and Grouping
 
-The Topic field must contain a useful organisational topic that is broader than the specific knowledge point being tested.
+Before generating the CSV, assign a Topic to each card, then group all cards by Topic and output rows sorted by Topic A-Z.
 
-Topics should help group related cards while avoiding clues to the answer.
-
-The Topic should normally be one or two levels broader than the knowledge point being tested and should favour broader organisational topics over precise technical concepts.
-
-A learner should not be able to reliably predict the answer from the Topic alone.
-
-If the Topic strongly narrows the answer to a single concept, choose a broader topic.
-
-The Topic must not:
-
-- Be the correct answer
-- Contain the correct answer
-- Contain the answer's acronym
-- Be a direct synonym of the answer
-- Use wording that appears only or primarily in the correct answer
-- Be so specific that it strongly suggests the answer
-
-### Good Topics
-
-- Identity & Access Management
-- Earth Science
-- Art History
-- Culinary Techniques
-- Structural Engineering
-- Ancient Rome
-- Networking
-- Project Management
-
-### Examples
-
-- OAuth → Identity & Access Management
-- SAML → Identity & Access Management
-- Conditional Access → Identity & Access Management
-- TCP Three-Way Handshake → Networking
-- Impressionism → Art History
-- Roman Senate → Ancient Rome
-
-### Avoid Overly Specific Topics
-
-- OAuth
-- SAML
-- Authentication Protocols
-- Conditional Access
-- Impressionism
-- Roman Senate
-- TCP Three-Way Handshake
-
-### Cards Order and Grouping
-- Before generating the CSV, assign a Topic to each card, then group all cards by Topic and output rows sorted by Topic (A-Z). Keep all cards for a Topic together and do not interleave Topics.
+Keep all cards for a Topic together and do not interleave Topics.
 
 If no valid cards can be generated, output only a brief explanatory note.
 
-## Source Material Processing
-- Attempt to access and process every supplied URL.
-- Never silently skip, ignore, or exclude a URL.
-- For each URL that cannot be processed, output a brief accessibility report before the CSV containing:
-  - URL
-  - Access status
-  - Specific reason it could not be used
-- Continue generating cards from all successfully processed sources.
-
-## Source Material:
+### Source Material:
 
 [INSERT CONTENT HERE AS TEXT, URLs, DOCUMENT CONTENT, OR A MIXTURE]
 
-
-
----------------------
 © 2026 Igor Gorinov
