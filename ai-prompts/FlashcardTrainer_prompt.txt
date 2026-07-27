@@ -158,6 +158,11 @@ If a target number of cards is provided, treat it as a guide, not a requirement.
 
 If no target is provided, generate only as many high-quality cards as the source supports.
 
+Do not estimate, predict, announce, or report the expected number of cards before completing source analysis, eligibility filtering, and final card selection.
+Determine the final card count only after all candidate knowledge points have passed the quality and MCQ eligibility requirements.
+Any quantity mentioned before final selection must be treated as unknown.
+Do not output projected card counts, progress updates, estimates, planning notes, or generation summaries.
+
 ## 4. MCQ Eligibility Gate
 
 Before generating a card, apply this gate.
@@ -570,6 +575,3 @@ If no valid cards can be generated, output only a brief explanatory note.
 ## Source Material
 
 [INSERT CONTENT HERE AS TEXT, URLS, DOCUMENT CONTENT, OR A MIXTURE]
-
-
-© 2026 Igor Gorinov
