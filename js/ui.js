@@ -171,7 +171,15 @@ function syncStudyControls() {
   syncNavigationFilterControls();
 }
 function hasActiveMeaningfulSession() {
-  return state.cards.length > 0 && state.sessionStarted && state.progress.viewedCount > 0;
+  if (state.cards.length === 0 || !state.sessionStarted) {
+    return false;
+  }
+  // Meaningful progress exists if more than one unique card has been viewed
+  if (state.progress.seenCards.size > 1) {
+    return true;
+  }
+  // Or if any card has been marked with an answer status
+  return state.answerStatuses.some((status) => status !== AnswerStatus.UNANSWERED);
 }
 function confirmSessionReset() {
   if (!hasActiveMeaningfulSession()) return Promise.resolve(true);
