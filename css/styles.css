@@ -1126,6 +1126,10 @@ p.empty-ai-gap {
     word-break:break-word
 }
 
+.flashcard-front:has(#multiChoiceOptions:not([hidden])) #questionTopic {
+    margin-bottom:8px
+}
+
 .flashcard-front:has(#multiChoiceOptions:not([hidden])) #multiChoiceOptions {
     background:rgba(15,118,110,.06);
     border-radius:8px;
