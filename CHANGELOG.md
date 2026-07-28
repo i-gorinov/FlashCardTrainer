@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.4] - 2026-07-28
+
+### Fixed
+- Session reset warning now only appears when meaningful progress has been made (multiple cards viewed or answers recorded), preventing false warnings immediately after deck load.
+
+### Changed
+- Optimized multi-choice mode spacing for compact view on smaller screens.
+- Adjusted margin for question topic text in multi-choice flashcard view for better visual alignment.
+- Refined card generation guidelines to clarify expected counts and eligibility filtering criteria.
+
 ## [1.5.3] - 2026-07-26
 
 ### Changed

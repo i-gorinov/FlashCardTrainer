@@ -64,22 +64,27 @@ Rules:
 
 # Versioning and Changelog Maintenance
 
-When implementing changes, always consider whether the change should update `APP_INFO.version` in `js/version.js` and `CHANGELOG.md`.
+For every coding task, classify the change as one of:
+- User-visible
+- Internal (non-user-visible)
+- Chore-only
 
-Update `APP_INFO.version` when the change is intended to be part of a user-facing release.
+Rules:
+- User-visible: must update version in `js/version.js` and add or update an entry in `CHANGELOG.md`.
+- Internal (non-user-visible): must also update version in `js/version.js` and add or update an entry in `CHANGELOG.md`.
+- Chore-only: do not update version or changelog unless explicitly requested.
 
-Use semantic versioning:
-- Increment PATCH for bug fixes, small corrections, and minor user-facing fixes.
-- Increment MINOR for new features, meaningful UI/UX improvements, or backward-compatible user-facing enhancements.
-- Increment MAJOR only for breaking changes, major workflow changes, major redesigns, or changes that significantly alter how users interact with the app.
+SemVer:
+- PATCH: fixes, small improvements, and internal refactors, hardening, or performance updates.
+- MINOR: new features or meaningful improvements (including significant internal engineering improvements).
+- MAJOR: breaking changes.
 
-Whenever `APP_INFO.version` is updated, also update `CHANGELOG.md` under a matching version heading.
+Changelog format:
+- User-visible changes under Added, Changed, or Fixed.
+- Internal changes under Internal (or Changed: Internal).
+- Keep the latest changelog version aligned with `APP_INFO.version` in `js/version.js`.
 
-`CHANGELOG.md` should:
-- Summarise notable user-facing changes.
-- Group changes under Added, Changed, Fixed, or similar headings where appropriate.
-- Avoid creating one entry for every commit.
-- Avoid documenting purely internal refactoring unless it affects user-facing behaviour.
-- Keep version numbers, dates, and release notes aligned with `APP_INFO.version`.
-
-Do not bump the version for changes that are purely internal, such as formatting, comments, minor code cleanup, or refactoring with no user-facing impact, unless explicitly requested.
+Required final-task statement:
+- Version/Changelog updated: yes (classification: User-visible or Internal, version: X.Y.Z)
+- or
+- Version/Changelog updated: no (classification: Chore-only, reason: ...)
