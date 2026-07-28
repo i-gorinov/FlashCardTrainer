@@ -155,6 +155,7 @@ Legacy note: the parser still accepts `Category` for older decks when `Topic` is
 - When `Multiple Choice` is active, only MC-capable cards are shown.
 - Multi-choice does not replace flashcard mode; it is a separate mode with its own card visibility rules.
 - In Multi-choice mode, the question side uses `MC-Question` and displays the correct answer with all distractors in a shuffled, lettered order that is stable for the session.
+- On shorter viewport heights, including mobile, Multi-choice mode applies compact in-card spacing so more options remain visible before internal scrolling is needed.
 - The answer side shows the correct answer with its assigned letter.
 - `Flashcards` is selected by default whenever a deck is loaded.
 - Shuffle is enabled by default whenever a deck is loaded.
